@@ -212,7 +212,7 @@ topology:
     - endpoints: ["node32:Gi0-0-0-1", "host:node32-Gi0-0-0-1"] # node11-Gi0-0-0-4
     - endpoints: ["node32:Gi0-0-0-2", "host:node32-Gi0-0-0-2"] # node17-Gi0-0-0-3
     - endpoints: ["node32:Gi0-0-0-3", "host:node32-Gi0-0-0-3"] # node23-Gi0-0-0-3
-    - endpoints: ["node32:Gi0-0-0-4", "node29:Gi0-0-0-4"]
+  
     - endpoints: ["node32:Gi0-0-0-5", "node35:Gi0-0-0-4"]
     - endpoints: ["node32:Gi0-0-0-6", "node48:Gi0-0-0-4"]
     - endpoints: ["node32:Gi0-0-0-7", "node55:Gi0-0-0-4"]
@@ -231,7 +231,7 @@ topology:
     - endpoints: ["node34:Gi0-0-0-1", "host:node34-Gi0-0-0-1"] # node12-Gi0-0-0-4
     - endpoints: ["node34:Gi0-0-0-2", "host:node34-Gi0-0-0-2"] # node16-Gi0-0-0-4
     - endpoints: ["node34:Gi0-0-0-3", "host:node34-Gi0-0-0-3"] # node27-Gi0-0-0-4
-    - endpoints: ["node34:Gi0-0-0-4", "node31:Gi0-0-0-6"]
+
     - endpoints: ["node34:Gi0-0-0-5", "node35:Gi0-0-0-6"]
     - endpoints: ["node34:Gi0-0-0-6", "node46:Gi0-0-0-4"]
     - endpoints: ["node34:Gi0-0-0-7", "node51:Gi0-0-0-4"]
@@ -322,8 +322,8 @@ topology:
     - endpoints: ["node44:Gi0-0-0-2", "host:node44-Gi0-0-0-2"] # node18-Gi0-0-0-5
     - endpoints: ["node44:Gi0-0-0-3", "host:node44-Gi0-0-0-3"] # node22-Gi0-0-0-6
 
-    - endpoints: ["node44:Gi0-0-0-6", "node46:Gi0-0-0-6"]
-    - endpoints: ["node44:Gi0-0-0-7", "node52:Gi0-0-0-6"]
+    - endpoints: ["node44:Gi0-0-0-6", "node48:Gi0-0-0-6"]
+    - endpoints: ["node44:Gi0-0-0-7", "node51:Gi0-0-0-6"]
 
 # node45
     - endpoints: ["node45:Gi0-0-0-0", "host:node45-Gi0-0-0-0"] # node02-Gi0-0-0-6
