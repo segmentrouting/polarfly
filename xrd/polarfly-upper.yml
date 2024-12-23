@@ -12,169 +12,169 @@ topology:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.57
-      startup-config: config-xrd/node29.cfg 
+      startup-config: config/node29.cfg 
 
     node30:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.58
-      startup-config: config-xrd/node30.cfg 
+      startup-config: config/node30.cfg 
 
     node31:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.59
-      startup-config: config-xrd/node31.cfg 
+      startup-config: config/node31.cfg 
 
     node32:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.60
-      startup-config: config-xrd/node32.cfg 
+      startup-config: config/node32.cfg 
 
     node33:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.61
-      startup-config: config-xrd/node33.cfg 
+      startup-config: config/node33.cfg 
 
     node34:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.62
-      startup-config: config-xrd/node34.cfg 
+      startup-config: config/node34.cfg 
 
     node35:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.63
-      startup-config: config-xrd/node35.cfg 
+      startup-config: config/node35.cfg 
 
     node36:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.64
-      startup-config: config-xrd/node36.cfg 
+      startup-config: config/node36.cfg 
 
     node37:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.65
-      startup-config: config-xrd/node37.cfg 
+      startup-config: config/node37.cfg 
 
     node38:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.66
-      startup-config: config-xrd/node38.cfg 
+      startup-config: config/node38.cfg 
 
     node39:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.67
-      startup-config: config-xrd/node39.cfg 
+      startup-config: config/node39.cfg 
 
     node40:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.68
-      startup-config: config-xrd/node40.cfg 
+      startup-config: config/node40.cfg 
 
     node41:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.69
-      startup-config: config-xrd/node41.cfg 
+      startup-config: config/node41.cfg 
 
     node42:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.70
-      startup-config: config-xrd/node42.cfg 
+      startup-config: config/node42.cfg 
 
     node43:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.71
-      startup-config: config-xrd/node43.cfg 
+      startup-config: config/node43.cfg 
 
     node44:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.72
-      startup-config: config-xrd/node44.cfg 
+      startup-config: config/node44.cfg 
 
     node45:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.73
-      startup-config: config-xrd/node45.cfg 
+      startup-config: config/node45.cfg 
 
     node46:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.74
-      startup-config: config-xrd/node46.cfg 
+      startup-config: config/node46.cfg 
 
     node47:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.75
-      startup-config: config-xrd/node47.cfg 
+      startup-config: config/node47.cfg 
 
     node48:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.76
-      startup-config: config-xrd/node48.cfg 
+      startup-config: config/node48.cfg 
 
     node49:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.77
-      startup-config: config-xrd/node49.cfg 
+      startup-config: config/node49.cfg 
 
     node50:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.78
-      startup-config: config-xrd/node50.cfg 
+      startup-config: config/node50.cfg 
 
     node51:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.79
-      startup-config: config-xrd/node51.cfg 
+      startup-config: config/node51.cfg 
 
     node52:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.80
-      startup-config: config-xrd/node52.cfg 
+      startup-config: config/node52.cfg 
 
     node53:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.81
-      startup-config: config-xrd/node53.cfg 
+      startup-config: config/node53.cfg 
 
     node54:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.82
-      startup-config: config-xrd/node54.cfg 
+      startup-config: config/node54.cfg 
 
     node55:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.83
-      startup-config: config-xrd/node55.cfg 
+      startup-config: config/node55.cfg 
 
     node56:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 172.20.8.84
-      startup-config: config-xrd/node56.cfg  
+      startup-config: config/node56.cfg  
 
   links:
 
