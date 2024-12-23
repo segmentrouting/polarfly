@@ -1,0 +1,423 @@
+
+name: polarfly-radix8
+
+mgmt:
+  network: pf-mgt
+  ipv4-subnet: 172.20.8.0/24
+
+topology:
+  nodes:
+
+    node29:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.57
+      startup-config: config-xrd/node29.cfg 
+
+    node30:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.58
+      startup-config: config-xrd/node30.cfg 
+
+    node31:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.59
+      startup-config: config-xrd/node31.cfg 
+
+    node32:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.60
+      startup-config: config-xrd/node32.cfg 
+
+    node33:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.61
+      startup-config: config-xrd/node33.cfg 
+
+    node34:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.62
+      startup-config: config-xrd/node34.cfg 
+
+    node35:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.63
+      startup-config: config-xrd/node35.cfg 
+
+    node36:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.64
+      startup-config: config-xrd/node36.cfg 
+
+    node37:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.65
+      startup-config: config-xrd/node37.cfg 
+
+    node38:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.66
+      startup-config: config-xrd/node38.cfg 
+
+    node39:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.67
+      startup-config: config-xrd/node39.cfg 
+
+    node40:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.68
+      startup-config: config-xrd/node40.cfg 
+
+    node41:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.69
+      startup-config: config-xrd/node41.cfg 
+
+    node42:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.70
+      startup-config: config-xrd/node42.cfg 
+
+    node43:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.71
+      startup-config: config-xrd/node43.cfg 
+
+    node44:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.72
+      startup-config: config-xrd/node44.cfg 
+
+    node45:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.73
+      startup-config: config-xrd/node45.cfg 
+
+    node46:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.74
+      startup-config: config-xrd/node46.cfg 
+
+    node47:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.75
+      startup-config: config-xrd/node47.cfg 
+
+    node48:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.76
+      startup-config: config-xrd/node48.cfg 
+
+    node49:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.77
+      startup-config: config-xrd/node49.cfg 
+
+    node50:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.78
+      startup-config: config-xrd/node50.cfg 
+
+    node51:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.79
+      startup-config: config-xrd/node51.cfg 
+
+    node52:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.80
+      startup-config: config-xrd/node52.cfg 
+
+    node53:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.81
+      startup-config: config-xrd/node53.cfg 
+
+    node54:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.82
+      startup-config: config-xrd/node54.cfg 
+
+    node55:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.83
+      startup-config: config-xrd/node55.cfg 
+
+    node56:
+      kind: cisco_xrd
+      image: ios-xr/xrd-control-plane:25.1.1.21I
+      mgmt-ipv4: 172.20.8.84
+      startup-config: config-xrd/node56.cfg  
+
+  links:
+
+# node29
+    - endpoints: ["node29:Gi0-0-0-0", "host:node29-Gi0-0-0-0"] # node06-Gi0-0-0-4
+    - endpoints: ["node29:Gi0-0-0-1", "host:node29-Gi0-0-0-1"] # node09-Gi0-0-0-4
+    - endpoints: ["node29:Gi0-0-0-2", "host:node29-Gi0-0-0-2"] # node19-Gi0-0-0-4
+    - endpoints: ["node29:Gi0-0-0-3", "host:node29-Gi0-0-0-3"] # node22-Gi0-0-0-4
+    - endpoints: ["node29:Gi0-0-0-4", "node32:Gi0-0-0-4"]
+    - endpoints: ["node29:Gi0-0-0-5", "node35:Gi0-0-0-1"]
+    - endpoints: ["node29:Gi0-0-0-6", "node45:Gi0-0-0-4"]
+    - endpoints: ["node29:Gi0-0-0-7", "node54:Gi0-0-0-4"]
+
+# node30
+    - endpoints: ["node30:Gi0-0-0-0", "host:node30-Gi0-0-0-0"] # node03-Gi0-0-0-4
+    - endpoints: ["node30:Gi0-0-0-1", "host:node30-Gi0-0-0-1"] # node08-Gi0-0-0-4
+    - endpoints: ["node30:Gi0-0-0-2", "host:node30-Gi0-0-0-2"] # node20-Gi0-0-0-4
+    - endpoints: ["node30:Gi0-0-0-3", "host:node30-Gi0-0-0-3"] # node25-Gi0-0-0-4
+    - endpoints: ["node30:Gi0-0-0-4", "node35:Gi0-0-0-2"]
+    - endpoints: ["node30:Gi0-0-0-5", "node47:Gi0-0-0-4"]
+    - endpoints: ["node30:Gi0-0-0-6", "node52:Gi0-0-0-4"]
+
+# node31
+    - endpoints: ["node31:Gi0-0-0-0", "host:node31-Gi0-0-0-0"] # node02-Gi0-0-0-4
+    - endpoints: ["node31:Gi0-0-0-1", "host:node31-Gi0-0-0-1"] # node10-Gi0-0-0-4
+    - endpoints: ["node31:Gi0-0-0-2", "host:node31-Gi0-0-0-2"] # node18-Gi0-0-0-2
+    - endpoints: ["node31:Gi0-0-0-3", "host:node31-Gi0-0-0-3"] # node26-Gi0-0-0-3
+    - endpoints: ["node31:Gi0-0-0-4", "node34:Gi0-0-0-4"]
+    - endpoints: ["node31:Gi0-0-0-5", "node35:Gi0-0-0-3"]
+    - endpoints: ["node31:Gi0-0-0-6", "node43:Gi0-0-0-4"]
+    - endpoints: ["node31:Gi0-0-0-7", "node50:Gi0-0-0-4"]
+
+# node32
+    - endpoints: ["node32:Gi0-0-0-0", "host:node32-Gi0-0-0-0"] # node05-Gi0-0-0-4
+    - endpoints: ["node32:Gi0-0-0-1", "host:node32-Gi0-0-0-1"] # node11-Gi0-0-0-4
+    - endpoints: ["node32:Gi0-0-0-2", "host:node32-Gi0-0-0-2"] # node17-Gi0-0-0-3
+    - endpoints: ["node32:Gi0-0-0-3", "host:node32-Gi0-0-0-3"] # node23-Gi0-0-0-3
+    - endpoints: ["node32:Gi0-0-0-4", "node29:Gi0-0-0-4"]
+    - endpoints: ["node32:Gi0-0-0-5", "node35:Gi0-0-0-4"]
+    - endpoints: ["node32:Gi0-0-0-6", "node48:Gi0-0-0-4"]
+    - endpoints: ["node32:Gi0-0-0-7", "node55:Gi0-0-0-4"]
+
+# node33
+    - endpoints: ["node33:Gi0-0-0-0", "host:node33-Gi0-0-0-0"] # node04-Gi0-0-0-4
+    - endpoints: ["node33:Gi0-0-0-1", "host:node33-Gi0-0-0-1"] # node13-Gi0-0-0-4
+    - endpoints: ["node33:Gi0-0-0-2", "host:node33-Gi0-0-0-2"] # node15-Gi0-0-0-4
+    - endpoints: ["node33:Gi0-0-0-3", "host:node33-Gi0-0-0-3"] # node24-Gi0-0-0-4
+    - endpoints: ["node33:Gi0-0-0-4", "node35:Gi0-0-0-5"]
+    - endpoints: ["node33:Gi0-0-0-5", "node44:Gi0-0-0-4"]
+    - endpoints: ["node33:Gi0-0-0-6", "node53:Gi0-0-0-4"]
+
+# node34
+    - endpoints: ["node34:Gi0-0-0-0", "host:node34-Gi0-0-0-0"] # node01-Gi0-0-0-4
+    - endpoints: ["node34:Gi0-0-0-1", "host:node34-Gi0-0-0-1"] # node12-Gi0-0-0-4
+    - endpoints: ["node34:Gi0-0-0-2", "host:node34-Gi0-0-0-2"] # node16-Gi0-0-0-4
+    - endpoints: ["node34:Gi0-0-0-3", "host:node34-Gi0-0-0-3"] # node27-Gi0-0-0-4
+    - endpoints: ["node34:Gi0-0-0-4", "node31:Gi0-0-0-6"]
+    - endpoints: ["node34:Gi0-0-0-5", "node35:Gi0-0-0-6"]
+    - endpoints: ["node34:Gi0-0-0-6", "node46:Gi0-0-0-4"]
+    - endpoints: ["node34:Gi0-0-0-7", "node51:Gi0-0-0-4"]
+
+# node35
+    - endpoints: ["node35:Gi0-0-0-0", "host:node35-Gi0-0-0-0"] # node28-Gi0-0-0-0
+    - endpoints: ["node35:Gi0-0-0-7", "node49:Gi0-0-0-5"]
+
+# node36
+    - endpoints: ["node36:Gi0-0-0-0", "host:node36-Gi0-0-0-0"] # node06-Gi0-0-0-5
+    - endpoints: ["node36:Gi0-0-0-1", "host:node36-Gi0-0-0-1"] # node08-Gi0-0-0-5
+    - endpoints: ["node36:Gi0-0-0-2", "host:node36-Gi0-0-0-2"] # node17-Gi0-0-0-4
+    - endpoints: ["node36:Gi0-0-0-3", "host:node36-Gi0-0-0-3"] # node26-Gi0-0-0-4
+    - endpoints: ["node36:Gi0-0-0-4", "host:node36-Gi0-0-0-4"] # node28-Gi0-0-0-1   
+    - endpoints: ["node36:Gi0-0-0-5", "node37:Gi0-0-0-5"]
+    - endpoints: ["node36:Gi0-0-0-6", "node46:Gi0-0-0-5"]
+    - endpoints: ["node36:Gi0-0-0-7", "node53:Gi0-0-0-5"]
+
+# node37
+    - endpoints: ["node37:Gi0-0-0-0", "host:node37-Gi0-0-0-0"] # node03-Gi0-0-0-5
+    - endpoints: ["node37:Gi0-0-0-1", "host:node37-Gi0-0-0-1"] # node11-Gi0-0-0-5
+    - endpoints: ["node37:Gi0-0-0-2", "host:node37-Gi0-0-0-2"] # node19-Gi0-0-0-5
+    - endpoints: ["node37:Gi0-0-0-3", "host:node37-Gi0-0-0-3"] # node27-Gi0-0-0-5
+    - endpoints: ["node37:Gi0-0-0-4", "host:node37-Gi0-0-0-4"] # node28-Gi0-0-0-2
+
+    - endpoints: ["node37:Gi0-0-0-6", "node44:Gi0-0-0-5"]
+    - endpoints: ["node37:Gi0-0-0-7", "node50:Gi0-0-0-5"]
+
+# node38
+    - endpoints: ["node38:Gi0-0-0-0", "host:node38-Gi0-0-0-0"] # node02-Gi0-0-0-5
+    - endpoints: ["node38:Gi0-0-0-1", "host:node38-Gi0-0-0-1"] # node12-Gi0-0-0-5
+    - endpoints: ["node38:Gi0-0-0-2", "host:node38-Gi0-0-0-2"] # node15-Gi0-0-0-5
+    - endpoints: ["node38:Gi0-0-0-3", "host:node38-Gi0-0-0-3"] # node25-Gi0-0-0-5
+    - endpoints: ["node38:Gi0-0-0-4", "host:node38-Gi0-0-0-4"] # node28-Gi0-0-0-3
+    - endpoints: ["node38:Gi0-0-0-5", "node48:Gi0-0-0-5"]
+    - endpoints: ["node38:Gi0-0-0-6", "node54:Gi0-0-0-5"]
+
+# node39
+    - endpoints: ["node39:Gi0-0-0-0", "host:node39-Gi0-0-0-0"] # node05-Gi0-0-0-5
+    - endpoints: ["node39:Gi0-0-0-1", "host:node39-Gi0-0-0-1"] # node09-Gi0-0-0-5
+    - endpoints: ["node39:Gi0-0-0-2", "host:node39-Gi0-0-0-2"] # node20-Gi0-0-0-5
+    - endpoints: ["node39:Gi0-0-0-3", "host:node39-Gi0-0-0-3"] # node24-Gi0-0-0-5
+    - endpoints: ["node39:Gi0-0-0-4", "host:node39-Gi0-0-0-4"] # node28-Gi0-0-0-4
+    - endpoints: ["node39:Gi0-0-0-5", "node43:Gi0-0-0-5"]
+    - endpoints: ["node39:Gi0-0-0-6", "node51:Gi0-0-0-5"]
+
+# node40
+    - endpoints: ["node40:Gi0-0-0-0", "host:node40-Gi0-0-0-0"] # node04-Gi0-0-0-5
+    - endpoints: ["node40:Gi0-0-0-1", "host:node40-Gi0-0-0-1"] # node10-Gi0-0-0-5
+    - endpoints: ["node40:Gi0-0-0-2", "host:node40-Gi0-0-0-2"] # node16-Gi0-0-0-5
+    - endpoints: ["node40:Gi0-0-0-3", "host:node40-Gi0-0-0-3"] # node25-Gi0-0-0-5
+    - endpoints: ["node40:Gi0-0-0-4", "host:node40-Gi0-0-0-4"] # node28-Gi0-0-0-5
+    - endpoints: ["node40:Gi0-0-0-5", "node41:Gi0-0-0-5"]
+    - endpoints: ["node40:Gi0-0-0-6", "node47:Gi0-0-0-5"]
+    - endpoints: ["node40:Gi0-0-0-7", "node55:Gi0-0-0-5"]
+
+# node41
+    - endpoints: ["node41:Gi0-0-0-0", "host:node41-Gi0-0-0-0"] # node01-Gi0-0-0-5
+    - endpoints: ["node41:Gi0-0-0-1", "host:node41-Gi0-0-0-1"] # node13-Gi0-0-0-5
+    - endpoints: ["node41:Gi0-0-0-2", "host:node41-Gi0-0-0-2"] # node18-Gi0-0-0-4
+    - endpoints: ["node41:Gi0-0-0-3", "host:node41-Gi0-0-0-3"] # node23-Gi0-0-0-4
+    - endpoints: ["node41:Gi0-0-0-4", "host:node41-Gi0-0-0-4"] # node28-Gi0-0-0-6
+
+    - endpoints: ["node41:Gi0-0-0-6", "node45:Gi0-0-0-5"]
+    - endpoints: ["node41:Gi0-0-0-7", "node52:Gi0-0-0-5"]
+
+# node42
+    - endpoints: ["node42:Gi0-0-0-0", "host:node42-Gi0-0-0-0"] # node07-Gi0-0-0-0
+    - endpoints: ["node42:Gi0-0-0-1", "host:node42-Gi0-0-0-1"] # node08-Gi0-0-0-6
+    - endpoints: ["node42:Gi0-0-0-2", "host:node42-Gi0-0-0-2"] # node09-Gi0-0-0-6
+    - endpoints: ["node42:Gi0-0-0-3", "host:node42-Gi0-0-0-3"] # node10-Gi0-0-0-6
+    - endpoints: ["node42:Gi0-0-0-4", "host:node42-Gi0-0-0-4"] # node11-Gi0-0-0-6
+    - endpoints: ["node42:Gi0-0-0-5", "host:node42-Gi0-0-0-5"] # node12-Gi0-0-0-6
+    - endpoints: ["node42:Gi0-0-0-6", "host:node42-Gi0-0-0-6"] # node13-Gi0-0-0-6 
+    - endpoints: ["node42:Gi0-0-0-7", "node49:Gi0-0-0-6"]
+
+# node43
+    - endpoints: ["node43:Gi0-0-0-0", "host:node43-Gi0-0-0-0"] # node06-Gi0-0-0-6
+    - endpoints: ["node43:Gi0-0-0-1", "host:node43-Gi0-0-0-1"] # node07-Gi0-0-0-1
+    - endpoints: ["node43:Gi0-0-0-2", "host:node43-Gi0-0-0-2"] # node16-Gi0-0-0-6
+    - endpoints: ["node43:Gi0-0-0-3", "host:node43-Gi0-0-0-3"] # node23-Gi0-0-0-5
+    - endpoints: ["node43:Gi0-0-0-6", "node47:Gi0-0-0-6"]
+    - endpoints: ["node43:Gi0-0-0-7", "node50:Gi0-0-0-6"]
+
+# node44
+    - endpoints: ["node44:Gi0-0-0-0", "host:node44-Gi0-0-0-0"] # node03-Gi0-0-0-6
+    - endpoints: ["node44:Gi0-0-0-1", "host:node44-Gi0-0-0-1"] # node07-Gi0-0-0-2
+    - endpoints: ["node44:Gi0-0-0-2", "host:node44-Gi0-0-0-2"] # node18-Gi0-0-0-5
+    - endpoints: ["node44:Gi0-0-0-3", "host:node44-Gi0-0-0-3"] # node22-Gi0-0-0-6
+
+    - endpoints: ["node44:Gi0-0-0-6", "node46:Gi0-0-0-6"]
+    - endpoints: ["node44:Gi0-0-0-7", "node52:Gi0-0-0-6"]
+
+# node45
+    - endpoints: ["node45:Gi0-0-0-0", "host:node45-Gi0-0-0-0"] # node02-Gi0-0-0-6
+    - endpoints: ["node45:Gi0-0-0-1", "host:node45-Gi0-0-0-1"] # node07-Gi0-0-0-3
+    - endpoints: ["node45:Gi0-0-0-2", "host:node45-Gi0-0-0-2"] # node19-Gi0-0-0-6
+    - endpoints: ["node45:Gi0-0-0-3", "host:node45-Gi0-0-0-3"] # node24-Gi0-0-0-6
+
+    - endpoints: ["node45:Gi0-0-0-6", "node46:Gi0-0-0-6"]
+    - endpoints: ["node45:Gi0-0-0-7", "node52:Gi0-0-0-6"]
+
+# node46
+    - endpoints: ["node46:Gi0-0-0-0", "host:node46-Gi0-0-0-0"] # node05-Gi0-0-0-6
+    - endpoints: ["node46:Gi0-0-0-1", "host:node46-Gi0-0-0-1"] # node07-Gi0-0-0-4
+    - endpoints: ["node46:Gi0-0-0-2", "host:node46-Gi0-0-0-2"] # node16-Gi0-0-0-6
+    - endpoints: ["node46:Gi0-0-0-3", "host:node46-Gi0-0-0-3"] # node25-Gi0-0-0-6
+
+    - endpoints: ["node46:Gi0-0-0-7", "node53:Gi0-0-0-6"]
+
+# node47
+    - endpoints: ["node47:Gi0-0-0-0", "host:node47-Gi0-0-0-0"] # node04-Gi0-0-0-6
+    - endpoints: ["node47:Gi0-0-0-1", "host:node47-Gi0-0-0-1"] # node07-Gi0-0-0-5
+    - endpoints: ["node47:Gi0-0-0-2", "host:node47-Gi0-0-0-2"] # node17-Gi0-0-0-5
+    - endpoints: ["node47:Gi0-0-0-3", "host:node47-Gi0-0-0-3"] # node27-Gi0-0-0-6
+
+    - endpoints: ["node47:Gi0-0-0-7", "node54:Gi0-0-0-6"]
+
+# node48
+    - endpoints: ["node48:Gi0-0-0-0", "host:node48-Gi0-0-0-0"] # node01-Gi0-0-0-6
+    - endpoints: ["node48:Gi0-0-0-1", "host:node48-Gi0-0-0-1"] # node07-Gi0-0-0-6
+    - endpoints: ["node48:Gi0-0-0-2", "host:node48-Gi0-0-0-2"] # node20-Gi0-0-0-6
+    - endpoints: ["node48:Gi0-0-0-3", "host:node48-Gi0-0-0-3"] # node26-Gi0-0-0-5
+
+    - endpoints: ["node48:Gi0-0-0-7", "node55:Gi0-0-0-6"]
+
+# node49
+    - endpoints: ["node49:Gi0-0-0-0", "host:node49-Gi0-0-0-0"] # node00-Gi0-0-0-0
+    - endpoints: ["node49:Gi0-0-0-1", "host:node49-Gi0-0-0-1"] # node07-Gi0-0-0-7
+    - endpoints: ["node49:Gi0-0-0-2", "host:node49-Gi0-0-0-2"] # node14-Gi0-0-0-7
+    - endpoints: ["node49:Gi0-0-0-3", "host:node49-Gi0-0-0-3"] # node21-Gi0-0-0-7
+    - endpoints: ["node49:Gi0-0-0-4", "host:node49-Gi0-0-0-4"] # node28-Gi0-0-0-7
+
+    - endpoints: ["node49:Gi0-0-0-7", "node56:Gi0-0-0-7"]
+
+# node50
+    - endpoints: ["node50:Gi0-0-0-0", "host:node50-Gi0-0-0-0"] # node00-Gi0-0-0-1
+    - endpoints: ["node50:Gi0-0-0-1", "host:node50-Gi0-0-0-1"] # node13-Gi0-0-0-7
+    - endpoints: ["node50:Gi0-0-0-2", "host:node50-Gi0-0-0-2"] # node19-Gi0-0-0-7
+    - endpoints: ["node50:Gi0-0-0-3", "host:node50-Gi0-0-0-3"] # node25-Gi0-0-0-7
+
+    - endpoints: ["node50:Gi0-0-0-7", "node55:Gi0-0-0-7"]
+
+# node51
+    - endpoints: ["node51:Gi0-0-0-0", "host:node51-Gi0-0-0-0"] # node00-Gi0-0-0-2
+    - endpoints: ["node51:Gi0-0-0-1", "host:node51-Gi0-0-0-1"] # node12-Gi0-0-0-7
+    - endpoints: ["node51:Gi0-0-0-2", "host:node51-Gi0-0-0-2"] # node17-Gi0-0-0-7
+    - endpoints: ["node51:Gi0-0-0-3", "host:node51-Gi0-0-0-3"] # node22-Gi0-0-0-7
+
+    - endpoints: ["node51:Gi0-0-0-7", "node52:Gi0-0-0-7"]
+    
+# node52
+    - endpoints: ["node52:Gi0-0-0-0", "host:node52-Gi0-0-0-0"] # node00-Gi0-0-0-3
+    - endpoints: ["node52:Gi0-0-0-1", "host:node52-Gi0-0-0-1"] # node11-Gi0-0-0-7
+    - endpoints: ["node52:Gi0-0-0-2", "host:node52-Gi0-0-0-2"] # node15-Gi0-0-0-7
+    - endpoints: ["node52:Gi0-0-0-3", "host:node52-Gi0-0-0-3"] # node26-Gi0-0-0-7
+
+# node53
+    - endpoints: ["node53:Gi0-0-0-0", "host:node53-Gi0-0-0-0"] # node00-Gi0-0-0-4
+    - endpoints: ["node53:Gi0-0-0-1", "host:node53-Gi0-0-0-1"] # node10-Gi0-0-0-7
+    - endpoints: ["node53:Gi0-0-0-2", "host:node53-Gi0-0-0-2"] # node20-Gi0-0-0-7
+    - endpoints: ["node53:Gi0-0-0-3", "host:node53-Gi0-0-0-3"] # node23-Gi0-0-0-7
+
+    - endpoints: ["node53:Gi0-0-0-7", "node54:Gi0-0-0-7"]
+
+# node54
+    - endpoints: ["node54:Gi0-0-0-0", "host:node54-Gi0-0-0-0"] # node00-Gi0-0-0-5
+    - endpoints: ["node54:Gi0-0-0-1", "host:node54-Gi0-0-0-1"] # node09-Gi0-0-0-7
+    - endpoints: ["node54:Gi0-0-0-2", "host:node54-Gi0-0-0-2"] # node18-Gi0-0-0-7
+    - endpoints: ["node54:Gi0-0-0-3", "host:node54-Gi0-0-0-3"] # node27-Gi0-0-0-7
+
+# node55
+    - endpoints: ["node55:Gi0-0-0-0", "host:node55-Gi0-0-0-0"] # node00-Gi0-0-0-6
+    - endpoints: ["node55:Gi0-0-0-1", "host:node55-Gi0-0-0-1"] # node08-Gi0-0-0-7
+    - endpoints: ["node55:Gi0-0-0-2", "host:node55-Gi0-0-0-2"] # node16-Gi0-0-0-7
+    - endpoints: ["node55:Gi0-0-0-3", "host:node55-Gi0-0-0-3"] # node24-Gi0-0-0-7
+
+# node56
+    - endpoints: ["node56:Gi0-0-0-0", "host:node56-Gi0-0-0-0"] # node00-Gi0-0-0-7
+    - endpoints: ["node56:Gi0-0-0-1", "host:node56-Gi0-0-0-1"] # node01-Gi0-0-0-7
+    - endpoints: ["node56:Gi0-0-0-2", "host:node56-Gi0-0-0-2"] # node02-Gi0-0-0-7
+    - endpoints: ["node56:Gi0-0-0-3", "host:node56-Gi0-0-0-3"] # node03-Gi0-0-0-7
+    - endpoints: ["node56:Gi0-0-0-4", "host:node56-Gi0-0-0-4"] # node04-Gi0-0-0-7
+    - endpoints: ["node56:Gi0-0-0-5", "host:node56-Gi0-0-0-5"] # node05-Gi0-0-0-7
+    - endpoints: ["node56:Gi0-0-0-6", "host:node56-Gi0-0-0-6"] # node06-Gi0-0-0-7
+
+
+
+
