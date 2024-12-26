@@ -2,27 +2,27 @@
 
 sudo clab tools vxlan delete -p clab
 
-# node00
-clab tools vxlan create --remote 198.18.1.101 --id 1000 --link node00-Gi0-0-0-0 
-clab tools vxlan create --remote 198.18.1.101 --id 1001 --link node00-Gi0-0-0-1
-clab tools vxlan create --remote 198.18.1.101 --id 1002 --link node00-Gi0-0-0-2 
-clab tools vxlan create --remote 198.18.1.101 --id 1003 --link node00-Gi0-0-0-3 
-clab tools vxlan create --remote 198.18.1.101 --id 1004 --link node00-Gi0-0-0-4
-clab tools vxlan create --remote 198.18.1.101 --id 1005 --link node00-Gi0-0-0-5
-clab tools vxlan create --remote 198.18.1.101 --id 1006 --link node00-Gi0-0-0-6  ## broken?
-clab tools vxlan create --remote 198.18.1.101 --id 1007 --link node00-Gi0-0-0-7
+# # node00
+# clab tools vxlan create --remote 198.18.1.101 --id 1000 --link node00-Gi0-0-0-0 
+# clab tools vxlan create --remote 198.18.1.101 --id 1001 --link node00-Gi0-0-0-1
+# clab tools vxlan create --remote 198.18.1.101 --id 1002 --link node00-Gi0-0-0-2 
+# clab tools vxlan create --remote 198.18.1.101 --id 1003 --link node00-Gi0-0-0-3 
+# clab tools vxlan create --remote 198.18.1.101 --id 1004 --link node00-Gi0-0-0-4
+# clab tools vxlan create --remote 198.18.1.101 --id 1005 --link node00-Gi0-0-0-5
+# clab tools vxlan create --remote 198.18.1.101 --id 1006 --link node00-Gi0-0-0-6  
+# clab tools vxlan create --remote 198.18.1.101 --id 1007 --link node00-Gi0-0-0-7
 
-# node01
-clab tools vxlan create --remote 198.18.1.101 --id 1008 --link node01-Gi0-0-0-4
-clab tools vxlan create --remote 198.18.1.101 --id 1009 --link node01-Gi0-0-0-5
-clab tools vxlan create --remote 198.18.1.101 --id 1010 --link node01-Gi0-0-0-6
-clab tools vxlan create --remote 198.18.1.101 --id 1011 --link node01-Gi0-0-0-7
+# # node01
+# clab tools vxlan create --remote 198.18.1.101 --id 1008 --link node01-Gi0-0-0-4
+# clab tools vxlan create --remote 198.18.1.101 --id 1009 --link node01-Gi0-0-0-5
+# clab tools vxlan create --remote 198.18.1.101 --id 1010 --link node01-Gi0-0-0-6
+# clab tools vxlan create --remote 198.18.1.101 --id 1011 --link node01-Gi0-0-0-7
 
-# node02
-clab tools vxlan create --remote 198.18.1.101 --id 1012 --link node02-Gi0-0-0-4
-clab tools vxlan create --remote 198.18.1.101 --id 1013 --link node02-Gi0-0-0-5
-clab tools vxlan create --remote 198.18.1.101 --id 1014 --link node02-Gi0-0-0-6
-clab tools vxlan create --remote 198.18.1.101 --id 1015 --link node02-Gi0-0-0-7
+# # node02
+# clab tools vxlan create --remote 198.18.1.101 --id 1012 --link node02-Gi0-0-0-4
+# clab tools vxlan create --remote 198.18.1.101 --id 1013 --link node02-Gi0-0-0-5
+# clab tools vxlan create --remote 198.18.1.101 --id 1014 --link node02-Gi0-0-0-6
+# clab tools vxlan create --remote 198.18.1.101 --id 1015 --link node02-Gi0-0-0-7
 
 # node03
 clab tools vxlan create --remote 198.18.1.101 --id 1016 --link node03-Gi0-0-0-4
