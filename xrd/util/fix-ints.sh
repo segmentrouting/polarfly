@@ -28,6 +28,8 @@ for ns in $namespaces; do
             printf "Interface ID: %s\n", interface
             printf "Interface name: %s\n", current_if
             printf "Altname: %s\n", $2
+            # Delete ip link if it exists in netns 1
+            system("ip link del " current_if " ")
             # Execute the move command
             system("ip netns exec '"$ns"' ip link set " current_if " netns 1")
             system("ip a | grep " current_if " ")
