@@ -17,6 +17,9 @@ for ns in $namespaces; do
             gsub(/:$/, "", interface)  # Remove trailing colon
             current_if=$2
             gsub(/:$/, "", current_if) # Remove trailing colon
+            # Trim everything after @ in interface name
+            split(current_if, if_parts, "@")
+            current_if=if_parts[1]
         }
         # If line contains altname
         /altname/ {
