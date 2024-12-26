@@ -32,7 +32,7 @@ for ns in $namespaces; do
             system("ip netns exec '"$ns"' ip link set " current_if " netns 1")
             # Set interface to up in netns 1
             system("ip link set " current_if " up")
-            printf "Interface moved to netns 1 and set to UP\n\n"
+            printf "Interface " current_if " moved to netns 1 and set to UP\n\n"
         }
     '
 done 
