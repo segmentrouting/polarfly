@@ -30,7 +30,9 @@ for ns in $namespaces; do
             printf "Altname: %s\n", $2
             # Execute the move command
             system("ip netns exec '"$ns"' ip link set " current_if " netns 1")
-            printf "Interface moved to netns 1\n\n"
+            # Set interface to up in netns 1
+            system("ip netns exec 1 ip link set " current_if " up")
+            printf "Interface moved to netns 1 and set to UP\n\n"
         }
     '
 done 
