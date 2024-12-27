@@ -12,4 +12,4 @@ jupyter notebook
 
 4. The browser will display the jupyter notebook file directory. Open any of the html files; the HS graph should render something like:
 
-![example](hs.png)
+![example](radix-8-polarfly.png)
