@@ -5,27 +5,28 @@ This project is setup to deploy a radix 8 XRd Polarfly topology, which results i
 ### Requirements:
 
 Two Linux servers or large VMs with 32 vCPU and 96GB RAM each. This project has been tested on Ubuntu 22.04.
-Docker and Containerlab
+
+Other requirements: Docker and Containerlab
 
 ### Instructions:
 
-1. Clone the repository
+1. Clone this repository
 
 2. Install Containerlab: https://containerlab.dev/install/
 
-3. Acquire a Cisco XRd or other dockerized router image
+3. Acquire a Cisco XRd router image
 
 4. Load docker image
 ```
 docker load -i <image_name>
 ```
 
-5. Modprobe
+1. Modprobe
 ```
 sudo modprobe br_netfilter
 ```
 
-6. Add the following to /etc/sysctl.conf
+1. Add the following to /etc/sysctl.conf
 ```
 kernel.pid_max=1048575
 net.vrf.strict_mode=1
@@ -62,15 +63,15 @@ sudo clab deploy -t polarfly-upper.yml
 
 11. Give the routers 1-2 minutes to launch, then proceed to the next step
 
-#### The current version of containerlab appears to have a bug where some node netns connections are erroneously created. Perform the following steps on both upper and lower servers/VMs.
+#### The current version of containerlab appears to have a bug where some nodes' netns connections are erroneously allocated. Perform the following steps on both upper and lower servers/VMs to fix the issue.
 
-1. cd into the util directory and run the find-ints.sh script, which will give a list of error connections
+1. cd into the util directory and run the `*find-ints.sh*` script, which will give a list of error connections
 ```
 cd util
 sudo ./find-ints.sh
 ```
 
-2.  Run the fix-ints.sh script, which will clean up the errors
+2.  Run the `*fix-ints.sh*` script, which will clean up the errors
 ```
 sudo./fix-ints.sh
 ```
@@ -101,3 +102,7 @@ password: cisco123
 ```
 show bgp ipv6 unicast summary
 ```
+
+You should now have a working topology that looks something like this:
+
+![example](../graph-view/data/radix-8-polarfly.png)
