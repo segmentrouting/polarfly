@@ -176,6 +176,28 @@ topology:
       mgmt-ipv4: 172.20.8.84
       startup-config: config/node56.cfg  
 
+    host04:
+      kind: linux
+      image: ubuntu-trex:1.1
+      mgmt-ipv4: 172.20.8.161
+      # binds: 
+      #   - trex/trex01/trex_cfg.yaml:/etc/trex_cfg.yaml
+
+    host05:
+      kind: linux
+      image: ubuntu-trex:1.1
+      mgmt-ipv4: 172.20.7.162
+      # binds: 
+      #   - trex/trex02/trex_cfg.yaml:/etc/trex_cfg.yaml
+
+    host06:
+      kind: linux
+      image: ubuntu-trex:1.1
+      mgmt-ipv4: 172.20.7.163
+      # binds: 
+      #   - trex/trex03/trex_cfg.yaml:/etc/trex_cfg.yaml
+
+
   links:
 
 # node29
@@ -187,6 +209,9 @@ topology:
     - endpoints: ["node29:Gi0-0-0-5", "node35:Gi0-0-0-1"]
     - endpoints: ["node29:Gi0-0-0-6", "node45:Gi0-0-0-4"]
     - endpoints: ["node29:Gi0-0-0-7", "node54:Gi0-0-0-4"]
+    - endpoints: ["node29:Gi0-0-0-8", "host04:eth1"]
+    - endpoints: ["node29:Gi0-0-0-9", "host05:eth1"]
+    - endpoints: ["node29:Gi0-0-0-10", "host06:eth1"]
 
 # node30
     - endpoints: ["node30:Gi0-0-0-0", "host:node30-Gi0-0-0-0"] # node03-Gi0-0-0-4
@@ -196,6 +221,9 @@ topology:
     - endpoints: ["node30:Gi0-0-0-4", "node35:Gi0-0-0-2"]
     - endpoints: ["node30:Gi0-0-0-5", "node47:Gi0-0-0-4"]
     - endpoints: ["node30:Gi0-0-0-6", "node52:Gi0-0-0-4"]
+    - endpoints: ["node30:Gi0-0-0-8", "host04:eth2"]
+    - endpoints: ["node30:Gi0-0-0-9", "host05:eth2"]
+    - endpoints: ["node30:Gi0-0-0-10", "host06:eth2"]
 
 # node31
     - endpoints: ["node31:Gi0-0-0-0", "host:node31-Gi0-0-0-0"] # node02-Gi0-0-0-4
@@ -206,16 +234,22 @@ topology:
     - endpoints: ["node31:Gi0-0-0-5", "node35:Gi0-0-0-3"]
     - endpoints: ["node31:Gi0-0-0-6", "node43:Gi0-0-0-4"]
     - endpoints: ["node31:Gi0-0-0-7", "node50:Gi0-0-0-4"]
+    - endpoints: ["node31:Gi0-0-0-8", "host04:eth3"]
+    - endpoints: ["node31:Gi0-0-0-9", "host05:eth3"]
+    - endpoints: ["node31:Gi0-0-0-10", "host06:eth3"]
 
 # node32
     - endpoints: ["node32:Gi0-0-0-0", "host:node32-Gi0-0-0-0"] # node05-Gi0-0-0-4
     - endpoints: ["node32:Gi0-0-0-1", "host:node32-Gi0-0-0-1"] # node11-Gi0-0-0-4
     - endpoints: ["node32:Gi0-0-0-2", "host:node32-Gi0-0-0-2"] # node17-Gi0-0-0-3
     - endpoints: ["node32:Gi0-0-0-3", "host:node32-Gi0-0-0-3"] # node23-Gi0-0-0-3
-  
+    - endpoints: ["node32:Gi0-0-0-4", "host:node29-Gi0-0-0-4"] # node29-Gi0-0-0-4
     - endpoints: ["node32:Gi0-0-0-5", "node35:Gi0-0-0-4"]
     - endpoints: ["node32:Gi0-0-0-6", "node48:Gi0-0-0-4"]
     - endpoints: ["node32:Gi0-0-0-7", "node55:Gi0-0-0-4"]
+    - endpoints: ["node32:Gi0-0-0-8", "host04:eth4"]
+    - endpoints: ["node32:Gi0-0-0-9", "host05:eth4"]
+    - endpoints: ["node32:Gi0-0-0-10", "host06:eth4"]
 
 # node33
     - endpoints: ["node33:Gi0-0-0-0", "host:node33-Gi0-0-0-0"] # node04-Gi0-0-0-4

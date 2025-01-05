@@ -73,7 +73,7 @@ sudo ./find-ints.sh
 
 2.  Run the `*fix-ints.sh*` script, which will clean up the errors
 ```
-sudo./fix-ints.sh
+sudo ./fix-ints.sh
 ```
 
 3.  Run vxlan interconnect scripts:
