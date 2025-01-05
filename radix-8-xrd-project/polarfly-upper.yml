@@ -178,22 +178,22 @@ topology:
 
     host04:
       kind: linux
-      image: ubuntu-trex:1.1
+      image: iejalapeno/alpine:latest
       mgmt-ipv4: 172.20.8.161
       # binds: 
       #   - trex/trex01/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host05:
       kind: linux
-      image: ubuntu-trex:1.1
-      mgmt-ipv4: 172.20.7.162
+      image: iejalapeno/alpine:latest
+      mgmt-ipv4: 172.20.8.162
       # binds: 
       #   - trex/trex02/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host06:
       kind: linux
-      image: ubuntu-trex:1.1
-      mgmt-ipv4: 172.20.7.163
+      image: iejalapeno/alpine:latest
+      mgmt-ipv4: 172.20.8.163
       # binds: 
       #   - trex/trex03/trex_cfg.yaml:/etc/trex_cfg.yaml
 
