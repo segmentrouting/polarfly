@@ -174,7 +174,7 @@ def main():
         raise FileNotFoundError(f"Input file not found: {args.input}")
     
     # Create radix directory if it doesn't exist
-    radix_dir = os.path.join("data", f"radix-{args.radix}")  # Changed path to data/radix-X
+    radix_dir = os.path.join("data", f"radix_{args.radix}")  # Changed from radix-{args.radix}
     if not os.path.exists(radix_dir):
         os.makedirs(radix_dir)
         print(f"Created directory: {radix_dir}")

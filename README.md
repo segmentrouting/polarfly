@@ -9,6 +9,7 @@ This project is setup to model Polarfly topologies of various size and in some c
 cd topogen
 python3 edge-list.py generate brown 3
 python3 edge-list.py generate brown 7
+python3 edge-list.py generate brown 13
 etc.
 ```
 
@@ -17,19 +18,30 @@ etc.
 Example: [Brown-3-adj.txt](util/data/Browns/Brown-3-adj.txt)
 
 
-## Use the graph-calc.py tool to generate a Polarfly graph dictionary and node categorization 
+## Use the graph-calc.py tool to generate a directory with vertex and edge data 
 
-Tool takes the adj.txt file as input and calculates a dictionarty of nodes and edges. It also calculates the node categorization (Quadric nodes, V1c, V1n, V2, etc.) and will output a json file with the node categorization.
+The graph-calc.py tool takes the adj.txt file, a radix number, and a q value as input and calculates vertex and edge data, which it populates into a directory with the radix number. It also calculates the node categorization (Quadric nodes, V1c, V1n, V2, etc.) and will output a json file with the node categorization.
 
 ```
-cd util
-python3 graph-calc.py -i data/Browns/Brown.3.adj.txt -o ../radix-4/base-graph.json -q 3 -n node -v ../radix-4/vertices.json -e ../radix-4/edges.json
-python3 graph-calc.py -i data/Browns/Brown.7.adj.txt -o ../radix-8/base-graph.json -q 7 -n node -v ../radix-8/vertices.json -e ../radix-8/edges.json
+cd topogen
+python3 graph-calc.py -i data/Browns/Brown.3.adj.txt -r 4 -q 3 -n node
+python3 graph-calc.py -i data/Browns/Brown.7.adj.txt -r 8 -q 7 -n node
+python3 graph-calc.py -i data/Browns/Brown.13.adj.txt -r 16 -q 13 -n node
 etc.
 ```
 
-### graph-calc.py 
+## ArangoDB import tool
 
+The arango.py tool imports the vertex and edge data into an ArangoDB database and populates a graph using the radix number as the collection name.
+
+```
+cd topogen
+python3 db/arangodb.py -p data/radix_4 --url http://198.18.133.105:30852 --dbname jalapeno --username root --password jalapeno
+
+python3 db/arangodb.py -p data/radix_8 --url http://198.18.133.105:30852 --dbname jalapeno --username root --password jalapeno
+
+python3 db/arangodb.py -p data/radix_16 --url http://198.18.133.105:30852 --dbname jalapeno --username root --password jalapeno
+```
 
 ## Example deployment of 57-node Radix 8 Polarfly
 
