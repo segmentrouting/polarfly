@@ -1,0 +1,2690 @@
+[
+    {
+        "from": "node00",
+        "to": "node49",
+        "_from": "radix_8_node/10.0.0.0_4200000000",
+        "_to": "radix_8_node/10.0.0.49_4200000049"
+    },
+    {
+        "from": "node49",
+        "to": "node00",
+        "_from": "radix_8_node/10.0.0.49_4200000049",
+        "_to": "radix_8_node/10.0.0.0_4200000000"
+    },
+    {
+        "from": "node00",
+        "to": "node50",
+        "_from": "radix_8_node/10.0.0.0_4200000000",
+        "_to": "radix_8_node/10.0.0.50_4200000050"
+    },
+    {
+        "from": "node50",
+        "to": "node00",
+        "_from": "radix_8_node/10.0.0.50_4200000050",
+        "_to": "radix_8_node/10.0.0.0_4200000000"
+    },
+    {
+        "from": "node00",
+        "to": "node51",
+        "_from": "radix_8_node/10.0.0.0_4200000000",
+        "_to": "radix_8_node/10.0.0.51_4200000051"
+    },
+    {
+        "from": "node51",
+        "to": "node00",
+        "_from": "radix_8_node/10.0.0.51_4200000051",
+        "_to": "radix_8_node/10.0.0.0_4200000000"
+    },
+    {
+        "from": "node00",
+        "to": "node52",
+        "_from": "radix_8_node/10.0.0.0_4200000000",
+        "_to": "radix_8_node/10.0.0.52_4200000052"
+    },
+    {
+        "from": "node52",
+        "to": "node00",
+        "_from": "radix_8_node/10.0.0.52_4200000052",
+        "_to": "radix_8_node/10.0.0.0_4200000000"
+    },
+    {
+        "from": "node00",
+        "to": "node53",
+        "_from": "radix_8_node/10.0.0.0_4200000000",
+        "_to": "radix_8_node/10.0.0.53_4200000053"
+    },
+    {
+        "from": "node53",
+        "to": "node00",
+        "_from": "radix_8_node/10.0.0.53_4200000053",
+        "_to": "radix_8_node/10.0.0.0_4200000000"
+    },
+    {
+        "from": "node00",
+        "to": "node54",
+        "_from": "radix_8_node/10.0.0.0_4200000000",
+        "_to": "radix_8_node/10.0.0.54_4200000054"
+    },
+    {
+        "from": "node54",
+        "to": "node00",
+        "_from": "radix_8_node/10.0.0.54_4200000054",
+        "_to": "radix_8_node/10.0.0.0_4200000000"
+    },
+    {
+        "from": "node00",
+        "to": "node55",
+        "_from": "radix_8_node/10.0.0.0_4200000000",
+        "_to": "radix_8_node/10.0.0.55_4200000055"
+    },
+    {
+        "from": "node55",
+        "to": "node00",
+        "_from": "radix_8_node/10.0.0.55_4200000055",
+        "_to": "radix_8_node/10.0.0.0_4200000000"
+    },
+    {
+        "from": "node00",
+        "to": "node56",
+        "_from": "radix_8_node/10.0.0.0_4200000000",
+        "_to": "radix_8_node/10.0.0.56_4200000056"
+    },
+    {
+        "from": "node56",
+        "to": "node00",
+        "_from": "radix_8_node/10.0.0.56_4200000056",
+        "_to": "radix_8_node/10.0.0.0_4200000000"
+    },
+    {
+        "from": "node01",
+        "to": "node06",
+        "_from": "radix_8_node/10.0.0.1_4200000001",
+        "_to": "radix_8_node/10.0.0.6_4200000006"
+    },
+    {
+        "from": "node06",
+        "to": "node01",
+        "_from": "radix_8_node/10.0.0.6_4200000006",
+        "_to": "radix_8_node/10.0.0.1_4200000001"
+    },
+    {
+        "from": "node01",
+        "to": "node13",
+        "_from": "radix_8_node/10.0.0.1_4200000001",
+        "_to": "radix_8_node/10.0.0.13_4200000013"
+    },
+    {
+        "from": "node13",
+        "to": "node01",
+        "_from": "radix_8_node/10.0.0.13_4200000013",
+        "_to": "radix_8_node/10.0.0.1_4200000001"
+    },
+    {
+        "from": "node01",
+        "to": "node20",
+        "_from": "radix_8_node/10.0.0.1_4200000001",
+        "_to": "radix_8_node/10.0.0.20_4200000020"
+    },
+    {
+        "from": "node20",
+        "to": "node01",
+        "_from": "radix_8_node/10.0.0.20_4200000020",
+        "_to": "radix_8_node/10.0.0.1_4200000001"
+    },
+    {
+        "from": "node01",
+        "to": "node27",
+        "_from": "radix_8_node/10.0.0.1_4200000001",
+        "_to": "radix_8_node/10.0.0.27_4200000027"
+    },
+    {
+        "from": "node27",
+        "to": "node01",
+        "_from": "radix_8_node/10.0.0.27_4200000027",
+        "_to": "radix_8_node/10.0.0.1_4200000001"
+    },
+    {
+        "from": "node01",
+        "to": "node34",
+        "_from": "radix_8_node/10.0.0.1_4200000001",
+        "_to": "radix_8_node/10.0.0.34_4200000034"
+    },
+    {
+        "from": "node34",
+        "to": "node01",
+        "_from": "radix_8_node/10.0.0.34_4200000034",
+        "_to": "radix_8_node/10.0.0.1_4200000001"
+    },
+    {
+        "from": "node01",
+        "to": "node41",
+        "_from": "radix_8_node/10.0.0.1_4200000001",
+        "_to": "radix_8_node/10.0.0.41_4200000041"
+    },
+    {
+        "from": "node41",
+        "to": "node01",
+        "_from": "radix_8_node/10.0.0.41_4200000041",
+        "_to": "radix_8_node/10.0.0.1_4200000001"
+    },
+    {
+        "from": "node01",
+        "to": "node48",
+        "_from": "radix_8_node/10.0.0.1_4200000001",
+        "_to": "radix_8_node/10.0.0.48_4200000048"
+    },
+    {
+        "from": "node48",
+        "to": "node01",
+        "_from": "radix_8_node/10.0.0.48_4200000048",
+        "_to": "radix_8_node/10.0.0.1_4200000001"
+    },
+    {
+        "from": "node01",
+        "to": "node56",
+        "_from": "radix_8_node/10.0.0.1_4200000001",
+        "_to": "radix_8_node/10.0.0.56_4200000056"
+    },
+    {
+        "from": "node56",
+        "to": "node01",
+        "_from": "radix_8_node/10.0.0.56_4200000056",
+        "_to": "radix_8_node/10.0.0.1_4200000001"
+    },
+    {
+        "from": "node02",
+        "to": "node03",
+        "_from": "radix_8_node/10.0.0.2_4200000002",
+        "_to": "radix_8_node/10.0.0.3_4200000003"
+    },
+    {
+        "from": "node03",
+        "to": "node02",
+        "_from": "radix_8_node/10.0.0.3_4200000003",
+        "_to": "radix_8_node/10.0.0.2_4200000002"
+    },
+    {
+        "from": "node02",
+        "to": "node10",
+        "_from": "radix_8_node/10.0.0.2_4200000002",
+        "_to": "radix_8_node/10.0.0.10_4200000010"
+    },
+    {
+        "from": "node10",
+        "to": "node02",
+        "_from": "radix_8_node/10.0.0.10_4200000010",
+        "_to": "radix_8_node/10.0.0.2_4200000002"
+    },
+    {
+        "from": "node02",
+        "to": "node17",
+        "_from": "radix_8_node/10.0.0.2_4200000002",
+        "_to": "radix_8_node/10.0.0.17_4200000017"
+    },
+    {
+        "from": "node17",
+        "to": "node02",
+        "_from": "radix_8_node/10.0.0.17_4200000017",
+        "_to": "radix_8_node/10.0.0.2_4200000002"
+    },
+    {
+        "from": "node02",
+        "to": "node24",
+        "_from": "radix_8_node/10.0.0.2_4200000002",
+        "_to": "radix_8_node/10.0.0.24_4200000024"
+    },
+    {
+        "from": "node24",
+        "to": "node02",
+        "_from": "radix_8_node/10.0.0.24_4200000024",
+        "_to": "radix_8_node/10.0.0.2_4200000002"
+    },
+    {
+        "from": "node02",
+        "to": "node31",
+        "_from": "radix_8_node/10.0.0.2_4200000002",
+        "_to": "radix_8_node/10.0.0.31_4200000031"
+    },
+    {
+        "from": "node31",
+        "to": "node02",
+        "_from": "radix_8_node/10.0.0.31_4200000031",
+        "_to": "radix_8_node/10.0.0.2_4200000002"
+    },
+    {
+        "from": "node02",
+        "to": "node38",
+        "_from": "radix_8_node/10.0.0.2_4200000002",
+        "_to": "radix_8_node/10.0.0.38_4200000038"
+    },
+    {
+        "from": "node38",
+        "to": "node02",
+        "_from": "radix_8_node/10.0.0.38_4200000038",
+        "_to": "radix_8_node/10.0.0.2_4200000002"
+    },
+    {
+        "from": "node02",
+        "to": "node45",
+        "_from": "radix_8_node/10.0.0.2_4200000002",
+        "_to": "radix_8_node/10.0.0.45_4200000045"
+    },
+    {
+        "from": "node45",
+        "to": "node02",
+        "_from": "radix_8_node/10.0.0.45_4200000045",
+        "_to": "radix_8_node/10.0.0.2_4200000002"
+    },
+    {
+        "from": "node02",
+        "to": "node56",
+        "_from": "radix_8_node/10.0.0.2_4200000002",
+        "_to": "radix_8_node/10.0.0.56_4200000056"
+    },
+    {
+        "from": "node56",
+        "to": "node02",
+        "_from": "radix_8_node/10.0.0.56_4200000056",
+        "_to": "radix_8_node/10.0.0.2_4200000002"
+    },
+    {
+        "from": "node03",
+        "to": "node09",
+        "_from": "radix_8_node/10.0.0.3_4200000003",
+        "_to": "radix_8_node/10.0.0.9_4200000009"
+    },
+    {
+        "from": "node09",
+        "to": "node03",
+        "_from": "radix_8_node/10.0.0.9_4200000009",
+        "_to": "radix_8_node/10.0.0.3_4200000003"
+    },
+    {
+        "from": "node03",
+        "to": "node16",
+        "_from": "radix_8_node/10.0.0.3_4200000003",
+        "_to": "radix_8_node/10.0.0.16_4200000016"
+    },
+    {
+        "from": "node16",
+        "to": "node03",
+        "_from": "radix_8_node/10.0.0.16_4200000016",
+        "_to": "radix_8_node/10.0.0.3_4200000003"
+    },
+    {
+        "from": "node03",
+        "to": "node23",
+        "_from": "radix_8_node/10.0.0.3_4200000003",
+        "_to": "radix_8_node/10.0.0.23_4200000023"
+    },
+    {
+        "from": "node23",
+        "to": "node03",
+        "_from": "radix_8_node/10.0.0.23_4200000023",
+        "_to": "radix_8_node/10.0.0.3_4200000003"
+    },
+    {
+        "from": "node03",
+        "to": "node30",
+        "_from": "radix_8_node/10.0.0.3_4200000003",
+        "_to": "radix_8_node/10.0.0.30_4200000030"
+    },
+    {
+        "from": "node30",
+        "to": "node03",
+        "_from": "radix_8_node/10.0.0.30_4200000030",
+        "_to": "radix_8_node/10.0.0.3_4200000003"
+    },
+    {
+        "from": "node03",
+        "to": "node37",
+        "_from": "radix_8_node/10.0.0.3_4200000003",
+        "_to": "radix_8_node/10.0.0.37_4200000037"
+    },
+    {
+        "from": "node37",
+        "to": "node03",
+        "_from": "radix_8_node/10.0.0.37_4200000037",
+        "_to": "radix_8_node/10.0.0.3_4200000003"
+    },
+    {
+        "from": "node03",
+        "to": "node44",
+        "_from": "radix_8_node/10.0.0.3_4200000003",
+        "_to": "radix_8_node/10.0.0.44_4200000044"
+    },
+    {
+        "from": "node44",
+        "to": "node03",
+        "_from": "radix_8_node/10.0.0.44_4200000044",
+        "_to": "radix_8_node/10.0.0.3_4200000003"
+    },
+    {
+        "from": "node03",
+        "to": "node56",
+        "_from": "radix_8_node/10.0.0.3_4200000003",
+        "_to": "radix_8_node/10.0.0.56_4200000056"
+    },
+    {
+        "from": "node56",
+        "to": "node03",
+        "_from": "radix_8_node/10.0.0.56_4200000056",
+        "_to": "radix_8_node/10.0.0.3_4200000003"
+    },
+    {
+        "from": "node04",
+        "to": "node05",
+        "_from": "radix_8_node/10.0.0.4_4200000004",
+        "_to": "radix_8_node/10.0.0.5_4200000005"
+    },
+    {
+        "from": "node05",
+        "to": "node04",
+        "_from": "radix_8_node/10.0.0.5_4200000005",
+        "_to": "radix_8_node/10.0.0.4_4200000004"
+    },
+    {
+        "from": "node04",
+        "to": "node12",
+        "_from": "radix_8_node/10.0.0.4_4200000004",
+        "_to": "radix_8_node/10.0.0.12_4200000012"
+    },
+    {
+        "from": "node12",
+        "to": "node04",
+        "_from": "radix_8_node/10.0.0.12_4200000012",
+        "_to": "radix_8_node/10.0.0.4_4200000004"
+    },
+    {
+        "from": "node04",
+        "to": "node19",
+        "_from": "radix_8_node/10.0.0.4_4200000004",
+        "_to": "radix_8_node/10.0.0.19_4200000019"
+    },
+    {
+        "from": "node19",
+        "to": "node04",
+        "_from": "radix_8_node/10.0.0.19_4200000019",
+        "_to": "radix_8_node/10.0.0.4_4200000004"
+    },
+    {
+        "from": "node04",
+        "to": "node26",
+        "_from": "radix_8_node/10.0.0.4_4200000004",
+        "_to": "radix_8_node/10.0.0.26_4200000026"
+    },
+    {
+        "from": "node26",
+        "to": "node04",
+        "_from": "radix_8_node/10.0.0.26_4200000026",
+        "_to": "radix_8_node/10.0.0.4_4200000004"
+    },
+    {
+        "from": "node04",
+        "to": "node33",
+        "_from": "radix_8_node/10.0.0.4_4200000004",
+        "_to": "radix_8_node/10.0.0.33_4200000033"
+    },
+    {
+        "from": "node33",
+        "to": "node04",
+        "_from": "radix_8_node/10.0.0.33_4200000033",
+        "_to": "radix_8_node/10.0.0.4_4200000004"
+    },
+    {
+        "from": "node04",
+        "to": "node40",
+        "_from": "radix_8_node/10.0.0.4_4200000004",
+        "_to": "radix_8_node/10.0.0.40_4200000040"
+    },
+    {
+        "from": "node40",
+        "to": "node04",
+        "_from": "radix_8_node/10.0.0.40_4200000040",
+        "_to": "radix_8_node/10.0.0.4_4200000004"
+    },
+    {
+        "from": "node04",
+        "to": "node47",
+        "_from": "radix_8_node/10.0.0.4_4200000004",
+        "_to": "radix_8_node/10.0.0.47_4200000047"
+    },
+    {
+        "from": "node47",
+        "to": "node04",
+        "_from": "radix_8_node/10.0.0.47_4200000047",
+        "_to": "radix_8_node/10.0.0.4_4200000004"
+    },
+    {
+        "from": "node04",
+        "to": "node56",
+        "_from": "radix_8_node/10.0.0.4_4200000004",
+        "_to": "radix_8_node/10.0.0.56_4200000056"
+    },
+    {
+        "from": "node56",
+        "to": "node04",
+        "_from": "radix_8_node/10.0.0.56_4200000056",
+        "_to": "radix_8_node/10.0.0.4_4200000004"
+    },
+    {
+        "from": "node05",
+        "to": "node11",
+        "_from": "radix_8_node/10.0.0.5_4200000005",
+        "_to": "radix_8_node/10.0.0.11_4200000011"
+    },
+    {
+        "from": "node11",
+        "to": "node05",
+        "_from": "radix_8_node/10.0.0.11_4200000011",
+        "_to": "radix_8_node/10.0.0.5_4200000005"
+    },
+    {
+        "from": "node05",
+        "to": "node18",
+        "_from": "radix_8_node/10.0.0.5_4200000005",
+        "_to": "radix_8_node/10.0.0.18_4200000018"
+    },
+    {
+        "from": "node18",
+        "to": "node05",
+        "_from": "radix_8_node/10.0.0.18_4200000018",
+        "_to": "radix_8_node/10.0.0.5_4200000005"
+    },
+    {
+        "from": "node05",
+        "to": "node25",
+        "_from": "radix_8_node/10.0.0.5_4200000005",
+        "_to": "radix_8_node/10.0.0.25_4200000025"
+    },
+    {
+        "from": "node25",
+        "to": "node05",
+        "_from": "radix_8_node/10.0.0.25_4200000025",
+        "_to": "radix_8_node/10.0.0.5_4200000005"
+    },
+    {
+        "from": "node05",
+        "to": "node32",
+        "_from": "radix_8_node/10.0.0.5_4200000005",
+        "_to": "radix_8_node/10.0.0.32_4200000032"
+    },
+    {
+        "from": "node32",
+        "to": "node05",
+        "_from": "radix_8_node/10.0.0.32_4200000032",
+        "_to": "radix_8_node/10.0.0.5_4200000005"
+    },
+    {
+        "from": "node05",
+        "to": "node39",
+        "_from": "radix_8_node/10.0.0.5_4200000005",
+        "_to": "radix_8_node/10.0.0.39_4200000039"
+    },
+    {
+        "from": "node39",
+        "to": "node05",
+        "_from": "radix_8_node/10.0.0.39_4200000039",
+        "_to": "radix_8_node/10.0.0.5_4200000005"
+    },
+    {
+        "from": "node05",
+        "to": "node46",
+        "_from": "radix_8_node/10.0.0.5_4200000005",
+        "_to": "radix_8_node/10.0.0.46_4200000046"
+    },
+    {
+        "from": "node46",
+        "to": "node05",
+        "_from": "radix_8_node/10.0.0.46_4200000046",
+        "_to": "radix_8_node/10.0.0.5_4200000005"
+    },
+    {
+        "from": "node05",
+        "to": "node56",
+        "_from": "radix_8_node/10.0.0.5_4200000005",
+        "_to": "radix_8_node/10.0.0.56_4200000056"
+    },
+    {
+        "from": "node56",
+        "to": "node05",
+        "_from": "radix_8_node/10.0.0.56_4200000056",
+        "_to": "radix_8_node/10.0.0.5_4200000005"
+    },
+    {
+        "from": "node06",
+        "to": "node08",
+        "_from": "radix_8_node/10.0.0.6_4200000006",
+        "_to": "radix_8_node/10.0.0.8_4200000008"
+    },
+    {
+        "from": "node08",
+        "to": "node06",
+        "_from": "radix_8_node/10.0.0.8_4200000008",
+        "_to": "radix_8_node/10.0.0.6_4200000006"
+    },
+    {
+        "from": "node06",
+        "to": "node15",
+        "_from": "radix_8_node/10.0.0.6_4200000006",
+        "_to": "radix_8_node/10.0.0.15_4200000015"
+    },
+    {
+        "from": "node15",
+        "to": "node06",
+        "_from": "radix_8_node/10.0.0.15_4200000015",
+        "_to": "radix_8_node/10.0.0.6_4200000006"
+    },
+    {
+        "from": "node06",
+        "to": "node22",
+        "_from": "radix_8_node/10.0.0.6_4200000006",
+        "_to": "radix_8_node/10.0.0.22_4200000022"
+    },
+    {
+        "from": "node22",
+        "to": "node06",
+        "_from": "radix_8_node/10.0.0.22_4200000022",
+        "_to": "radix_8_node/10.0.0.6_4200000006"
+    },
+    {
+        "from": "node06",
+        "to": "node29",
+        "_from": "radix_8_node/10.0.0.6_4200000006",
+        "_to": "radix_8_node/10.0.0.29_4200000029"
+    },
+    {
+        "from": "node29",
+        "to": "node06",
+        "_from": "radix_8_node/10.0.0.29_4200000029",
+        "_to": "radix_8_node/10.0.0.6_4200000006"
+    },
+    {
+        "from": "node06",
+        "to": "node36",
+        "_from": "radix_8_node/10.0.0.6_4200000006",
+        "_to": "radix_8_node/10.0.0.36_4200000036"
+    },
+    {
+        "from": "node36",
+        "to": "node06",
+        "_from": "radix_8_node/10.0.0.36_4200000036",
+        "_to": "radix_8_node/10.0.0.6_4200000006"
+    },
+    {
+        "from": "node06",
+        "to": "node43",
+        "_from": "radix_8_node/10.0.0.6_4200000006",
+        "_to": "radix_8_node/10.0.0.43_4200000043"
+    },
+    {
+        "from": "node43",
+        "to": "node06",
+        "_from": "radix_8_node/10.0.0.43_4200000043",
+        "_to": "radix_8_node/10.0.0.6_4200000006"
+    },
+    {
+        "from": "node06",
+        "to": "node56",
+        "_from": "radix_8_node/10.0.0.6_4200000006",
+        "_to": "radix_8_node/10.0.0.56_4200000056"
+    },
+    {
+        "from": "node56",
+        "to": "node06",
+        "_from": "radix_8_node/10.0.0.56_4200000056",
+        "_to": "radix_8_node/10.0.0.6_4200000006"
+    },
+    {
+        "from": "node07",
+        "to": "node42",
+        "_from": "radix_8_node/10.0.0.7_4200000007",
+        "_to": "radix_8_node/10.0.0.42_4200000042"
+    },
+    {
+        "from": "node42",
+        "to": "node07",
+        "_from": "radix_8_node/10.0.0.42_4200000042",
+        "_to": "radix_8_node/10.0.0.7_4200000007"
+    },
+    {
+        "from": "node07",
+        "to": "node43",
+        "_from": "radix_8_node/10.0.0.7_4200000007",
+        "_to": "radix_8_node/10.0.0.43_4200000043"
+    },
+    {
+        "from": "node43",
+        "to": "node07",
+        "_from": "radix_8_node/10.0.0.43_4200000043",
+        "_to": "radix_8_node/10.0.0.7_4200000007"
+    },
+    {
+        "from": "node07",
+        "to": "node44",
+        "_from": "radix_8_node/10.0.0.7_4200000007",
+        "_to": "radix_8_node/10.0.0.44_4200000044"
+    },
+    {
+        "from": "node44",
+        "to": "node07",
+        "_from": "radix_8_node/10.0.0.44_4200000044",
+        "_to": "radix_8_node/10.0.0.7_4200000007"
+    },
+    {
+        "from": "node07",
+        "to": "node45",
+        "_from": "radix_8_node/10.0.0.7_4200000007",
+        "_to": "radix_8_node/10.0.0.45_4200000045"
+    },
+    {
+        "from": "node45",
+        "to": "node07",
+        "_from": "radix_8_node/10.0.0.45_4200000045",
+        "_to": "radix_8_node/10.0.0.7_4200000007"
+    },
+    {
+        "from": "node07",
+        "to": "node46",
+        "_from": "radix_8_node/10.0.0.7_4200000007",
+        "_to": "radix_8_node/10.0.0.46_4200000046"
+    },
+    {
+        "from": "node46",
+        "to": "node07",
+        "_from": "radix_8_node/10.0.0.46_4200000046",
+        "_to": "radix_8_node/10.0.0.7_4200000007"
+    },
+    {
+        "from": "node07",
+        "to": "node47",
+        "_from": "radix_8_node/10.0.0.7_4200000007",
+        "_to": "radix_8_node/10.0.0.47_4200000047"
+    },
+    {
+        "from": "node47",
+        "to": "node07",
+        "_from": "radix_8_node/10.0.0.47_4200000047",
+        "_to": "radix_8_node/10.0.0.7_4200000007"
+    },
+    {
+        "from": "node07",
+        "to": "node48",
+        "_from": "radix_8_node/10.0.0.7_4200000007",
+        "_to": "radix_8_node/10.0.0.48_4200000048"
+    },
+    {
+        "from": "node48",
+        "to": "node07",
+        "_from": "radix_8_node/10.0.0.48_4200000048",
+        "_to": "radix_8_node/10.0.0.7_4200000007"
+    },
+    {
+        "from": "node07",
+        "to": "node49",
+        "_from": "radix_8_node/10.0.0.7_4200000007",
+        "_to": "radix_8_node/10.0.0.49_4200000049"
+    },
+    {
+        "from": "node49",
+        "to": "node07",
+        "_from": "radix_8_node/10.0.0.49_4200000049",
+        "_to": "radix_8_node/10.0.0.7_4200000007"
+    },
+    {
+        "from": "node08",
+        "to": "node12",
+        "_from": "radix_8_node/10.0.0.8_4200000008",
+        "_to": "radix_8_node/10.0.0.12_4200000012"
+    },
+    {
+        "from": "node12",
+        "to": "node08",
+        "_from": "radix_8_node/10.0.0.12_4200000012",
+        "_to": "radix_8_node/10.0.0.8_4200000008"
+    },
+    {
+        "from": "node08",
+        "to": "node18",
+        "_from": "radix_8_node/10.0.0.8_4200000008",
+        "_to": "radix_8_node/10.0.0.18_4200000018"
+    },
+    {
+        "from": "node18",
+        "to": "node08",
+        "_from": "radix_8_node/10.0.0.18_4200000018",
+        "_to": "radix_8_node/10.0.0.8_4200000008"
+    },
+    {
+        "from": "node08",
+        "to": "node24",
+        "_from": "radix_8_node/10.0.0.8_4200000008",
+        "_to": "radix_8_node/10.0.0.24_4200000024"
+    },
+    {
+        "from": "node24",
+        "to": "node08",
+        "_from": "radix_8_node/10.0.0.24_4200000024",
+        "_to": "radix_8_node/10.0.0.8_4200000008"
+    },
+    {
+        "from": "node08",
+        "to": "node30",
+        "_from": "radix_8_node/10.0.0.8_4200000008",
+        "_to": "radix_8_node/10.0.0.30_4200000030"
+    },
+    {
+        "from": "node30",
+        "to": "node08",
+        "_from": "radix_8_node/10.0.0.30_4200000030",
+        "_to": "radix_8_node/10.0.0.8_4200000008"
+    },
+    {
+        "from": "node08",
+        "to": "node36",
+        "_from": "radix_8_node/10.0.0.8_4200000008",
+        "_to": "radix_8_node/10.0.0.36_4200000036"
+    },
+    {
+        "from": "node36",
+        "to": "node08",
+        "_from": "radix_8_node/10.0.0.36_4200000036",
+        "_to": "radix_8_node/10.0.0.8_4200000008"
+    },
+    {
+        "from": "node08",
+        "to": "node42",
+        "_from": "radix_8_node/10.0.0.8_4200000008",
+        "_to": "radix_8_node/10.0.0.42_4200000042"
+    },
+    {
+        "from": "node42",
+        "to": "node08",
+        "_from": "radix_8_node/10.0.0.42_4200000042",
+        "_to": "radix_8_node/10.0.0.8_4200000008"
+    },
+    {
+        "from": "node08",
+        "to": "node55",
+        "_from": "radix_8_node/10.0.0.8_4200000008",
+        "_to": "radix_8_node/10.0.0.55_4200000055"
+    },
+    {
+        "from": "node55",
+        "to": "node08",
+        "_from": "radix_8_node/10.0.0.55_4200000055",
+        "_to": "radix_8_node/10.0.0.8_4200000008"
+    },
+    {
+        "from": "node09",
+        "to": "node13",
+        "_from": "radix_8_node/10.0.0.9_4200000009",
+        "_to": "radix_8_node/10.0.0.13_4200000013"
+    },
+    {
+        "from": "node13",
+        "to": "node09",
+        "_from": "radix_8_node/10.0.0.13_4200000013",
+        "_to": "radix_8_node/10.0.0.9_4200000009"
+    },
+    {
+        "from": "node09",
+        "to": "node16",
+        "_from": "radix_8_node/10.0.0.9_4200000009",
+        "_to": "radix_8_node/10.0.0.16_4200000016"
+    },
+    {
+        "from": "node16",
+        "to": "node09",
+        "_from": "radix_8_node/10.0.0.16_4200000016",
+        "_to": "radix_8_node/10.0.0.9_4200000009"
+    },
+    {
+        "from": "node09",
+        "to": "node26",
+        "_from": "radix_8_node/10.0.0.9_4200000009",
+        "_to": "radix_8_node/10.0.0.26_4200000026"
+    },
+    {
+        "from": "node26",
+        "to": "node09",
+        "_from": "radix_8_node/10.0.0.26_4200000026",
+        "_to": "radix_8_node/10.0.0.9_4200000009"
+    },
+    {
+        "from": "node09",
+        "to": "node29",
+        "_from": "radix_8_node/10.0.0.9_4200000009",
+        "_to": "radix_8_node/10.0.0.29_4200000029"
+    },
+    {
+        "from": "node29",
+        "to": "node09",
+        "_from": "radix_8_node/10.0.0.29_4200000029",
+        "_to": "radix_8_node/10.0.0.9_4200000009"
+    },
+    {
+        "from": "node09",
+        "to": "node39",
+        "_from": "radix_8_node/10.0.0.9_4200000009",
+        "_to": "radix_8_node/10.0.0.39_4200000039"
+    },
+    {
+        "from": "node39",
+        "to": "node09",
+        "_from": "radix_8_node/10.0.0.39_4200000039",
+        "_to": "radix_8_node/10.0.0.9_4200000009"
+    },
+    {
+        "from": "node09",
+        "to": "node42",
+        "_from": "radix_8_node/10.0.0.9_4200000009",
+        "_to": "radix_8_node/10.0.0.42_4200000042"
+    },
+    {
+        "from": "node42",
+        "to": "node09",
+        "_from": "radix_8_node/10.0.0.42_4200000042",
+        "_to": "radix_8_node/10.0.0.9_4200000009"
+    },
+    {
+        "from": "node09",
+        "to": "node54",
+        "_from": "radix_8_node/10.0.0.9_4200000009",
+        "_to": "radix_8_node/10.0.0.54_4200000054"
+    },
+    {
+        "from": "node54",
+        "to": "node09",
+        "_from": "radix_8_node/10.0.0.54_4200000054",
+        "_to": "radix_8_node/10.0.0.9_4200000009"
+    },
+    {
+        "from": "node10",
+        "to": "node11",
+        "_from": "radix_8_node/10.0.0.10_4200000010",
+        "_to": "radix_8_node/10.0.0.11_4200000011"
+    },
+    {
+        "from": "node11",
+        "to": "node10",
+        "_from": "radix_8_node/10.0.0.11_4200000011",
+        "_to": "radix_8_node/10.0.0.10_4200000010"
+    },
+    {
+        "from": "node10",
+        "to": "node20",
+        "_from": "radix_8_node/10.0.0.10_4200000010",
+        "_to": "radix_8_node/10.0.0.20_4200000020"
+    },
+    {
+        "from": "node20",
+        "to": "node10",
+        "_from": "radix_8_node/10.0.0.20_4200000020",
+        "_to": "radix_8_node/10.0.0.10_4200000010"
+    },
+    {
+        "from": "node10",
+        "to": "node22",
+        "_from": "radix_8_node/10.0.0.10_4200000010",
+        "_to": "radix_8_node/10.0.0.22_4200000022"
+    },
+    {
+        "from": "node22",
+        "to": "node10",
+        "_from": "radix_8_node/10.0.0.22_4200000022",
+        "_to": "radix_8_node/10.0.0.10_4200000010"
+    },
+    {
+        "from": "node10",
+        "to": "node31",
+        "_from": "radix_8_node/10.0.0.10_4200000010",
+        "_to": "radix_8_node/10.0.0.31_4200000031"
+    },
+    {
+        "from": "node31",
+        "to": "node10",
+        "_from": "radix_8_node/10.0.0.31_4200000031",
+        "_to": "radix_8_node/10.0.0.10_4200000010"
+    },
+    {
+        "from": "node10",
+        "to": "node40",
+        "_from": "radix_8_node/10.0.0.10_4200000010",
+        "_to": "radix_8_node/10.0.0.40_4200000040"
+    },
+    {
+        "from": "node40",
+        "to": "node10",
+        "_from": "radix_8_node/10.0.0.40_4200000040",
+        "_to": "radix_8_node/10.0.0.10_4200000010"
+    },
+    {
+        "from": "node10",
+        "to": "node42",
+        "_from": "radix_8_node/10.0.0.10_4200000010",
+        "_to": "radix_8_node/10.0.0.42_4200000042"
+    },
+    {
+        "from": "node42",
+        "to": "node10",
+        "_from": "radix_8_node/10.0.0.42_4200000042",
+        "_to": "radix_8_node/10.0.0.10_4200000010"
+    },
+    {
+        "from": "node10",
+        "to": "node53",
+        "_from": "radix_8_node/10.0.0.10_4200000010",
+        "_to": "radix_8_node/10.0.0.53_4200000053"
+    },
+    {
+        "from": "node53",
+        "to": "node10",
+        "_from": "radix_8_node/10.0.0.53_4200000053",
+        "_to": "radix_8_node/10.0.0.10_4200000010"
+    },
+    {
+        "from": "node11",
+        "to": "node15",
+        "_from": "radix_8_node/10.0.0.11_4200000011",
+        "_to": "radix_8_node/10.0.0.15_4200000015"
+    },
+    {
+        "from": "node15",
+        "to": "node11",
+        "_from": "radix_8_node/10.0.0.15_4200000015",
+        "_to": "radix_8_node/10.0.0.11_4200000011"
+    },
+    {
+        "from": "node11",
+        "to": "node27",
+        "_from": "radix_8_node/10.0.0.11_4200000011",
+        "_to": "radix_8_node/10.0.0.27_4200000027"
+    },
+    {
+        "from": "node27",
+        "to": "node11",
+        "_from": "radix_8_node/10.0.0.27_4200000027",
+        "_to": "radix_8_node/10.0.0.11_4200000011"
+    },
+    {
+        "from": "node11",
+        "to": "node32",
+        "_from": "radix_8_node/10.0.0.11_4200000011",
+        "_to": "radix_8_node/10.0.0.32_4200000032"
+    },
+    {
+        "from": "node32",
+        "to": "node11",
+        "_from": "radix_8_node/10.0.0.32_4200000032",
+        "_to": "radix_8_node/10.0.0.11_4200000011"
+    },
+    {
+        "from": "node11",
+        "to": "node37",
+        "_from": "radix_8_node/10.0.0.11_4200000011",
+        "_to": "radix_8_node/10.0.0.37_4200000037"
+    },
+    {
+        "from": "node37",
+        "to": "node11",
+        "_from": "radix_8_node/10.0.0.37_4200000037",
+        "_to": "radix_8_node/10.0.0.11_4200000011"
+    },
+    {
+        "from": "node11",
+        "to": "node42",
+        "_from": "radix_8_node/10.0.0.11_4200000011",
+        "_to": "radix_8_node/10.0.0.42_4200000042"
+    },
+    {
+        "from": "node42",
+        "to": "node11",
+        "_from": "radix_8_node/10.0.0.42_4200000042",
+        "_to": "radix_8_node/10.0.0.11_4200000011"
+    },
+    {
+        "from": "node11",
+        "to": "node52",
+        "_from": "radix_8_node/10.0.0.11_4200000011",
+        "_to": "radix_8_node/10.0.0.52_4200000052"
+    },
+    {
+        "from": "node52",
+        "to": "node11",
+        "_from": "radix_8_node/10.0.0.52_4200000052",
+        "_to": "radix_8_node/10.0.0.11_4200000011"
+    },
+    {
+        "from": "node12",
+        "to": "node19",
+        "_from": "radix_8_node/10.0.0.12_4200000012",
+        "_to": "radix_8_node/10.0.0.19_4200000019"
+    },
+    {
+        "from": "node19",
+        "to": "node12",
+        "_from": "radix_8_node/10.0.0.19_4200000019",
+        "_to": "radix_8_node/10.0.0.12_4200000012"
+    },
+    {
+        "from": "node12",
+        "to": "node23",
+        "_from": "radix_8_node/10.0.0.12_4200000012",
+        "_to": "radix_8_node/10.0.0.23_4200000023"
+    },
+    {
+        "from": "node23",
+        "to": "node12",
+        "_from": "radix_8_node/10.0.0.23_4200000023",
+        "_to": "radix_8_node/10.0.0.12_4200000012"
+    },
+    {
+        "from": "node12",
+        "to": "node34",
+        "_from": "radix_8_node/10.0.0.12_4200000012",
+        "_to": "radix_8_node/10.0.0.34_4200000034"
+    },
+    {
+        "from": "node34",
+        "to": "node12",
+        "_from": "radix_8_node/10.0.0.34_4200000034",
+        "_to": "radix_8_node/10.0.0.12_4200000012"
+    },
+    {
+        "from": "node12",
+        "to": "node38",
+        "_from": "radix_8_node/10.0.0.12_4200000012",
+        "_to": "radix_8_node/10.0.0.38_4200000038"
+    },
+    {
+        "from": "node38",
+        "to": "node12",
+        "_from": "radix_8_node/10.0.0.38_4200000038",
+        "_to": "radix_8_node/10.0.0.12_4200000012"
+    },
+    {
+        "from": "node12",
+        "to": "node42",
+        "_from": "radix_8_node/10.0.0.12_4200000012",
+        "_to": "radix_8_node/10.0.0.42_4200000042"
+    },
+    {
+        "from": "node42",
+        "to": "node12",
+        "_from": "radix_8_node/10.0.0.42_4200000042",
+        "_to": "radix_8_node/10.0.0.12_4200000012"
+    },
+    {
+        "from": "node12",
+        "to": "node51",
+        "_from": "radix_8_node/10.0.0.12_4200000012",
+        "_to": "radix_8_node/10.0.0.51_4200000051"
+    },
+    {
+        "from": "node51",
+        "to": "node12",
+        "_from": "radix_8_node/10.0.0.51_4200000051",
+        "_to": "radix_8_node/10.0.0.12_4200000012"
+    },
+    {
+        "from": "node13",
+        "to": "node17",
+        "_from": "radix_8_node/10.0.0.13_4200000013",
+        "_to": "radix_8_node/10.0.0.17_4200000017"
+    },
+    {
+        "from": "node17",
+        "to": "node13",
+        "_from": "radix_8_node/10.0.0.17_4200000017",
+        "_to": "radix_8_node/10.0.0.13_4200000013"
+    },
+    {
+        "from": "node13",
+        "to": "node25",
+        "_from": "radix_8_node/10.0.0.13_4200000013",
+        "_to": "radix_8_node/10.0.0.25_4200000025"
+    },
+    {
+        "from": "node25",
+        "to": "node13",
+        "_from": "radix_8_node/10.0.0.25_4200000025",
+        "_to": "radix_8_node/10.0.0.13_4200000013"
+    },
+    {
+        "from": "node13",
+        "to": "node33",
+        "_from": "radix_8_node/10.0.0.13_4200000013",
+        "_to": "radix_8_node/10.0.0.33_4200000033"
+    },
+    {
+        "from": "node33",
+        "to": "node13",
+        "_from": "radix_8_node/10.0.0.33_4200000033",
+        "_to": "radix_8_node/10.0.0.13_4200000013"
+    },
+    {
+        "from": "node13",
+        "to": "node41",
+        "_from": "radix_8_node/10.0.0.13_4200000013",
+        "_to": "radix_8_node/10.0.0.41_4200000041"
+    },
+    {
+        "from": "node41",
+        "to": "node13",
+        "_from": "radix_8_node/10.0.0.41_4200000041",
+        "_to": "radix_8_node/10.0.0.13_4200000013"
+    },
+    {
+        "from": "node13",
+        "to": "node42",
+        "_from": "radix_8_node/10.0.0.13_4200000013",
+        "_to": "radix_8_node/10.0.0.42_4200000042"
+    },
+    {
+        "from": "node42",
+        "to": "node13",
+        "_from": "radix_8_node/10.0.0.42_4200000042",
+        "_to": "radix_8_node/10.0.0.13_4200000013"
+    },
+    {
+        "from": "node13",
+        "to": "node50",
+        "_from": "radix_8_node/10.0.0.13_4200000013",
+        "_to": "radix_8_node/10.0.0.50_4200000050"
+    },
+    {
+        "from": "node50",
+        "to": "node13",
+        "_from": "radix_8_node/10.0.0.50_4200000050",
+        "_to": "radix_8_node/10.0.0.13_4200000013"
+    },
+    {
+        "from": "node14",
+        "to": "node21",
+        "_from": "radix_8_node/10.0.0.14_4200000014",
+        "_to": "radix_8_node/10.0.0.21_4200000021"
+    },
+    {
+        "from": "node21",
+        "to": "node14",
+        "_from": "radix_8_node/10.0.0.21_4200000021",
+        "_to": "radix_8_node/10.0.0.14_4200000014"
+    },
+    {
+        "from": "node14",
+        "to": "node22",
+        "_from": "radix_8_node/10.0.0.14_4200000014",
+        "_to": "radix_8_node/10.0.0.22_4200000022"
+    },
+    {
+        "from": "node22",
+        "to": "node14",
+        "_from": "radix_8_node/10.0.0.22_4200000022",
+        "_to": "radix_8_node/10.0.0.14_4200000014"
+    },
+    {
+        "from": "node14",
+        "to": "node23",
+        "_from": "radix_8_node/10.0.0.14_4200000014",
+        "_to": "radix_8_node/10.0.0.23_4200000023"
+    },
+    {
+        "from": "node23",
+        "to": "node14",
+        "_from": "radix_8_node/10.0.0.23_4200000023",
+        "_to": "radix_8_node/10.0.0.14_4200000014"
+    },
+    {
+        "from": "node14",
+        "to": "node24",
+        "_from": "radix_8_node/10.0.0.14_4200000014",
+        "_to": "radix_8_node/10.0.0.24_4200000024"
+    },
+    {
+        "from": "node24",
+        "to": "node14",
+        "_from": "radix_8_node/10.0.0.24_4200000024",
+        "_to": "radix_8_node/10.0.0.14_4200000014"
+    },
+    {
+        "from": "node14",
+        "to": "node25",
+        "_from": "radix_8_node/10.0.0.14_4200000014",
+        "_to": "radix_8_node/10.0.0.25_4200000025"
+    },
+    {
+        "from": "node25",
+        "to": "node14",
+        "_from": "radix_8_node/10.0.0.25_4200000025",
+        "_to": "radix_8_node/10.0.0.14_4200000014"
+    },
+    {
+        "from": "node14",
+        "to": "node26",
+        "_from": "radix_8_node/10.0.0.14_4200000014",
+        "_to": "radix_8_node/10.0.0.26_4200000026"
+    },
+    {
+        "from": "node26",
+        "to": "node14",
+        "_from": "radix_8_node/10.0.0.26_4200000026",
+        "_to": "radix_8_node/10.0.0.14_4200000014"
+    },
+    {
+        "from": "node14",
+        "to": "node27",
+        "_from": "radix_8_node/10.0.0.14_4200000014",
+        "_to": "radix_8_node/10.0.0.27_4200000027"
+    },
+    {
+        "from": "node27",
+        "to": "node14",
+        "_from": "radix_8_node/10.0.0.27_4200000027",
+        "_to": "radix_8_node/10.0.0.14_4200000014"
+    },
+    {
+        "from": "node14",
+        "to": "node49",
+        "_from": "radix_8_node/10.0.0.14_4200000014",
+        "_to": "radix_8_node/10.0.0.49_4200000049"
+    },
+    {
+        "from": "node49",
+        "to": "node14",
+        "_from": "radix_8_node/10.0.0.49_4200000049",
+        "_to": "radix_8_node/10.0.0.14_4200000014"
+    },
+    {
+        "from": "node15",
+        "to": "node16",
+        "_from": "radix_8_node/10.0.0.15_4200000015",
+        "_to": "radix_8_node/10.0.0.16_4200000016"
+    },
+    {
+        "from": "node16",
+        "to": "node15",
+        "_from": "radix_8_node/10.0.0.16_4200000016",
+        "_to": "radix_8_node/10.0.0.15_4200000015"
+    },
+    {
+        "from": "node15",
+        "to": "node21",
+        "_from": "radix_8_node/10.0.0.15_4200000015",
+        "_to": "radix_8_node/10.0.0.21_4200000021"
+    },
+    {
+        "from": "node21",
+        "to": "node15",
+        "_from": "radix_8_node/10.0.0.21_4200000021",
+        "_to": "radix_8_node/10.0.0.15_4200000015"
+    },
+    {
+        "from": "node15",
+        "to": "node33",
+        "_from": "radix_8_node/10.0.0.15_4200000015",
+        "_to": "radix_8_node/10.0.0.33_4200000033"
+    },
+    {
+        "from": "node33",
+        "to": "node15",
+        "_from": "radix_8_node/10.0.0.33_4200000033",
+        "_to": "radix_8_node/10.0.0.15_4200000015"
+    },
+    {
+        "from": "node15",
+        "to": "node38",
+        "_from": "radix_8_node/10.0.0.15_4200000015",
+        "_to": "radix_8_node/10.0.0.38_4200000038"
+    },
+    {
+        "from": "node38",
+        "to": "node15",
+        "_from": "radix_8_node/10.0.0.38_4200000038",
+        "_to": "radix_8_node/10.0.0.15_4200000015"
+    },
+    {
+        "from": "node15",
+        "to": "node43",
+        "_from": "radix_8_node/10.0.0.15_4200000015",
+        "_to": "radix_8_node/10.0.0.43_4200000043"
+    },
+    {
+        "from": "node43",
+        "to": "node15",
+        "_from": "radix_8_node/10.0.0.43_4200000043",
+        "_to": "radix_8_node/10.0.0.15_4200000015"
+    },
+    {
+        "from": "node15",
+        "to": "node52",
+        "_from": "radix_8_node/10.0.0.15_4200000015",
+        "_to": "radix_8_node/10.0.0.52_4200000052"
+    },
+    {
+        "from": "node52",
+        "to": "node15",
+        "_from": "radix_8_node/10.0.0.52_4200000052",
+        "_to": "radix_8_node/10.0.0.15_4200000015"
+    },
+    {
+        "from": "node16",
+        "to": "node21",
+        "_from": "radix_8_node/10.0.0.16_4200000016",
+        "_to": "radix_8_node/10.0.0.21_4200000021"
+    },
+    {
+        "from": "node21",
+        "to": "node16",
+        "_from": "radix_8_node/10.0.0.21_4200000021",
+        "_to": "radix_8_node/10.0.0.16_4200000016"
+    },
+    {
+        "from": "node16",
+        "to": "node34",
+        "_from": "radix_8_node/10.0.0.16_4200000016",
+        "_to": "radix_8_node/10.0.0.34_4200000034"
+    },
+    {
+        "from": "node34",
+        "to": "node16",
+        "_from": "radix_8_node/10.0.0.34_4200000034",
+        "_to": "radix_8_node/10.0.0.16_4200000016"
+    },
+    {
+        "from": "node16",
+        "to": "node40",
+        "_from": "radix_8_node/10.0.0.16_4200000016",
+        "_to": "radix_8_node/10.0.0.40_4200000040"
+    },
+    {
+        "from": "node40",
+        "to": "node16",
+        "_from": "radix_8_node/10.0.0.40_4200000040",
+        "_to": "radix_8_node/10.0.0.16_4200000016"
+    },
+    {
+        "from": "node16",
+        "to": "node46",
+        "_from": "radix_8_node/10.0.0.16_4200000016",
+        "_to": "radix_8_node/10.0.0.46_4200000046"
+    },
+    {
+        "from": "node46",
+        "to": "node16",
+        "_from": "radix_8_node/10.0.0.46_4200000046",
+        "_to": "radix_8_node/10.0.0.16_4200000016"
+    },
+    {
+        "from": "node16",
+        "to": "node55",
+        "_from": "radix_8_node/10.0.0.16_4200000016",
+        "_to": "radix_8_node/10.0.0.55_4200000055"
+    },
+    {
+        "from": "node55",
+        "to": "node16",
+        "_from": "radix_8_node/10.0.0.55_4200000055",
+        "_to": "radix_8_node/10.0.0.16_4200000016"
+    },
+    {
+        "from": "node17",
+        "to": "node21",
+        "_from": "radix_8_node/10.0.0.17_4200000017",
+        "_to": "radix_8_node/10.0.0.21_4200000021"
+    },
+    {
+        "from": "node21",
+        "to": "node17",
+        "_from": "radix_8_node/10.0.0.21_4200000021",
+        "_to": "radix_8_node/10.0.0.17_4200000017"
+    },
+    {
+        "from": "node17",
+        "to": "node32",
+        "_from": "radix_8_node/10.0.0.17_4200000017",
+        "_to": "radix_8_node/10.0.0.32_4200000032"
+    },
+    {
+        "from": "node32",
+        "to": "node17",
+        "_from": "radix_8_node/10.0.0.32_4200000032",
+        "_to": "radix_8_node/10.0.0.17_4200000017"
+    },
+    {
+        "from": "node17",
+        "to": "node36",
+        "_from": "radix_8_node/10.0.0.17_4200000017",
+        "_to": "radix_8_node/10.0.0.36_4200000036"
+    },
+    {
+        "from": "node36",
+        "to": "node17",
+        "_from": "radix_8_node/10.0.0.36_4200000036",
+        "_to": "radix_8_node/10.0.0.17_4200000017"
+    },
+    {
+        "from": "node17",
+        "to": "node47",
+        "_from": "radix_8_node/10.0.0.17_4200000017",
+        "_to": "radix_8_node/10.0.0.47_4200000047"
+    },
+    {
+        "from": "node47",
+        "to": "node17",
+        "_from": "radix_8_node/10.0.0.47_4200000047",
+        "_to": "radix_8_node/10.0.0.17_4200000017"
+    },
+    {
+        "from": "node17",
+        "to": "node51",
+        "_from": "radix_8_node/10.0.0.17_4200000017",
+        "_to": "radix_8_node/10.0.0.51_4200000051"
+    },
+    {
+        "from": "node51",
+        "to": "node17",
+        "_from": "radix_8_node/10.0.0.51_4200000051",
+        "_to": "radix_8_node/10.0.0.17_4200000017"
+    },
+    {
+        "from": "node18",
+        "to": "node21",
+        "_from": "radix_8_node/10.0.0.18_4200000018",
+        "_to": "radix_8_node/10.0.0.21_4200000021"
+    },
+    {
+        "from": "node21",
+        "to": "node18",
+        "_from": "radix_8_node/10.0.0.21_4200000021",
+        "_to": "radix_8_node/10.0.0.18_4200000018"
+    },
+    {
+        "from": "node18",
+        "to": "node31",
+        "_from": "radix_8_node/10.0.0.18_4200000018",
+        "_to": "radix_8_node/10.0.0.31_4200000031"
+    },
+    {
+        "from": "node31",
+        "to": "node18",
+        "_from": "radix_8_node/10.0.0.31_4200000031",
+        "_to": "radix_8_node/10.0.0.18_4200000018"
+    },
+    {
+        "from": "node18",
+        "to": "node41",
+        "_from": "radix_8_node/10.0.0.18_4200000018",
+        "_to": "radix_8_node/10.0.0.41_4200000041"
+    },
+    {
+        "from": "node41",
+        "to": "node18",
+        "_from": "radix_8_node/10.0.0.41_4200000041",
+        "_to": "radix_8_node/10.0.0.18_4200000018"
+    },
+    {
+        "from": "node18",
+        "to": "node44",
+        "_from": "radix_8_node/10.0.0.18_4200000018",
+        "_to": "radix_8_node/10.0.0.44_4200000044"
+    },
+    {
+        "from": "node44",
+        "to": "node18",
+        "_from": "radix_8_node/10.0.0.44_4200000044",
+        "_to": "radix_8_node/10.0.0.18_4200000018"
+    },
+    {
+        "from": "node18",
+        "to": "node54",
+        "_from": "radix_8_node/10.0.0.18_4200000018",
+        "_to": "radix_8_node/10.0.0.54_4200000054"
+    },
+    {
+        "from": "node54",
+        "to": "node18",
+        "_from": "radix_8_node/10.0.0.54_4200000054",
+        "_to": "radix_8_node/10.0.0.18_4200000018"
+    },
+    {
+        "from": "node19",
+        "to": "node20",
+        "_from": "radix_8_node/10.0.0.19_4200000019",
+        "_to": "radix_8_node/10.0.0.20_4200000020"
+    },
+    {
+        "from": "node20",
+        "to": "node19",
+        "_from": "radix_8_node/10.0.0.20_4200000020",
+        "_to": "radix_8_node/10.0.0.19_4200000019"
+    },
+    {
+        "from": "node19",
+        "to": "node21",
+        "_from": "radix_8_node/10.0.0.19_4200000019",
+        "_to": "radix_8_node/10.0.0.21_4200000021"
+    },
+    {
+        "from": "node21",
+        "to": "node19",
+        "_from": "radix_8_node/10.0.0.21_4200000021",
+        "_to": "radix_8_node/10.0.0.19_4200000019"
+    },
+    {
+        "from": "node19",
+        "to": "node29",
+        "_from": "radix_8_node/10.0.0.19_4200000019",
+        "_to": "radix_8_node/10.0.0.29_4200000029"
+    },
+    {
+        "from": "node29",
+        "to": "node19",
+        "_from": "radix_8_node/10.0.0.29_4200000029",
+        "_to": "radix_8_node/10.0.0.19_4200000019"
+    },
+    {
+        "from": "node19",
+        "to": "node37",
+        "_from": "radix_8_node/10.0.0.19_4200000019",
+        "_to": "radix_8_node/10.0.0.37_4200000037"
+    },
+    {
+        "from": "node37",
+        "to": "node19",
+        "_from": "radix_8_node/10.0.0.37_4200000037",
+        "_to": "radix_8_node/10.0.0.19_4200000019"
+    },
+    {
+        "from": "node19",
+        "to": "node45",
+        "_from": "radix_8_node/10.0.0.19_4200000019",
+        "_to": "radix_8_node/10.0.0.45_4200000045"
+    },
+    {
+        "from": "node45",
+        "to": "node19",
+        "_from": "radix_8_node/10.0.0.45_4200000045",
+        "_to": "radix_8_node/10.0.0.19_4200000019"
+    },
+    {
+        "from": "node19",
+        "to": "node50",
+        "_from": "radix_8_node/10.0.0.19_4200000019",
+        "_to": "radix_8_node/10.0.0.50_4200000050"
+    },
+    {
+        "from": "node50",
+        "to": "node19",
+        "_from": "radix_8_node/10.0.0.50_4200000050",
+        "_to": "radix_8_node/10.0.0.19_4200000019"
+    },
+    {
+        "from": "node20",
+        "to": "node21",
+        "_from": "radix_8_node/10.0.0.20_4200000020",
+        "_to": "radix_8_node/10.0.0.21_4200000021"
+    },
+    {
+        "from": "node21",
+        "to": "node20",
+        "_from": "radix_8_node/10.0.0.21_4200000021",
+        "_to": "radix_8_node/10.0.0.20_4200000020"
+    },
+    {
+        "from": "node20",
+        "to": "node30",
+        "_from": "radix_8_node/10.0.0.20_4200000020",
+        "_to": "radix_8_node/10.0.0.30_4200000030"
+    },
+    {
+        "from": "node30",
+        "to": "node20",
+        "_from": "radix_8_node/10.0.0.30_4200000030",
+        "_to": "radix_8_node/10.0.0.20_4200000020"
+    },
+    {
+        "from": "node20",
+        "to": "node39",
+        "_from": "radix_8_node/10.0.0.20_4200000020",
+        "_to": "radix_8_node/10.0.0.39_4200000039"
+    },
+    {
+        "from": "node39",
+        "to": "node20",
+        "_from": "radix_8_node/10.0.0.39_4200000039",
+        "_to": "radix_8_node/10.0.0.20_4200000020"
+    },
+    {
+        "from": "node20",
+        "to": "node48",
+        "_from": "radix_8_node/10.0.0.20_4200000020",
+        "_to": "radix_8_node/10.0.0.48_4200000048"
+    },
+    {
+        "from": "node48",
+        "to": "node20",
+        "_from": "radix_8_node/10.0.0.48_4200000048",
+        "_to": "radix_8_node/10.0.0.20_4200000020"
+    },
+    {
+        "from": "node20",
+        "to": "node53",
+        "_from": "radix_8_node/10.0.0.20_4200000020",
+        "_to": "radix_8_node/10.0.0.53_4200000053"
+    },
+    {
+        "from": "node53",
+        "to": "node20",
+        "_from": "radix_8_node/10.0.0.53_4200000053",
+        "_to": "radix_8_node/10.0.0.20_4200000020"
+    },
+    {
+        "from": "node21",
+        "to": "node49",
+        "_from": "radix_8_node/10.0.0.21_4200000021",
+        "_to": "radix_8_node/10.0.0.49_4200000049"
+    },
+    {
+        "from": "node49",
+        "to": "node21",
+        "_from": "radix_8_node/10.0.0.49_4200000049",
+        "_to": "radix_8_node/10.0.0.21_4200000021"
+    },
+    {
+        "from": "node22",
+        "to": "node25",
+        "_from": "radix_8_node/10.0.0.22_4200000022",
+        "_to": "radix_8_node/10.0.0.25_4200000025"
+    },
+    {
+        "from": "node25",
+        "to": "node22",
+        "_from": "radix_8_node/10.0.0.25_4200000025",
+        "_to": "radix_8_node/10.0.0.22_4200000022"
+    },
+    {
+        "from": "node22",
+        "to": "node29",
+        "_from": "radix_8_node/10.0.0.22_4200000022",
+        "_to": "radix_8_node/10.0.0.29_4200000029"
+    },
+    {
+        "from": "node29",
+        "to": "node22",
+        "_from": "radix_8_node/10.0.0.29_4200000029",
+        "_to": "radix_8_node/10.0.0.22_4200000022"
+    },
+    {
+        "from": "node22",
+        "to": "node40",
+        "_from": "radix_8_node/10.0.0.22_4200000022",
+        "_to": "radix_8_node/10.0.0.40_4200000040"
+    },
+    {
+        "from": "node40",
+        "to": "node22",
+        "_from": "radix_8_node/10.0.0.40_4200000040",
+        "_to": "radix_8_node/10.0.0.22_4200000022"
+    },
+    {
+        "from": "node22",
+        "to": "node44",
+        "_from": "radix_8_node/10.0.0.22_4200000022",
+        "_to": "radix_8_node/10.0.0.44_4200000044"
+    },
+    {
+        "from": "node44",
+        "to": "node22",
+        "_from": "radix_8_node/10.0.0.44_4200000044",
+        "_to": "radix_8_node/10.0.0.22_4200000022"
+    },
+    {
+        "from": "node22",
+        "to": "node51",
+        "_from": "radix_8_node/10.0.0.22_4200000022",
+        "_to": "radix_8_node/10.0.0.51_4200000051"
+    },
+    {
+        "from": "node51",
+        "to": "node22",
+        "_from": "radix_8_node/10.0.0.51_4200000051",
+        "_to": "radix_8_node/10.0.0.22_4200000022"
+    },
+    {
+        "from": "node23",
+        "to": "node32",
+        "_from": "radix_8_node/10.0.0.23_4200000023",
+        "_to": "radix_8_node/10.0.0.32_4200000032"
+    },
+    {
+        "from": "node32",
+        "to": "node23",
+        "_from": "radix_8_node/10.0.0.32_4200000032",
+        "_to": "radix_8_node/10.0.0.23_4200000023"
+    },
+    {
+        "from": "node23",
+        "to": "node41",
+        "_from": "radix_8_node/10.0.0.23_4200000023",
+        "_to": "radix_8_node/10.0.0.41_4200000041"
+    },
+    {
+        "from": "node41",
+        "to": "node23",
+        "_from": "radix_8_node/10.0.0.41_4200000041",
+        "_to": "radix_8_node/10.0.0.23_4200000023"
+    },
+    {
+        "from": "node23",
+        "to": "node43",
+        "_from": "radix_8_node/10.0.0.23_4200000023",
+        "_to": "radix_8_node/10.0.0.43_4200000043"
+    },
+    {
+        "from": "node43",
+        "to": "node23",
+        "_from": "radix_8_node/10.0.0.43_4200000043",
+        "_to": "radix_8_node/10.0.0.23_4200000023"
+    },
+    {
+        "from": "node23",
+        "to": "node53",
+        "_from": "radix_8_node/10.0.0.23_4200000023",
+        "_to": "radix_8_node/10.0.0.53_4200000053"
+    },
+    {
+        "from": "node53",
+        "to": "node23",
+        "_from": "radix_8_node/10.0.0.53_4200000053",
+        "_to": "radix_8_node/10.0.0.23_4200000023"
+    },
+    {
+        "from": "node24",
+        "to": "node27",
+        "_from": "radix_8_node/10.0.0.24_4200000024",
+        "_to": "radix_8_node/10.0.0.27_4200000027"
+    },
+    {
+        "from": "node27",
+        "to": "node24",
+        "_from": "radix_8_node/10.0.0.27_4200000027",
+        "_to": "radix_8_node/10.0.0.24_4200000024"
+    },
+    {
+        "from": "node24",
+        "to": "node33",
+        "_from": "radix_8_node/10.0.0.24_4200000024",
+        "_to": "radix_8_node/10.0.0.33_4200000033"
+    },
+    {
+        "from": "node33",
+        "to": "node24",
+        "_from": "radix_8_node/10.0.0.33_4200000033",
+        "_to": "radix_8_node/10.0.0.24_4200000024"
+    },
+    {
+        "from": "node24",
+        "to": "node39",
+        "_from": "radix_8_node/10.0.0.24_4200000024",
+        "_to": "radix_8_node/10.0.0.39_4200000039"
+    },
+    {
+        "from": "node39",
+        "to": "node24",
+        "_from": "radix_8_node/10.0.0.39_4200000039",
+        "_to": "radix_8_node/10.0.0.24_4200000024"
+    },
+    {
+        "from": "node24",
+        "to": "node45",
+        "_from": "radix_8_node/10.0.0.24_4200000024",
+        "_to": "radix_8_node/10.0.0.45_4200000045"
+    },
+    {
+        "from": "node45",
+        "to": "node24",
+        "_from": "radix_8_node/10.0.0.45_4200000045",
+        "_to": "radix_8_node/10.0.0.24_4200000024"
+    },
+    {
+        "from": "node24",
+        "to": "node55",
+        "_from": "radix_8_node/10.0.0.24_4200000024",
+        "_to": "radix_8_node/10.0.0.55_4200000055"
+    },
+    {
+        "from": "node55",
+        "to": "node24",
+        "_from": "radix_8_node/10.0.0.55_4200000055",
+        "_to": "radix_8_node/10.0.0.24_4200000024"
+    },
+    {
+        "from": "node25",
+        "to": "node30",
+        "_from": "radix_8_node/10.0.0.25_4200000025",
+        "_to": "radix_8_node/10.0.0.30_4200000030"
+    },
+    {
+        "from": "node30",
+        "to": "node25",
+        "_from": "radix_8_node/10.0.0.30_4200000030",
+        "_to": "radix_8_node/10.0.0.25_4200000025"
+    },
+    {
+        "from": "node25",
+        "to": "node38",
+        "_from": "radix_8_node/10.0.0.25_4200000025",
+        "_to": "radix_8_node/10.0.0.38_4200000038"
+    },
+    {
+        "from": "node38",
+        "to": "node25",
+        "_from": "radix_8_node/10.0.0.38_4200000038",
+        "_to": "radix_8_node/10.0.0.25_4200000025"
+    },
+    {
+        "from": "node25",
+        "to": "node46",
+        "_from": "radix_8_node/10.0.0.25_4200000025",
+        "_to": "radix_8_node/10.0.0.46_4200000046"
+    },
+    {
+        "from": "node46",
+        "to": "node25",
+        "_from": "radix_8_node/10.0.0.46_4200000046",
+        "_to": "radix_8_node/10.0.0.25_4200000025"
+    },
+    {
+        "from": "node25",
+        "to": "node50",
+        "_from": "radix_8_node/10.0.0.25_4200000025",
+        "_to": "radix_8_node/10.0.0.50_4200000050"
+    },
+    {
+        "from": "node50",
+        "to": "node25",
+        "_from": "radix_8_node/10.0.0.50_4200000050",
+        "_to": "radix_8_node/10.0.0.25_4200000025"
+    },
+    {
+        "from": "node26",
+        "to": "node31",
+        "_from": "radix_8_node/10.0.0.26_4200000026",
+        "_to": "radix_8_node/10.0.0.31_4200000031"
+    },
+    {
+        "from": "node31",
+        "to": "node26",
+        "_from": "radix_8_node/10.0.0.31_4200000031",
+        "_to": "radix_8_node/10.0.0.26_4200000026"
+    },
+    {
+        "from": "node26",
+        "to": "node36",
+        "_from": "radix_8_node/10.0.0.26_4200000026",
+        "_to": "radix_8_node/10.0.0.36_4200000036"
+    },
+    {
+        "from": "node36",
+        "to": "node26",
+        "_from": "radix_8_node/10.0.0.36_4200000036",
+        "_to": "radix_8_node/10.0.0.26_4200000026"
+    },
+    {
+        "from": "node26",
+        "to": "node48",
+        "_from": "radix_8_node/10.0.0.26_4200000026",
+        "_to": "radix_8_node/10.0.0.48_4200000048"
+    },
+    {
+        "from": "node48",
+        "to": "node26",
+        "_from": "radix_8_node/10.0.0.48_4200000048",
+        "_to": "radix_8_node/10.0.0.26_4200000026"
+    },
+    {
+        "from": "node26",
+        "to": "node52",
+        "_from": "radix_8_node/10.0.0.26_4200000026",
+        "_to": "radix_8_node/10.0.0.52_4200000052"
+    },
+    {
+        "from": "node52",
+        "to": "node26",
+        "_from": "radix_8_node/10.0.0.52_4200000052",
+        "_to": "radix_8_node/10.0.0.26_4200000026"
+    },
+    {
+        "from": "node27",
+        "to": "node34",
+        "_from": "radix_8_node/10.0.0.27_4200000027",
+        "_to": "radix_8_node/10.0.0.34_4200000034"
+    },
+    {
+        "from": "node34",
+        "to": "node27",
+        "_from": "radix_8_node/10.0.0.34_4200000034",
+        "_to": "radix_8_node/10.0.0.27_4200000027"
+    },
+    {
+        "from": "node27",
+        "to": "node37",
+        "_from": "radix_8_node/10.0.0.27_4200000027",
+        "_to": "radix_8_node/10.0.0.37_4200000037"
+    },
+    {
+        "from": "node37",
+        "to": "node27",
+        "_from": "radix_8_node/10.0.0.37_4200000037",
+        "_to": "radix_8_node/10.0.0.27_4200000027"
+    },
+    {
+        "from": "node27",
+        "to": "node47",
+        "_from": "radix_8_node/10.0.0.27_4200000027",
+        "_to": "radix_8_node/10.0.0.47_4200000047"
+    },
+    {
+        "from": "node47",
+        "to": "node27",
+        "_from": "radix_8_node/10.0.0.47_4200000047",
+        "_to": "radix_8_node/10.0.0.27_4200000027"
+    },
+    {
+        "from": "node27",
+        "to": "node54",
+        "_from": "radix_8_node/10.0.0.27_4200000027",
+        "_to": "radix_8_node/10.0.0.54_4200000054"
+    },
+    {
+        "from": "node54",
+        "to": "node27",
+        "_from": "radix_8_node/10.0.0.54_4200000054",
+        "_to": "radix_8_node/10.0.0.27_4200000027"
+    },
+    {
+        "from": "node28",
+        "to": "node35",
+        "_from": "radix_8_node/10.0.0.28_4200000028",
+        "_to": "radix_8_node/10.0.0.35_4200000035"
+    },
+    {
+        "from": "node35",
+        "to": "node28",
+        "_from": "radix_8_node/10.0.0.35_4200000035",
+        "_to": "radix_8_node/10.0.0.28_4200000028"
+    },
+    {
+        "from": "node28",
+        "to": "node36",
+        "_from": "radix_8_node/10.0.0.28_4200000028",
+        "_to": "radix_8_node/10.0.0.36_4200000036"
+    },
+    {
+        "from": "node36",
+        "to": "node28",
+        "_from": "radix_8_node/10.0.0.36_4200000036",
+        "_to": "radix_8_node/10.0.0.28_4200000028"
+    },
+    {
+        "from": "node28",
+        "to": "node37",
+        "_from": "radix_8_node/10.0.0.28_4200000028",
+        "_to": "radix_8_node/10.0.0.37_4200000037"
+    },
+    {
+        "from": "node37",
+        "to": "node28",
+        "_from": "radix_8_node/10.0.0.37_4200000037",
+        "_to": "radix_8_node/10.0.0.28_4200000028"
+    },
+    {
+        "from": "node28",
+        "to": "node38",
+        "_from": "radix_8_node/10.0.0.28_4200000028",
+        "_to": "radix_8_node/10.0.0.38_4200000038"
+    },
+    {
+        "from": "node38",
+        "to": "node28",
+        "_from": "radix_8_node/10.0.0.38_4200000038",
+        "_to": "radix_8_node/10.0.0.28_4200000028"
+    },
+    {
+        "from": "node28",
+        "to": "node39",
+        "_from": "radix_8_node/10.0.0.28_4200000028",
+        "_to": "radix_8_node/10.0.0.39_4200000039"
+    },
+    {
+        "from": "node39",
+        "to": "node28",
+        "_from": "radix_8_node/10.0.0.39_4200000039",
+        "_to": "radix_8_node/10.0.0.28_4200000028"
+    },
+    {
+        "from": "node28",
+        "to": "node40",
+        "_from": "radix_8_node/10.0.0.28_4200000028",
+        "_to": "radix_8_node/10.0.0.40_4200000040"
+    },
+    {
+        "from": "node40",
+        "to": "node28",
+        "_from": "radix_8_node/10.0.0.40_4200000040",
+        "_to": "radix_8_node/10.0.0.28_4200000028"
+    },
+    {
+        "from": "node28",
+        "to": "node41",
+        "_from": "radix_8_node/10.0.0.28_4200000028",
+        "_to": "radix_8_node/10.0.0.41_4200000041"
+    },
+    {
+        "from": "node41",
+        "to": "node28",
+        "_from": "radix_8_node/10.0.0.41_4200000041",
+        "_to": "radix_8_node/10.0.0.28_4200000028"
+    },
+    {
+        "from": "node28",
+        "to": "node49",
+        "_from": "radix_8_node/10.0.0.28_4200000028",
+        "_to": "radix_8_node/10.0.0.49_4200000049"
+    },
+    {
+        "from": "node49",
+        "to": "node28",
+        "_from": "radix_8_node/10.0.0.49_4200000049",
+        "_to": "radix_8_node/10.0.0.28_4200000028"
+    },
+    {
+        "from": "node29",
+        "to": "node32",
+        "_from": "radix_8_node/10.0.0.29_4200000029",
+        "_to": "radix_8_node/10.0.0.32_4200000032"
+    },
+    {
+        "from": "node32",
+        "to": "node29",
+        "_from": "radix_8_node/10.0.0.32_4200000032",
+        "_to": "radix_8_node/10.0.0.29_4200000029"
+    },
+    {
+        "from": "node29",
+        "to": "node35",
+        "_from": "radix_8_node/10.0.0.29_4200000029",
+        "_to": "radix_8_node/10.0.0.35_4200000035"
+    },
+    {
+        "from": "node35",
+        "to": "node29",
+        "_from": "radix_8_node/10.0.0.35_4200000035",
+        "_to": "radix_8_node/10.0.0.29_4200000029"
+    },
+    {
+        "from": "node29",
+        "to": "node45",
+        "_from": "radix_8_node/10.0.0.29_4200000029",
+        "_to": "radix_8_node/10.0.0.45_4200000045"
+    },
+    {
+        "from": "node45",
+        "to": "node29",
+        "_from": "radix_8_node/10.0.0.45_4200000045",
+        "_to": "radix_8_node/10.0.0.29_4200000029"
+    },
+    {
+        "from": "node29",
+        "to": "node54",
+        "_from": "radix_8_node/10.0.0.29_4200000029",
+        "_to": "radix_8_node/10.0.0.54_4200000054"
+    },
+    {
+        "from": "node54",
+        "to": "node29",
+        "_from": "radix_8_node/10.0.0.54_4200000054",
+        "_to": "radix_8_node/10.0.0.29_4200000029"
+    },
+    {
+        "from": "node30",
+        "to": "node35",
+        "_from": "radix_8_node/10.0.0.30_4200000030",
+        "_to": "radix_8_node/10.0.0.35_4200000035"
+    },
+    {
+        "from": "node35",
+        "to": "node30",
+        "_from": "radix_8_node/10.0.0.35_4200000035",
+        "_to": "radix_8_node/10.0.0.30_4200000030"
+    },
+    {
+        "from": "node30",
+        "to": "node47",
+        "_from": "radix_8_node/10.0.0.30_4200000030",
+        "_to": "radix_8_node/10.0.0.47_4200000047"
+    },
+    {
+        "from": "node47",
+        "to": "node30",
+        "_from": "radix_8_node/10.0.0.47_4200000047",
+        "_to": "radix_8_node/10.0.0.30_4200000030"
+    },
+    {
+        "from": "node30",
+        "to": "node52",
+        "_from": "radix_8_node/10.0.0.30_4200000030",
+        "_to": "radix_8_node/10.0.0.52_4200000052"
+    },
+    {
+        "from": "node52",
+        "to": "node30",
+        "_from": "radix_8_node/10.0.0.52_4200000052",
+        "_to": "radix_8_node/10.0.0.30_4200000030"
+    },
+    {
+        "from": "node31",
+        "to": "node34",
+        "_from": "radix_8_node/10.0.0.31_4200000031",
+        "_to": "radix_8_node/10.0.0.34_4200000034"
+    },
+    {
+        "from": "node34",
+        "to": "node31",
+        "_from": "radix_8_node/10.0.0.34_4200000034",
+        "_to": "radix_8_node/10.0.0.31_4200000031"
+    },
+    {
+        "from": "node31",
+        "to": "node35",
+        "_from": "radix_8_node/10.0.0.31_4200000031",
+        "_to": "radix_8_node/10.0.0.35_4200000035"
+    },
+    {
+        "from": "node35",
+        "to": "node31",
+        "_from": "radix_8_node/10.0.0.35_4200000035",
+        "_to": "radix_8_node/10.0.0.31_4200000031"
+    },
+    {
+        "from": "node31",
+        "to": "node43",
+        "_from": "radix_8_node/10.0.0.31_4200000031",
+        "_to": "radix_8_node/10.0.0.43_4200000043"
+    },
+    {
+        "from": "node43",
+        "to": "node31",
+        "_from": "radix_8_node/10.0.0.43_4200000043",
+        "_to": "radix_8_node/10.0.0.31_4200000031"
+    },
+    {
+        "from": "node31",
+        "to": "node50",
+        "_from": "radix_8_node/10.0.0.31_4200000031",
+        "_to": "radix_8_node/10.0.0.50_4200000050"
+    },
+    {
+        "from": "node50",
+        "to": "node31",
+        "_from": "radix_8_node/10.0.0.50_4200000050",
+        "_to": "radix_8_node/10.0.0.31_4200000031"
+    },
+    {
+        "from": "node32",
+        "to": "node35",
+        "_from": "radix_8_node/10.0.0.32_4200000032",
+        "_to": "radix_8_node/10.0.0.35_4200000035"
+    },
+    {
+        "from": "node35",
+        "to": "node32",
+        "_from": "radix_8_node/10.0.0.35_4200000035",
+        "_to": "radix_8_node/10.0.0.32_4200000032"
+    },
+    {
+        "from": "node32",
+        "to": "node48",
+        "_from": "radix_8_node/10.0.0.32_4200000032",
+        "_to": "radix_8_node/10.0.0.48_4200000048"
+    },
+    {
+        "from": "node48",
+        "to": "node32",
+        "_from": "radix_8_node/10.0.0.48_4200000048",
+        "_to": "radix_8_node/10.0.0.32_4200000032"
+    },
+    {
+        "from": "node32",
+        "to": "node55",
+        "_from": "radix_8_node/10.0.0.32_4200000032",
+        "_to": "radix_8_node/10.0.0.55_4200000055"
+    },
+    {
+        "from": "node55",
+        "to": "node32",
+        "_from": "radix_8_node/10.0.0.55_4200000055",
+        "_to": "radix_8_node/10.0.0.32_4200000032"
+    },
+    {
+        "from": "node33",
+        "to": "node35",
+        "_from": "radix_8_node/10.0.0.33_4200000033",
+        "_to": "radix_8_node/10.0.0.35_4200000035"
+    },
+    {
+        "from": "node35",
+        "to": "node33",
+        "_from": "radix_8_node/10.0.0.35_4200000035",
+        "_to": "radix_8_node/10.0.0.33_4200000033"
+    },
+    {
+        "from": "node33",
+        "to": "node44",
+        "_from": "radix_8_node/10.0.0.33_4200000033",
+        "_to": "radix_8_node/10.0.0.44_4200000044"
+    },
+    {
+        "from": "node44",
+        "to": "node33",
+        "_from": "radix_8_node/10.0.0.44_4200000044",
+        "_to": "radix_8_node/10.0.0.33_4200000033"
+    },
+    {
+        "from": "node33",
+        "to": "node53",
+        "_from": "radix_8_node/10.0.0.33_4200000033",
+        "_to": "radix_8_node/10.0.0.53_4200000053"
+    },
+    {
+        "from": "node53",
+        "to": "node33",
+        "_from": "radix_8_node/10.0.0.53_4200000053",
+        "_to": "radix_8_node/10.0.0.33_4200000033"
+    },
+    {
+        "from": "node34",
+        "to": "node35",
+        "_from": "radix_8_node/10.0.0.34_4200000034",
+        "_to": "radix_8_node/10.0.0.35_4200000035"
+    },
+    {
+        "from": "node35",
+        "to": "node34",
+        "_from": "radix_8_node/10.0.0.35_4200000035",
+        "_to": "radix_8_node/10.0.0.34_4200000034"
+    },
+    {
+        "from": "node34",
+        "to": "node46",
+        "_from": "radix_8_node/10.0.0.34_4200000034",
+        "_to": "radix_8_node/10.0.0.46_4200000046"
+    },
+    {
+        "from": "node46",
+        "to": "node34",
+        "_from": "radix_8_node/10.0.0.46_4200000046",
+        "_to": "radix_8_node/10.0.0.34_4200000034"
+    },
+    {
+        "from": "node34",
+        "to": "node51",
+        "_from": "radix_8_node/10.0.0.34_4200000034",
+        "_to": "radix_8_node/10.0.0.51_4200000051"
+    },
+    {
+        "from": "node51",
+        "to": "node34",
+        "_from": "radix_8_node/10.0.0.51_4200000051",
+        "_to": "radix_8_node/10.0.0.34_4200000034"
+    },
+    {
+        "from": "node35",
+        "to": "node49",
+        "_from": "radix_8_node/10.0.0.35_4200000035",
+        "_to": "radix_8_node/10.0.0.49_4200000049"
+    },
+    {
+        "from": "node49",
+        "to": "node35",
+        "_from": "radix_8_node/10.0.0.49_4200000049",
+        "_to": "radix_8_node/10.0.0.35_4200000035"
+    },
+    {
+        "from": "node36",
+        "to": "node37",
+        "_from": "radix_8_node/10.0.0.36_4200000036",
+        "_to": "radix_8_node/10.0.0.37_4200000037"
+    },
+    {
+        "from": "node37",
+        "to": "node36",
+        "_from": "radix_8_node/10.0.0.37_4200000037",
+        "_to": "radix_8_node/10.0.0.36_4200000036"
+    },
+    {
+        "from": "node36",
+        "to": "node46",
+        "_from": "radix_8_node/10.0.0.36_4200000036",
+        "_to": "radix_8_node/10.0.0.46_4200000046"
+    },
+    {
+        "from": "node46",
+        "to": "node36",
+        "_from": "radix_8_node/10.0.0.46_4200000046",
+        "_to": "radix_8_node/10.0.0.36_4200000036"
+    },
+    {
+        "from": "node36",
+        "to": "node53",
+        "_from": "radix_8_node/10.0.0.36_4200000036",
+        "_to": "radix_8_node/10.0.0.53_4200000053"
+    },
+    {
+        "from": "node53",
+        "to": "node36",
+        "_from": "radix_8_node/10.0.0.53_4200000053",
+        "_to": "radix_8_node/10.0.0.36_4200000036"
+    },
+    {
+        "from": "node37",
+        "to": "node44",
+        "_from": "radix_8_node/10.0.0.37_4200000037",
+        "_to": "radix_8_node/10.0.0.44_4200000044"
+    },
+    {
+        "from": "node44",
+        "to": "node37",
+        "_from": "radix_8_node/10.0.0.44_4200000044",
+        "_to": "radix_8_node/10.0.0.37_4200000037"
+    },
+    {
+        "from": "node37",
+        "to": "node50",
+        "_from": "radix_8_node/10.0.0.37_4200000037",
+        "_to": "radix_8_node/10.0.0.50_4200000050"
+    },
+    {
+        "from": "node50",
+        "to": "node37",
+        "_from": "radix_8_node/10.0.0.50_4200000050",
+        "_to": "radix_8_node/10.0.0.37_4200000037"
+    },
+    {
+        "from": "node38",
+        "to": "node48",
+        "_from": "radix_8_node/10.0.0.38_4200000038",
+        "_to": "radix_8_node/10.0.0.48_4200000048"
+    },
+    {
+        "from": "node48",
+        "to": "node38",
+        "_from": "radix_8_node/10.0.0.48_4200000048",
+        "_to": "radix_8_node/10.0.0.38_4200000038"
+    },
+    {
+        "from": "node38",
+        "to": "node54",
+        "_from": "radix_8_node/10.0.0.38_4200000038",
+        "_to": "radix_8_node/10.0.0.54_4200000054"
+    },
+    {
+        "from": "node54",
+        "to": "node38",
+        "_from": "radix_8_node/10.0.0.54_4200000054",
+        "_to": "radix_8_node/10.0.0.38_4200000038"
+    },
+    {
+        "from": "node39",
+        "to": "node43",
+        "_from": "radix_8_node/10.0.0.39_4200000039",
+        "_to": "radix_8_node/10.0.0.43_4200000043"
+    },
+    {
+        "from": "node43",
+        "to": "node39",
+        "_from": "radix_8_node/10.0.0.43_4200000043",
+        "_to": "radix_8_node/10.0.0.39_4200000039"
+    },
+    {
+        "from": "node39",
+        "to": "node51",
+        "_from": "radix_8_node/10.0.0.39_4200000039",
+        "_to": "radix_8_node/10.0.0.51_4200000051"
+    },
+    {
+        "from": "node51",
+        "to": "node39",
+        "_from": "radix_8_node/10.0.0.51_4200000051",
+        "_to": "radix_8_node/10.0.0.39_4200000039"
+    },
+    {
+        "from": "node40",
+        "to": "node41",
+        "_from": "radix_8_node/10.0.0.40_4200000040",
+        "_to": "radix_8_node/10.0.0.41_4200000041"
+    },
+    {
+        "from": "node41",
+        "to": "node40",
+        "_from": "radix_8_node/10.0.0.41_4200000041",
+        "_to": "radix_8_node/10.0.0.40_4200000040"
+    },
+    {
+        "from": "node40",
+        "to": "node47",
+        "_from": "radix_8_node/10.0.0.40_4200000040",
+        "_to": "radix_8_node/10.0.0.47_4200000047"
+    },
+    {
+        "from": "node47",
+        "to": "node40",
+        "_from": "radix_8_node/10.0.0.47_4200000047",
+        "_to": "radix_8_node/10.0.0.40_4200000040"
+    },
+    {
+        "from": "node40",
+        "to": "node55",
+        "_from": "radix_8_node/10.0.0.40_4200000040",
+        "_to": "radix_8_node/10.0.0.55_4200000055"
+    },
+    {
+        "from": "node55",
+        "to": "node40",
+        "_from": "radix_8_node/10.0.0.55_4200000055",
+        "_to": "radix_8_node/10.0.0.40_4200000040"
+    },
+    {
+        "from": "node41",
+        "to": "node45",
+        "_from": "radix_8_node/10.0.0.41_4200000041",
+        "_to": "radix_8_node/10.0.0.45_4200000045"
+    },
+    {
+        "from": "node45",
+        "to": "node41",
+        "_from": "radix_8_node/10.0.0.45_4200000045",
+        "_to": "radix_8_node/10.0.0.41_4200000041"
+    },
+    {
+        "from": "node41",
+        "to": "node52",
+        "_from": "radix_8_node/10.0.0.41_4200000041",
+        "_to": "radix_8_node/10.0.0.52_4200000052"
+    },
+    {
+        "from": "node52",
+        "to": "node41",
+        "_from": "radix_8_node/10.0.0.52_4200000052",
+        "_to": "radix_8_node/10.0.0.41_4200000041"
+    },
+    {
+        "from": "node42",
+        "to": "node49",
+        "_from": "radix_8_node/10.0.0.42_4200000042",
+        "_to": "radix_8_node/10.0.0.49_4200000049"
+    },
+    {
+        "from": "node49",
+        "to": "node42",
+        "_from": "radix_8_node/10.0.0.49_4200000049",
+        "_to": "radix_8_node/10.0.0.42_4200000042"
+    },
+    {
+        "from": "node43",
+        "to": "node47",
+        "_from": "radix_8_node/10.0.0.43_4200000043",
+        "_to": "radix_8_node/10.0.0.47_4200000047"
+    },
+    {
+        "from": "node47",
+        "to": "node43",
+        "_from": "radix_8_node/10.0.0.47_4200000047",
+        "_to": "radix_8_node/10.0.0.43_4200000043"
+    },
+    {
+        "from": "node43",
+        "to": "node50",
+        "_from": "radix_8_node/10.0.0.43_4200000043",
+        "_to": "radix_8_node/10.0.0.50_4200000050"
+    },
+    {
+        "from": "node50",
+        "to": "node43",
+        "_from": "radix_8_node/10.0.0.50_4200000050",
+        "_to": "radix_8_node/10.0.0.43_4200000043"
+    },
+    {
+        "from": "node44",
+        "to": "node48",
+        "_from": "radix_8_node/10.0.0.44_4200000044",
+        "_to": "radix_8_node/10.0.0.48_4200000048"
+    },
+    {
+        "from": "node48",
+        "to": "node44",
+        "_from": "radix_8_node/10.0.0.48_4200000048",
+        "_to": "radix_8_node/10.0.0.44_4200000044"
+    },
+    {
+        "from": "node44",
+        "to": "node51",
+        "_from": "radix_8_node/10.0.0.44_4200000044",
+        "_to": "radix_8_node/10.0.0.51_4200000051"
+    },
+    {
+        "from": "node51",
+        "to": "node44",
+        "_from": "radix_8_node/10.0.0.51_4200000051",
+        "_to": "radix_8_node/10.0.0.44_4200000044"
+    },
+    {
+        "from": "node45",
+        "to": "node46",
+        "_from": "radix_8_node/10.0.0.45_4200000045",
+        "_to": "radix_8_node/10.0.0.46_4200000046"
+    },
+    {
+        "from": "node46",
+        "to": "node45",
+        "_from": "radix_8_node/10.0.0.46_4200000046",
+        "_to": "radix_8_node/10.0.0.45_4200000045"
+    },
+    {
+        "from": "node45",
+        "to": "node52",
+        "_from": "radix_8_node/10.0.0.45_4200000045",
+        "_to": "radix_8_node/10.0.0.52_4200000052"
+    },
+    {
+        "from": "node52",
+        "to": "node45",
+        "_from": "radix_8_node/10.0.0.52_4200000052",
+        "_to": "radix_8_node/10.0.0.45_4200000045"
+    },
+    {
+        "from": "node46",
+        "to": "node53",
+        "_from": "radix_8_node/10.0.0.46_4200000046",
+        "_to": "radix_8_node/10.0.0.53_4200000053"
+    },
+    {
+        "from": "node53",
+        "to": "node46",
+        "_from": "radix_8_node/10.0.0.53_4200000053",
+        "_to": "radix_8_node/10.0.0.46_4200000046"
+    },
+    {
+        "from": "node47",
+        "to": "node54",
+        "_from": "radix_8_node/10.0.0.47_4200000047",
+        "_to": "radix_8_node/10.0.0.54_4200000054"
+    },
+    {
+        "from": "node54",
+        "to": "node47",
+        "_from": "radix_8_node/10.0.0.54_4200000054",
+        "_to": "radix_8_node/10.0.0.47_4200000047"
+    },
+    {
+        "from": "node48",
+        "to": "node55",
+        "_from": "radix_8_node/10.0.0.48_4200000048",
+        "_to": "radix_8_node/10.0.0.55_4200000055"
+    },
+    {
+        "from": "node55",
+        "to": "node48",
+        "_from": "radix_8_node/10.0.0.55_4200000055",
+        "_to": "radix_8_node/10.0.0.48_4200000048"
+    },
+    {
+        "from": "node49",
+        "to": "node56",
+        "_from": "radix_8_node/10.0.0.49_4200000049",
+        "_to": "radix_8_node/10.0.0.56_4200000056"
+    },
+    {
+        "from": "node56",
+        "to": "node49",
+        "_from": "radix_8_node/10.0.0.56_4200000056",
+        "_to": "radix_8_node/10.0.0.49_4200000049"
+    },
+    {
+        "from": "node50",
+        "to": "node55",
+        "_from": "radix_8_node/10.0.0.50_4200000050",
+        "_to": "radix_8_node/10.0.0.55_4200000055"
+    },
+    {
+        "from": "node55",
+        "to": "node50",
+        "_from": "radix_8_node/10.0.0.55_4200000055",
+        "_to": "radix_8_node/10.0.0.50_4200000050"
+    },
+    {
+        "from": "node51",
+        "to": "node52",
+        "_from": "radix_8_node/10.0.0.51_4200000051",
+        "_to": "radix_8_node/10.0.0.52_4200000052"
+    },
+    {
+        "from": "node52",
+        "to": "node51",
+        "_from": "radix_8_node/10.0.0.52_4200000052",
+        "_to": "radix_8_node/10.0.0.51_4200000051"
+    },
+    {
+        "from": "node53",
+        "to": "node54",
+        "_from": "radix_8_node/10.0.0.53_4200000053",
+        "_to": "radix_8_node/10.0.0.54_4200000054"
+    },
+    {
+        "from": "node54",
+        "to": "node53",
+        "_from": "radix_8_node/10.0.0.54_4200000054",
+        "_to": "radix_8_node/10.0.0.53_4200000053"
+    }
+]

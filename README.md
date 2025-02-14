@@ -1,6 +1,37 @@
 # polarfly
 
-Project is setup to deploy a radix 8 Polarfly topology, which results in a 57 node Polarfly single tier network. The setup uses Containerlab as topology orchestrator and leverages the Containerlab VXLAN tool to connect nodes across host servers or VMs.
+This project is setup to model Polarfly topologies of various size and in some cases has containerlab topology definitions and config files to them. For example the radix 8 Polarfly topology results in a 57 node single tier network. In the case of larger topologies, the Containerlab VXLAN tool may be used to connect nodes across host servers or VMs.
+
+## Use the edgelist.py tool to generate a basic Polarfly edge list
+
+1. Run the topogen edge-list tool:
+```
+cd topogen
+python3 edge-list.py generate brown 3
+python3 edge-list.py generate brown 7
+etc.
+```
+
+2. The tool will generate a Brown-<n>-adj.txt file in the util/data/Browns directory.
+
+Example: [Brown-3-adj.txt](util/data/Browns/Brown-3-adj.txt)
+
+
+## Use the graph-calc.py tool to generate a Polarfly graph dictionary and node categorization 
+
+Tool takes the adj.txt file as input and calculates a dictionarty of nodes and edges. It also calculates the node categorization (Quadric nodes, V1c, V1n, V2, etc.) and will output a json file with the node categorization.
+
+```
+cd util
+python3 graph-calc.py -i data/Browns/Brown.3.adj.txt -o ../radix-4/base-graph.json -q 3 -n node -v ../radix-4/vertices.json -e ../radix-4/edges.json
+python3 graph-calc.py -i data/Browns/Brown.7.adj.txt -o ../radix-8/base-graph.json -q 7 -n node -v ../radix-8/vertices.json -e ../radix-8/edges.json
+etc.
+```
+
+### graph-calc.py 
+
+
+## Example deployment of 57-node Radix 8 Polarfly
 
 Requirements:
 
@@ -20,11 +51,11 @@ Instructions:
 docker load -i <image_name>
 ```
 
-5. Modprobe
+1. Modprobe
 ```
 sudo modprobe br_netfilter
 ```
-6. Add the following to /etc/sysctl.conf
+1. Add the following to /etc/sysctl.conf
 ```
 kernel.pid_max=1048575
 net.vrf.strict_mode=1
@@ -76,3 +107,7 @@ ssh cisco@clab-polarfly-radix8-node55
 password: cisco123
 ```
 
+13. srctl reference command:
+```
+srctl get-paths -s ebgp_prefix_v6/fc00:0:701:805::_64 -d ebgp_prefix_v6/fc00:0:701:9::_64 --type best-paths --limit 9
+```

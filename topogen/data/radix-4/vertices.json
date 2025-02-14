@@ -1,0 +1,236 @@
+[
+    {
+        "_key": "10.0.0.0_4200000000",
+        "router_id": "10.0.0.0",
+        "name": "node00",
+        "tier": "dc-tier-0",
+        "asn": 4200000000,
+        "sids": [
+            {
+                "srv6_sid": "fc00:0:1000::",
+                "srv6_endpoint_behavior": {
+                    "endpoint_behavior": 48,
+                    "flag": 0,
+                    "algo": 0
+                }
+            }
+        ],
+        "category": "V2"
+    },
+    {
+        "_key": "10.0.0.1_4200000001",
+        "router_id": "10.0.0.1",
+        "name": "node01",
+        "tier": "dc-tier-0",
+        "asn": 4200000001,
+        "sids": [
+            {
+                "srv6_sid": "fc00:0:1001::",
+                "srv6_endpoint_behavior": {
+                    "endpoint_behavior": 48,
+                    "flag": 0,
+                    "algo": 0
+                }
+            }
+        ],
+        "category": "V1n"
+    },
+    {
+        "_key": "10.0.0.2_4200000002",
+        "router_id": "10.0.0.2",
+        "name": "node02",
+        "tier": "dc-tier-0",
+        "asn": 4200000002,
+        "sids": [
+            {
+                "srv6_sid": "fc00:0:1002::",
+                "srv6_endpoint_behavior": {
+                    "endpoint_behavior": 48,
+                    "flag": 0,
+                    "algo": 0
+                }
+            }
+        ],
+        "category": "V1c"
+    },
+    {
+        "_key": "10.0.0.3_4200000003",
+        "router_id": "10.0.0.3",
+        "name": "node03",
+        "tier": "dc-tier-0",
+        "asn": 4200000003,
+        "sids": [
+            {
+                "srv6_sid": "fc00:0:1003::",
+                "srv6_endpoint_behavior": {
+                    "endpoint_behavior": 48,
+                    "flag": 0,
+                    "algo": 0
+                }
+            }
+        ],
+        "category": "V1n"
+    },
+    {
+        "_key": "10.0.0.4_4200000004",
+        "router_id": "10.0.0.4",
+        "name": "node04",
+        "tier": "dc-tier-0",
+        "asn": 4200000004,
+        "sids": [
+            {
+                "srv6_sid": "fc00:0:1004::",
+                "srv6_endpoint_behavior": {
+                    "endpoint_behavior": 48,
+                    "flag": 0,
+                    "algo": 0
+                }
+            }
+        ],
+        "category": "W"
+    },
+    {
+        "_key": "10.0.0.5_4200000005",
+        "router_id": "10.0.0.5",
+        "name": "node05",
+        "tier": "dc-tier-0",
+        "asn": 4200000005,
+        "sids": [
+            {
+                "srv6_sid": "fc00:0:1005::",
+                "srv6_endpoint_behavior": {
+                    "endpoint_behavior": 48,
+                    "flag": 0,
+                    "algo": 0
+                }
+            }
+        ],
+        "category": "W"
+    },
+    {
+        "_key": "10.0.0.6_4200000006",
+        "router_id": "10.0.0.6",
+        "name": "node06",
+        "tier": "dc-tier-0",
+        "asn": 4200000006,
+        "sids": [
+            {
+                "srv6_sid": "fc00:0:1006::",
+                "srv6_endpoint_behavior": {
+                    "endpoint_behavior": 48,
+                    "flag": 0,
+                    "algo": 0
+                }
+            }
+        ],
+        "category": "V1c"
+    },
+    {
+        "_key": "10.0.0.7_4200000007",
+        "router_id": "10.0.0.7",
+        "name": "node07",
+        "tier": "dc-tier-0",
+        "asn": 4200000007,
+        "sids": [
+            {
+                "srv6_sid": "fc00:0:1007::",
+                "srv6_endpoint_behavior": {
+                    "endpoint_behavior": 48,
+                    "flag": 0,
+                    "algo": 0
+                }
+            }
+        ],
+        "category": "W"
+    },
+    {
+        "_key": "10.0.0.8_4200000008",
+        "router_id": "10.0.0.8",
+        "name": "node08",
+        "tier": "dc-tier-0",
+        "asn": 4200000008,
+        "sids": [
+            {
+                "srv6_sid": "fc00:0:1008::",
+                "srv6_endpoint_behavior": {
+                    "endpoint_behavior": 48,
+                    "flag": 0,
+                    "algo": 0
+                }
+            }
+        ],
+        "category": "W"
+    },
+    {
+        "_key": "10.0.0.9_4200000009",
+        "router_id": "10.0.0.9",
+        "name": "node09",
+        "tier": "dc-tier-0",
+        "asn": 4200000009,
+        "sids": [
+            {
+                "srv6_sid": "fc00:0:1009::",
+                "srv6_endpoint_behavior": {
+                    "endpoint_behavior": 48,
+                    "flag": 0,
+                    "algo": 0
+                }
+            }
+        ],
+        "category": "V2"
+    },
+    {
+        "_key": "10.0.0.10_4200000010",
+        "router_id": "10.0.0.10",
+        "name": "node10",
+        "tier": "dc-tier-0",
+        "asn": 4200000010,
+        "sids": [
+            {
+                "srv6_sid": "fc00:0:100a::",
+                "srv6_endpoint_behavior": {
+                    "endpoint_behavior": 48,
+                    "flag": 0,
+                    "algo": 0
+                }
+            }
+        ],
+        "category": "V1n"
+    },
+    {
+        "_key": "10.0.0.11_4200000011",
+        "router_id": "10.0.0.11",
+        "name": "node11",
+        "tier": "dc-tier-0",
+        "asn": 4200000011,
+        "sids": [
+            {
+                "srv6_sid": "fc00:0:100b::",
+                "srv6_endpoint_behavior": {
+                    "endpoint_behavior": 48,
+                    "flag": 0,
+                    "algo": 0
+                }
+            }
+        ],
+        "category": "V1c"
+    },
+    {
+        "_key": "10.0.0.12_4200000012",
+        "router_id": "10.0.0.12",
+        "name": "node12",
+        "tier": "dc-tier-0",
+        "asn": 4200000012,
+        "sids": [
+            {
+                "srv6_sid": "fc00:0:100c::",
+                "srv6_endpoint_behavior": {
+                    "endpoint_behavior": 48,
+                    "flag": 0,
+                    "algo": 0
+                }
+            }
+        ],
+        "category": "V1n"
+    }
+]
