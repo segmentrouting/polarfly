@@ -36,11 +36,11 @@ The arango.py tool imports the vertex and edge data into an ArangoDB database an
 
 ```
 cd topogen
-python3 db/arangodb.py -p data/radix_4 --url http://198.18.133.105:30852 --dbname jalapeno --username root --password jalapeno
+python3 db/arangodb.py -p data/radix_4 --url http://198.18.133.102:30852 --dbname jalapeno --username root --password jalapeno
 
-python3 db/arangodb.py -p data/radix_8 --url http://198.18.133.105:30852 --dbname jalapeno --username root --password jalapeno
+python3 db/arangodb.py -p data/radix_8 --url http://198.18.133.102:30852 --dbname jalapeno --username root --password jalapeno
 
-python3 db/arangodb.py -p data/radix_16 --url http://198.18.133.105:30852 --dbname jalapeno --username root --password jalapeno
+python3 db/arangodb.py -p data/radix_16 --url http://198.18.133.102:30852 --dbname jalapeno --username root --password jalapeno
 ```
 
 ## Example deployment of 57-node Radix 8 Polarfly

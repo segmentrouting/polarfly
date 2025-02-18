@@ -14,7 +14,7 @@ def parse_args():
 
 def setup_database():
     """Setup database connection and collections"""
-    client = ArangoClient(hosts='http://198.18.133.105:30852')
+    client = ArangoClient(hosts='http://198.18.133.102:30852')
     db = client.db('polarfly32', username='root', password='jalapeno')
     
     # Get bgp_node collection
