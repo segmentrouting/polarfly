@@ -52,7 +52,7 @@ Node categories:
   V2   (not adjacent to quadrics): 253
 ```
 
-[Radix-8](radix-8-polarfly.png)
+![Radix-8 Topology](radix-8-polarfly.png)
 ## ArangoDB import tool
 
 The topogen/db/arangodb.py tool imports the vertex and edge data into an ArangoDB database and populates a graph using the radix number as the collection name.
