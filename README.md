@@ -186,7 +186,37 @@ password: cisco123
 
 ### srctl command line tool
 
-1. srctl reference command:
+1. clone srctl tool:
 ```
+git clone https://github.com/jalapeno/srctl.git
+```
+
+2. install srctl:
+```
+cd srctl
+make
+```
+pip install -e .
+```
+
+3. srctl example commands:
+```
+export JALAPENO_API_SERVER=http://198.18.133.102:30800
 srctl get-paths -s ebgp_prefix_v6/fc00:0:701:805::_64 -d ebgp_prefix_v6/fc00:0:701:9::_64 --type best-paths --limit 9
+```
+
+```
+export JALAPENO_API_SERVER=http://198.18.133.102:30800
+srctl get-paths -f srctl/get-best-paths.yaml --limit 8
+```
+
+Example output:
+```yaml
+cisco@topology-host:~/polarfly$ srctl get-paths -f srctl/get-best-paths.yaml --limit 8
+Loaded configuration from srctl/get-best-paths.yaml
+
+example:
+  Path 1 SRv6 uSID: fc00:0:1004:1021:1023:
+  Path 2 SRv6 uSID: fc00:0:1004:1005:1020:1023:
+  Path 3 SRv6 uSID: fc00:0:1004:100c:1022:1023:
 ```
