@@ -194,8 +194,6 @@ git clone https://github.com/jalapeno/srctl.git
 2. install srctl:
 ```
 cd srctl
-make
-```
 pip install -e .
 ```
 
