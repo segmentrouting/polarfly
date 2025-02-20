@@ -81,6 +81,48 @@ def get_node_category(node_id, quadrics, adj_nodes, q):
     
     return "V2"
 
+def get_cluster_assignment(node_id, quadrics, adj_lists, q):
+    """
+    Determine which cluster (C0 through Cq) a node belongs to:
+    C0 - quadric vertices (W)
+    C1-Cq - non-quadric clusters, each with a center V1c vertex and its neighbors
+    """
+    if node_id in quadrics:
+        return 0  # C0 for quadrics
+    
+    # Find our chosen quadric (same as before)
+    chosen_quadric = None
+    for quadric in quadrics:
+        non_quadric_connections = sum(1 for n in range(q*q + q + 1)
+                                    if n not in quadrics and 
+                                    get_dot_product(n, quadric, q) == 0)
+        if non_quadric_connections == q:
+            chosen_quadric = quadric
+            break
+    
+    if chosen_quadric is None:
+        chosen_quadric = min(quadrics)
+    
+    # Get all center nodes (connected to chosen quadric)
+    centers = []
+    for n in range(q*q + q + 1):
+        if n not in quadrics and get_dot_product(n, chosen_quadric, q) == 0:
+            centers.append(n)
+            if len(centers) == q:  # We've found all q centers
+                break
+    
+    # If this node is a center, its cluster number is its position in centers list plus 1
+    if node_id in centers:
+        return centers.index(node_id) + 1
+        
+    # If not a center, find which center this node is connected to
+    for center in centers:
+        if node_id in adj_lists[center]:  # If this node is adjacent to the center
+            return centers.index(center) + 1
+            
+    # If we get here, something went wrong
+    raise ValueError(f"Could not assign cluster for node {node_id}")
+
 def convert_adj_to_edge_list(adj_file_path, node_prefix=None, q=None):
     nodes = []
     edges = set()  # using set to avoid duplicate edges
@@ -132,6 +174,14 @@ def convert_adj_to_edge_list(adj_file_path, node_prefix=None, q=None):
         }
         edges_list.append(edge)
     
+    # Add cluster assignments to metadata
+    node_clusters = {}
+    if q is not None:
+        for node_id in range(len(nodes)):
+            node_name = f"{node_prefix}{node_id:02d}" if node_prefix else node_id
+            cluster = get_cluster_assignment(node_id, quadrics, adj_lists, q)
+            node_clusters[node_name] = f"C{cluster}"
+    
     # Create dictionary structure
     graph_dict = {
         "graph": {
@@ -142,11 +192,16 @@ def convert_adj_to_edge_list(adj_file_path, node_prefix=None, q=None):
                 "edge_count": len(edges_list),
                 "q_value": q,
                 "node_categories": node_categories,
+                "node_clusters": node_clusters,
                 "category_counts": {
                     "W": sum(1 for cat in node_categories.values() if cat == "W"),
                     "V1c": sum(1 for cat in node_categories.values() if cat == "V1c"),
                     "V1n": sum(1 for cat in node_categories.values() if cat == "V1n"),
                     "V2": sum(1 for cat in node_categories.values() if cat == "V2")
+                } if q is not None else None,
+                "cluster_counts": {
+                    f"C{i}": sum(1 for c in node_clusters.values() if c == f"C{i}")
+                    for i in range(q+1)
                 } if q is not None else None
             }
         }
