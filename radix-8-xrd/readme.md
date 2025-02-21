@@ -103,6 +103,14 @@ password: cisco123
 show bgp ipv6 unicast summary
 ```
 
+Shift OOB interface to mgt bridge:
+```
+sudo ip addr del 198.18.4.2/24 dev ens192
+sudo ip addr add 198.18.4.2/24 dev br-501f4bbbf398
+sudo brctl addif br-501f4bbbf398 ens192
+```
+
+
 You should now have a working topology that looks something like this:
 
 ![example](../graph-view/data/radix-8-polarfly.png)

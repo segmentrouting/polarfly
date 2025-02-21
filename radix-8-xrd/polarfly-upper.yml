@@ -2,7 +2,7 @@
 name: polarfly-radix8
 
 mgmt:
-  network: pf-mgt
+  network: pfupper-mgt
   ipv4-subnet: 198.18.4.0/24
 
 topology:
