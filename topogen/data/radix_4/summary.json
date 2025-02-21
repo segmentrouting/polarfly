@@ -132,11 +132,32 @@
                 "node11": "V1c",
                 "node12": "V1n"
             },
+            "node_clusters": {
+                "node00": "C3",
+                "node01": "C1",
+                "node02": "C1",
+                "node03": "C2",
+                "node04": "C0",
+                "node05": "C0",
+                "node06": "C2",
+                "node07": "C0",
+                "node08": "C0",
+                "node09": "C2",
+                "node10": "C1",
+                "node11": "C3",
+                "node12": "C1"
+            },
             "category_counts": {
                 "W": 4,
                 "V1c": 3,
                 "V1n": 4,
                 "V2": 2
+            },
+            "cluster_counts": {
+                "C0": 4,
+                "C1": 4,
+                "C2": 3,
+                "C3": 2
             }
         }
     }

@@ -86,11 +86,18 @@ def get_cluster_assignment(node_id, quadrics, adj_lists, q):
     Determine which cluster (C0 through Cq) a node belongs to:
     C0 - quadric vertices (W)
     C1-Cq - non-quadric clusters, each with a center V1c vertex and its neighbors
+    Following Algorithm 1 from the paper:
+    1. All quadrics go to C0
+    2. Select arbitrary quadric v
+    3. For each vertex u adjacent to v:
+       - u becomes a center of new cluster Ci
+       - All non-quadric neighbors of u go into Ci
     """
+    # Quadrics always go to C0
     if node_id in quadrics:
-        return 0  # C0 for quadrics
-    
-    # Find our chosen quadric (same as before)
+        return 0
+
+    # Find our chosen quadric
     chosen_quadric = None
     for quadric in quadrics:
         non_quadric_connections = sum(1 for n in range(q*q + q + 1)
@@ -102,25 +109,31 @@ def get_cluster_assignment(node_id, quadrics, adj_lists, q):
     
     if chosen_quadric is None:
         chosen_quadric = min(quadrics)
-    
-    # Get all center nodes (connected to chosen quadric)
+
+    # Get all center nodes (vertices adjacent to chosen quadric)
     centers = []
     for n in range(q*q + q + 1):
         if n not in quadrics and get_dot_product(n, chosen_quadric, q) == 0:
             centers.append(n)
             if len(centers) == q:  # We've found all q centers
                 break
-    
-    # If this node is a center, its cluster number is its position in centers list plus 1
+
+    # If this node is a center, assign it to corresponding cluster
     if node_id in centers:
         return centers.index(node_id) + 1
-        
-    # If not a center, find which center this node is connected to
-    for center in centers:
-        if node_id in adj_lists[center]:  # If this node is adjacent to the center
-            return centers.index(center) + 1
-            
-    # If we get here, something went wrong
+
+    # For non-center nodes, find which center they're connected to
+    # by checking adjacency lists
+    for i, center in enumerate(centers, 1):
+        if node_id in adj_lists[center]:
+            return i
+
+    # Debug output if we can't assign a cluster
+    print(f"Debug - Node {node_id}:")
+    print(f"Chosen quadric: {chosen_quadric}")
+    print(f"Centers: {centers}")
+    print(f"Node adjacencies: {adj_lists[node_id]}")
+    
     raise ValueError(f"Could not assign cluster for node {node_id}")
 
 def convert_adj_to_edge_list(adj_file_path, node_prefix=None, q=None):
