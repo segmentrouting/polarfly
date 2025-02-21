@@ -2,8 +2,9 @@
 name: polarfly-radix8
 
 mgmt:
-  network: pf-mgt
+  network: pflower-mgt
   ipv4-subnet: 198.18.4.0/24
+  ipv4-address: 198.18.4.2
 
 topology:
   nodes:
