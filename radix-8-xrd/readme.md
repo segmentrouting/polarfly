@@ -121,65 +121,65 @@ sudo brctl addif br-501f4bbbf398 ens192
 
 user/pw for all nodes is cisco/cisco123
 
-| Node name      | ip address                   |
+| Node name      | ip address                  |
 |:---------------|:----------------------------|
-| node00         | 198.18.4.100                |
-| node01         | 198.18.4.101                |
-| node02         | 198.18.4.102                |
-| node03         | 198.18.4.103                |
-| node04         | 198.18.4.104                |
-| node05         | 198.18.4.105                |
-| node06         | 198.18.4.106                |
-| node07         | 198.18.4.107                |
-| node08         | 198.18.4.108                |
-| node09         | 198.18.4.109                |
-| node10         | 198.18.4.110                |
-| node11         | 198.18.4.111                |
-| node12         | 198.18.4.112                |
-| node13         | 198.18.4.113                |
-| node14         | 198.18.4.114                |
-| node15         | 198.18.4.115                |
-| node16         | 198.18.4.116                |
-| node17         | 198.18.4.117                |
-| node18         | 198.18.4.118                |
-| node19         | 198.18.4.119                |
-| node20         | 198.18.4.120                |
-| node21         | 198.18.4.121                |
-| node22         | 198.18.4.122                |
-| node23         | 198.18.4.123                |
-| node24         | 198.18.4.124                |
-| node25         | 198.18.4.125                |
-| node26         | 198.18.4.126                |
-| node27         | 198.18.4.127                |
-| node28         | 198.18.4.128                |
-| node29         | 198.18.4.129                |
-| node30         | 198.18.4.130                |
-| node31         | 198.18.4.131                |
-| node32         | 198.18.4.132                |
-| node33         | 198.18.4.133                |
-| node34         | 198.18.4.134                |
-| node35         | 198.18.4.135                |
-| node36         | 198.18.4.136                |
-| node37         | 198.18.4.137                |
-| node38         | 198.18.4.138                |
-| node39         | 198.18.4.139                |
-| node40         | 198.18.4.140                |
-| node41         | 198.18.4.141                |
-| node42         | 198.18.4.142                |
-| node43         | 198.18.4.143                |
-| node44         | 198.18.4.144                |
-| node45         | 198.18.4.145                |
-| node46         | 198.18.4.146                |
-| node47         | 198.18.4.147                |
-| node48         | 198.18.4.148                |
-| node49         | 198.18.4.149                |
-| node50         | 198.18.4.150                |
-| node51         | 198.18.4.151                |
-| node52         | 198.18.4.152                |
-| node53         | 198.18.4.153                |
-| node54         | 198.18.4.154                |
-| node55         | 198.18.4.155                |
-| node56         | 198.18.4.156                |
+| node00         | ssh cisco@198.18.4.100      |
+| node01         | ssh cisco@198.18.4.101      |
+| node02         | ssh cisco@198.18.4.102      |
+| node03         | ssh cisco@198.18.4.103      |
+| node04         | ssh cisco@198.18.4.104      |
+| node05         | ssh cisco@198.18.4.105      |
+| node06         | ssh cisco@198.18.4.106      |
+| node07         | ssh cisco@198.18.4.107      |
+| node08         | ssh cisco@198.18.4.108      |
+| node09         | ssh cisco@198.18.4.109      |
+| node10         | ssh cisco@198.18.4.110      |
+| node11         | ssh cisco@198.18.4.111      |
+| node12         | ssh cisco@198.18.4.112      |
+| node13         | ssh cisco@198.18.4.113      |
+| node14         | ssh cisco@198.18.4.114      |
+| node15         | ssh cisco@198.18.4.115      |
+| node16         | ssh cisco@198.18.4.116      |
+| node17         | ssh cisco@198.18.4.117      |
+| node18         | ssh cisco@198.18.4.118      |
+| node19         | ssh cisco@198.18.4.119      |
+| node20         | ssh cisco@198.18.4.120      |
+| node21         | ssh cisco@198.18.4.121      |
+| node22         | ssh cisco@198.18.4.122      |
+| node23         | ssh cisco@198.18.4.123      |
+| node24         | ssh cisco@198.18.4.124      |
+| node25         | ssh cisco@198.18.4.125      |
+| node26         | ssh cisco@198.18.4.126      |
+| node27         | ssh cisco@198.18.4.127      |
+| node28         | ssh cisco@198.18.4.128      |
+| node29         | ssh cisco@198.18.4.129      |
+| node30         | ssh cisco@198.18.4.130      |
+| node31         | ssh cisco@198.18.4.131      |
+| node32         | ssh cisco@198.18.4.132      |
+| node33         | ssh cisco@198.18.4.133      |
+| node34         | ssh cisco@198.18.4.134      |
+| node35         | ssh cisco@198.18.4.135      |
+| node36         | ssh cisco@198.18.4.136      |
+| node37         | ssh cisco@198.18.4.137      |
+| node38         | ssh cisco@198.18.4.138      |
+| node39         | ssh cisco@198.18.4.139      |
+| node40         | ssh cisco@198.18.4.140      |
+| node41         | ssh cisco@198.18.4.141      |
+| node42         | ssh cisco@198.18.4.142      |
+| node43         | ssh cisco@198.18.4.143      |
+| node44         | ssh cisco@198.18.4.144      |
+| node45         | ssh cisco@198.18.4.145      |
+| node46         | ssh cisco@198.18.4.146      |
+| node47         | ssh cisco@198.18.4.147      |
+| node48         | ssh cisco@198.18.4.148      |
+| node49         | ssh cisco@198.18.4.149      |
+| node50         | ssh cisco@198.18.4.150      |
+| node51         | ssh cisco@198.18.4.151      |
+| node52         | ssh cisco@198.18.4.152      |
+| node53         | ssh cisco@198.18.4.153      |
+| node54         | ssh cisco@198.18.4.154      |
+| node55         | ssh cisco@198.18.4.155      |
+| node56         | ssh cisco@198.18.4.156      |
 
 
 You should now have a working topology that looks something like this:
