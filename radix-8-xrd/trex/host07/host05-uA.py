@@ -6,23 +6,23 @@ class STLIPv6(object):
         # Port configurations with both inner and outer IPv6 addresses
         port_config = {
             0: {
-                'src': 'fc00:0:f801::2',
-                'dst': 'fc00:0:f800::2',
+                'src': 'fc00:0:f801:4::2',
+                'dst': 'fc00:0:f800:4::2',
                 'srv6_dst': 'fc00:0:fe01:fe00:fe01:fe00::'
             },
             1: {
-                'src': 'fc00:0:f801:1::2',
-                'dst': 'fc00:0:f800:1::2',
+                'src': 'fc00:0:f801:8::2',
+                'dst': 'fc00:0:f800:8::2',
                 'srv6_dst': 'fc00:0:fe02:fe01:fe02:fe01::'
             },
             2: {
-                'src': 'fc00:0:f801:2::2',
-                'dst': 'fc00:0:f800:2::2',
+                'src': 'fc00:0:f801:c::2',
+                'dst': 'fc00:0:f800:c::2',
                 'srv6_dst': 'fc00:0:fe03:fe02:fe03:fe02::'
             },
             3: {
-                'src': 'fc00:0:f801:3::2',
-                'dst': 'fc00:0:f800:3::2',
+                'src': 'fc00:0:f801:10::2',
+                'dst': 'fc00:0:f800:10::2',
                 'srv6_dst': 'fc00:0:fe04:fe03:fe04:fe03::'
             }
         }
