@@ -12,169 +12,169 @@ topology:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.129
-      startup-config: config/node29.cfg 
+      startup-config: xrd-config/node29.cfg 
 
     node30:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.130
-      startup-config: config/node30.cfg 
+      startup-config: xrd-config/node30.cfg 
 
     node31:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.131
-      startup-config: config/node31.cfg 
+      startup-config: xrd-config/node31.cfg 
 
     node32:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.132
-      startup-config: config/node32.cfg 
+      startup-config: xrd-config/node32.cfg 
 
     node33:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.133
-      startup-config: config/node33.cfg 
+      startup-config: xrd-config/node33.cfg 
 
     node34:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.134
-      startup-config: config/node34.cfg 
+      startup-config: xrd-config/node34.cfg 
 
     node35:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.135
-      startup-config: config/node35.cfg 
+      startup-config: xrd-config/node35.cfg 
 
     node36:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.136
-      startup-config: config/node36.cfg 
+      startup-config: xrd-config/node36.cfg 
 
     node37:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.137
-      startup-config: config/node37.cfg 
+      startup-config: xrd-config/node37.cfg 
 
     node38:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.138
-      startup-config: config/node38.cfg 
+      startup-config: xrd-config/node38.cfg 
 
     node39:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.139
-      startup-config: config/node39.cfg 
+      startup-config: xrd-config/node39.cfg 
 
     node40:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.140
-      startup-config: config/node40.cfg 
+      startup-config: xrd-config/node40.cfg 
 
     node41:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.141
-      startup-config: config/node41.cfg 
+      startup-config: xrd-config/node41.cfg 
 
     node42:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.142
-      startup-config: config/node42.cfg 
+      startup-config: xrd-config/node42.cfg 
 
     node43:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.143
-      startup-config: config/node43.cfg 
+      startup-config: xrd-config/node43.cfg 
 
     node44:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.144
-      startup-config: config/node44.cfg 
+      startup-config: xrd-config/node44.cfg 
 
     node45:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.145
-      startup-config: config/node45.cfg 
+      startup-config: xrd-config/node45.cfg 
 
     node46:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.146
-      startup-config: config/node46.cfg 
+      startup-config: xrd-config/node46.cfg 
 
     node47:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.147
-      startup-config: config/node47.cfg 
+      startup-config: xrd-config/node47.cfg 
 
     node48:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.148
-      startup-config: config/node48.cfg 
+      startup-config: xrd-config/node48.cfg 
 
     node49:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.149
-      startup-config: config/node49.cfg 
+      startup-config: xrd-config/node49.cfg 
 
     node50:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.150
-      startup-config: config/node50.cfg 
+      startup-config: xrd-config/node50.cfg 
 
     node51:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.151
-      startup-config: config/node51.cfg 
+      startup-config: xrd-config/node51.cfg 
 
     node52:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.152
-      startup-config: config/node52.cfg 
+      startup-config: xrd-config/node52.cfg 
 
     node53:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.153
-      startup-config: config/node53.cfg 
+      startup-config: xrd-config/node53.cfg 
 
     node54:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.154
-      startup-config: config/node54.cfg 
+      startup-config: xrd-config/node54.cfg 
 
     node55:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.155
-      startup-config: config/node55.cfg 
+      startup-config: xrd-config/node55.cfg 
 
     node56:
       kind: cisco_xrd
       image: ios-xr/xrd-control-plane:25.1.1.21I
       mgmt-ipv4: 198.18.4.156
-      startup-config: config/node56.cfg  
+      startup-config: xrd-config/node56.cfg  
 
     host04:
       kind: linux
@@ -293,7 +293,7 @@ topology:
     - endpoints: ["node35:Gi0-0-0-10", "host06:eth7"]
     - endpoints: ["node35:Gi0-0-0-11", "host07:eth7"]
 
-# node36
+# node36  
     - endpoints: ["node36:Gi0-0-0-0", "host:node36-Gi0-0-0-0"] # node06-Gi0-0-0-5
     - endpoints: ["node36:Gi0-0-0-1", "host:node36-Gi0-0-0-1"] # node08-Gi0-0-0-5
     - endpoints: ["node36:Gi0-0-0-2", "host:node36-Gi0-0-0-2"] # node17-Gi0-0-0-4
