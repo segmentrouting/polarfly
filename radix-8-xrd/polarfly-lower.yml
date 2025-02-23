@@ -184,28 +184,28 @@ topology:
 
     host00:
       kind: linux
-      image: ubuntu-trex:1.3
+      image: ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.200
       binds: 
         - trex/host00/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host01:
       kind: linux
-      image: ubuntu-trex:1.3
+      image: ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.201
       binds: 
         - trex/host01/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host02:
       kind: linux
-      image: ubuntu-trex:1.3
+      image: ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.202
       binds: 
         - trex/host02/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host03:
       kind: linux
-      image: ubuntu-trex:1.3
+      image: ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.203
       binds: 
         - trex/host03/trex_cfg.yaml:/etc/trex_cfg.yaml
