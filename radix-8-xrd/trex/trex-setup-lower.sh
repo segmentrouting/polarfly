@@ -53,7 +53,7 @@ docker exec -it clab-polarfly-radix8-host00 ip addr add fc00:0:f800:1c::2/64 dev
 
 docker exec -it clab-polarfly-radix8-host00 ip -6 route add fc00:0::/32 \
 nexthop via fc00:0:f800::1 dev eth1 weight 1 \
-nexthop via fc00:0:f800:4::1 dev eth2 weight 1 \
+nexthop via fc00:0:f800:4::1 dev eth2 weight 10 \
 nexthop via fc00:0:f800:8::1 dev eth3 weight 1 \
 nexthop via fc00:0:f800:c::1 dev eth4 weight 1 \
 nexthop via fc00:0:f800:10::1 dev eth5 weight 1 \
@@ -61,6 +61,9 @@ nexthop via fc00:0:f800:14::1 dev eth6 weight 1 \
 nexthop via fc00:0:f800:18::1 dev eth7 weight 1 \
 nexthop via fc00:0:f800:1c::1 dev eth8 weight 1
 
+docker exec -it clab-polarfly-radix8-host00 ip -6 route add fc00:0:f801::/64 \
+  nexthop encap seg6 mode encap segs fc00:0:1049:1035:: via fc00:0:f800::1 dev eth1 weight 20 \
+  nexthop encap seg6 mode encap segs fc00:0:1050:1019:: via fc00:0:f800:4::1 dev eth2 weight 10
 
 ## host01
 docker exec -it clab-polarfly-radix8-host01 ip addr add 10.10.1.2/24 dev eth1
