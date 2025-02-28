@@ -99,14 +99,14 @@ The containerlab connections both within the servers/VMs and across the vxlan in
 
 ### Access Routers
    
-1.  ssh to topology host VM:
-    node00 - node28:
+1.  ssh to jumpbox/topology host VM:   
+    node00 - node28 on topology-host1:
     ```
     ssh cisco@198.18.133.100
     ```
-    node29 - node57:
+    node29 - node57 on topology-host2:
     ```
-    ssh cisco@198.18.133.129
+    ssh cisco@198.18.133.101
     ```
 
 user/pw for all nodes is cisco/cisco123
