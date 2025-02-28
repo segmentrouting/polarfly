@@ -97,91 +97,81 @@ sudo ./vxlan-upper.sh
 
 The containerlab connections both within the servers/VMs and across the vxlan interconnects should now be up
 
-### Verify nodes are up and BGP sessions are established
+### Access Routers
    
-1.  ssh to routers. Example:
-```
-ssh cisco@clab-polarfly-radix8-node55
-password: cisco123
-```
-
-2. BGP sessions should be established. Example:
-```
-show bgp ipv6 unicast summary
-```
-
-3. Shift OOB interface to mgt bridge:
-```
-sudo ip addr del 198.18.4.2/24 dev ens192
-sudo ip addr add 198.18.4.2/24 dev br-501f4bbbf398
-sudo brctl addif br-501f4bbbf398 ens192
-```
-
-### Router ssh table
+1.  ssh to topology host VM:
+    node00 - node28:
+    ```
+    ssh cisco@198.18.133.100
+    ```
+    node29 - node57:
+    ```
+    ssh cisco@198.18.133.129
+    ```
 
 user/pw for all nodes is cisco/cisco123
 
-| Node name      | ip address                  |
-|:---------------|:----------------------------|
-| node00         | ssh cisco@198.18.4.100      |
-| node01         | ssh cisco@198.18.4.101      |
-| node02         | ssh cisco@198.18.4.102      |
-| node03         | ssh cisco@198.18.4.103      |
-| node04         | ssh cisco@198.18.4.104      |
-| node05         | ssh cisco@198.18.4.105      |
-| node06         | ssh cisco@198.18.4.106      |
-| node07         | ssh cisco@198.18.4.107      |
-| node08         | ssh cisco@198.18.4.108      |
-| node09         | ssh cisco@198.18.4.109      |
-| node10         | ssh cisco@198.18.4.110      |
-| node11         | ssh cisco@198.18.4.111      |
-| node12         | ssh cisco@198.18.4.112      |
-| node13         | ssh cisco@198.18.4.113      |
-| node14         | ssh cisco@198.18.4.114      |
-| node15         | ssh cisco@198.18.4.115      |
-| node16         | ssh cisco@198.18.4.116      |
-| node17         | ssh cisco@198.18.4.117      |
-| node18         | ssh cisco@198.18.4.118      |
-| node19         | ssh cisco@198.18.4.119      |
-| node20         | ssh cisco@198.18.4.120      |
-| node21         | ssh cisco@198.18.4.121      |
-| node22         | ssh cisco@198.18.4.122      |
-| node23         | ssh cisco@198.18.4.123      |
-| node24         | ssh cisco@198.18.4.124      |
-| node25         | ssh cisco@198.18.4.125      |
-| node26         | ssh cisco@198.18.4.126      |
-| node27         | ssh cisco@198.18.4.127      |
-| node28         | ssh cisco@198.18.4.128      |
-| node29         | ssh cisco@198.18.4.129      |
-| node30         | ssh cisco@198.18.4.130      |
-| node31         | ssh cisco@198.18.4.131      |
-| node32         | ssh cisco@198.18.4.132      |
-| node33         | ssh cisco@198.18.4.133      |
-| node34         | ssh cisco@198.18.4.134      |
-| node35         | ssh cisco@198.18.4.135      |
-| node36         | ssh cisco@198.18.4.136      |
-| node37         | ssh cisco@198.18.4.137      |
-| node38         | ssh cisco@198.18.4.138      |
-| node39         | ssh cisco@198.18.4.139      |
-| node40         | ssh cisco@198.18.4.140      |
-| node41         | ssh cisco@198.18.4.141      |
-| node42         | ssh cisco@198.18.4.142      |
-| node43         | ssh cisco@198.18.4.143      |
-| node44         | ssh cisco@198.18.4.144      |
-| node45         | ssh cisco@198.18.4.145      |
-| node46         | ssh cisco@198.18.4.146      |
-| node47         | ssh cisco@198.18.4.147      |
-| node48         | ssh cisco@198.18.4.148      |
-| node49         | ssh cisco@198.18.4.149      |
-| node50         | ssh cisco@198.18.4.150      |
-| node51         | ssh cisco@198.18.4.151      |
-| node52         | ssh cisco@198.18.4.152      |
-| node53         | ssh cisco@198.18.4.153      |
-| node54         | ssh cisco@198.18.4.154      |
-| node55         | ssh cisco@198.18.4.155      |
-| node56         | ssh cisco@198.18.4.156      |
+| topology-host1 | ssh to node00 - node28          |
+|:---------------|:--------------------------------|
+| node00         | cisco@clab-radix8-isis-node00   |
+| node01         | cisco@clab-radix8-isis-node01   |
+| node02         | cisco@clab-radix8-isis-node02   |
+| node03         | cisco@clab-radix8-isis-node03   |
+| node04         | cisco@clab-radix8-isis-node04   |
+| node05         | cisco@clab-radix8-isis-node05   |
+| node06         | cisco@clab-radix8-isis-node06   |
+| node07         | cisco@clab-radix8-isis-node07   |
+| node08         | cisco@clab-radix8-isis-node08   |
+| node09         | cisco@clab-radix8-isis-node09   |
+| node10         | cisco@clab-radix8-isis-node10   |
+| node11         | cisco@clab-radix8-isis-node11   |
+| node12         | cisco@clab-radix8-isis-node12   |
+| node13         | cisco@clab-radix8-isis-node13   |
+| node14         | cisco@clab-radix8-isis-node14   |
+| node15         | cisco@clab-radix8-isis-node15   |
+| node16         | cisco@clab-radix8-isis-node16   |
+| node17         | cisco@clab-radix8-isis-node17   |
+| node18         | cisco@clab-radix8-isis-node18   |
+| node19         | cisco@clab-radix8-isis-node19   |
+| node20         | cisco@clab-radix8-isis-node20   |
+| node21         | cisco@clab-radix8-isis-node21   |
+| node22         | cisco@clab-radix8-isis-node22   |
+| node23         | cisco@clab-radix8-isis-node23   |
+| node24         | cisco@clab-radix8-isis-node24   |
+| node25         | cisco@clab-radix8-isis-node25   |
+| node26         | cisco@clab-radix8-isis-node26   |
+| node27         | cisco@clab-radix8-isis-node27   |
+| node28         | cisco@clab-radix8-isis-node28   |
+
+| topology-host2 | ssh to node29 - node57          |
+|:---------------|:--------------------------------|
+| node29         | cisco@clab-radix8-isis-node29   |
+| node30         | cisco@clab-radix8-isis-node30   |
+| node31         | cisco@clab-radix8-isis-node31   |
+| node32         | cisco@clab-radix8-isis-node32   |
+| node33         | cisco@clab-radix8-isis-node33   |
+| node34         | cisco@clab-radix8-isis-node34   |
+| node35         | cisco@clab-radix8-isis-node35   |
+| node36         | cisco@clab-radix8-isis-node36   |
+| node37         | cisco@clab-radix8-isis-node37   |
+| node38         | cisco@clab-radix8-isis-node38   |
+| node39         | cisco@clab-radix8-isis-node39   |
+| node40         | cisco@clab-radix8-isis-node40   |
+| node41         | cisco@clab-radix8-isis-node41   |
+| node42         | cisco@clab-radix8-isis-node42   |
+| node43         | cisco@clab-radix8-isis-node43   |
+| node44         | cisco@clab-radix8-isis-node44   |
+| node45         | cisco@clab-radix8-isis-node45   |
+| node46         | cisco@clab-radix8-isis-node46   |
+| node47         | cisco@clab-radix8-isis-node47   |
+| node48         | cisco@clab-radix8-isis-node48   |
+| node49         | cisco@clab-radix8-isis-node49   |
+| node50         | cisco@clab-radix8-isis-node50   |
+| node51         | cisco@clab-radix8-isis-node51   |
+| node52         | cisco@clab-radix8-isis-node52   |
+| node53         | cisco@clab-radix8-isis-node53   |
+| node54         | cisco@clab-radix8-isis-node54   |
+| node55         | cisco@clab-radix8-isis-node55   |
+| node56         | cisco@clab-radix8-isis-node56   |
 
 
-You should now have a working topology that looks something like this:
-
-![example](../graph-view/data/radix-8-polarfly.png)
