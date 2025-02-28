@@ -4,7 +4,7 @@
 
 - [Requirements](#requirements)
 - [Instructions](#instructions)
-- [Router ssh table](#router-ssh-table)
+- [Access Routers](#access-routers)
 
 
 This project is setup to deploy a radix 8 XRd Polarfly topology, which results in a 57 node Polarfly single tier network. The setup uses Containerlab as topology orchestrator and leverages the Containerlab VXLAN tool to connect nodes across host servers or VMs.
