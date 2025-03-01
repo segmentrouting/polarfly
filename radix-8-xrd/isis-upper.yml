@@ -389,7 +389,7 @@ topology:
     - endpoints: ["node34:Gi0-0-0-5", "node35:Gi0-0-0-6"]
     - endpoints: ["node34:Gi0-0-0-6", "node46:Gi0-0-0-4"]
     - endpoints: ["node34:Gi0-0-0-7", "node51:Gi0-0-0-4"]
-    - endpoints: ["node34:Gi0-0-0-8", "host33:eth1"]
+    - endpoints: ["node34:Gi0-0-0-8", "host34:eth1"]
 
 # node35
     - endpoints: ["node35:Gi0-0-0-0", "host:node35-Gi0-0-0-0"] # node28-Gi0-0-0-0
