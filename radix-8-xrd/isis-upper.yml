@@ -309,12 +309,12 @@ topology:
     host55:
       kind: linux
       image: iejalapeno/alpine:iperf1.0
-      mgmt-ipv4: 198.18.4.255
+      mgmt-ipv4: 198.18.4.55
 
     host56:
       kind: linux
       image: iejalapeno/alpine:iperf1.0
-      mgmt-ipv4: 198.18.4.256
+      mgmt-ipv4: 198.18.4.56
 
   links:
 
