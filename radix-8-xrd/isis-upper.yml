@@ -178,142 +178,170 @@ topology:
 
     host29:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.229
 
     host30:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.230
 
     host31:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.231
 
     host32:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.232
 
     host33:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.233
 
     host34:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.234
 
     host35:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.235
 
     host36:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.236
 
     host37:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.237
 
     host38:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.238
 
     host39:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.239
 
     host40:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.240
 
     host41:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.241
 
     host42:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.242
 
     host43:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.243
       
     host44:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.244
 
     host45:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.245
 
     host46:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.246
 
     host47:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.247
 
     host48:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.248
 
     host49:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.249
 
     host50:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.250
 
     host51:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.251
 
     host52:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.252
 
     host53:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.253
 
     host54:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.254
 
     host55:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.55
 
     host56:
       kind: linux
-      image: iejalapeno/alpine:iperf1.1
+      #image: iejalapeno/alpine:iperf1.1
+      image: iejalapeno/ubuntu-trex:1.4
       mgmt-ipv4: 198.18.4.56
 
   links:
