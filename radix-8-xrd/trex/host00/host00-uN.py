@@ -3,38 +3,38 @@ from trex_stl_lib.api import *
 class STLIPv6(object):
 
     def get_streams(self, direction=0, **kwargs):
-        # Port configurations with both inner and outer IPv6 addresses
-        port_config = {
-            0: {
-                'src': 'fc00:0:f800::2',
-                'dst': 'fc00:0:f800:8001::2',
+        # Source address
+        src_addr = 'fc00:0:f800::2'
+        
+        # Destination configurations with both inner and outer IPv6 addresses
+        dst_config = [
+            {
+                'dst': 'fc00:0:f801::2',
                 'srv6_dst': 'fc00:0:1004:1008:1012:1016::'
             },
-            1: {
-                'src': 'fc00:0:f800:4::2',
-                'dst': 'fc00:0:f800:8005::2',
+            {
+                'dst': 'fc00:0:f801:4::2',
                 'srv6_dst': 'fc00:0:1005:1009:1013:1017::'
             },
-            2: {
-                'src': 'fc00:0:f800:8::2',
-                'dst': 'fc00:0:f800:8009::2',
+            {
+                'dst': 'fc00:0:f801:8::2',
                 'srv6_dst': 'fc00:0:1006:1010:1014:1018::'
             },
-            3: {
-                'src': 'fc00:0:f800:c::2',
-                'dst': 'fc00:0:f800:800d::2',
+            {
+                'dst': 'fc00:0:f801:c::2',
                 'srv6_dst': 'fc00:0:1007:1011:1015:1019::'
             }
-        }
+        ]
 
         # Create streams list
         streams = []
         
-        for port_id, addresses in port_config.items():
+        # Create a stream for each destination
+        for stream_id, addresses in enumerate(dst_config):
             # Create packet with outer IPv6 (SRv6) and inner IPv6
             base_pkt = Ether()/\
-                      IPv6(src=addresses['src'], dst=addresses['srv6_dst'])/\
-                      IPv6(src=addresses['src'], dst=addresses['dst'])/\
+                      IPv6(src=src_addr, dst=addresses['srv6_dst'])/\
+                      IPv6(src=src_addr, dst=addresses['dst'])/\
                       UDP(dport=12345, sport=54321)
             
             # Create a packet size that will result in ~10Mbps at 1000pps
@@ -42,7 +42,14 @@ class STLIPv6(object):
             
             # Create a stream with the packet
             pkt = STLPktBuilder(pkt=base_pkt/('x' * pad_size))
-            streams.append(STLStream(packet=pkt, mode=STLTXCont(pps=3)))
+            
+            # Add stream with a unique ID and small inter-stream gap to avoid bursts
+            streams.append(STLStream(
+                packet=pkt, 
+                mode=STLTXCont(pps=1000),  # 1000 pps for ~10Mbps
+                isg=10*stream_id,  # Inter-stream gap
+                flow_stats=STLFlowStats(pg_id=stream_id)
+            ))
 
         return streams
 
@@ -64,15 +71,14 @@ def main():
         profile = STLIPv6()
         streams = profile.get_streams()
         
-        # Add streams to ports
-        for port_id, stream in enumerate(streams):
-            client.add_streams(stream, ports=[port_id])
-            print(f"Added stream to port {port_id}")
+        # Add all streams to port 0
+        client.add_streams(streams, ports=[0])
+        print(f"Added {len(streams)} streams to port 0")
         
-        # Start traffic on all ports
-        client.start(ports=[0,1,2,3])
+        # Start traffic on port 0
+        client.start(ports=[0])
         
-        print("Traffic started on all ports")
+        print("Traffic started on port 0")
         print("Press Enter to stop...")
         input()
         

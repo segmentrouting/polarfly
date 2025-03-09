@@ -1,4 +1,7 @@
+#import sys
+#sys.path.append('/opt/trex/v3.04/')
 from trex_stl_lib.api import *
+#from trex.stl.api import *
 
 class STLIPv6(object):
 
@@ -10,19 +13,19 @@ class STLIPv6(object):
         dst_config = [
             {
                 'dst': 'fc00:0:f801:5::2',
-                'srv6_dst': 'fc00:0:1004:1008:1012:1016::'
+                'srv6_dst': 'fc00:0:fe00:fe00:fe04:fe04::'
             },
             {
                 'dst': 'fc00:0:f801:9::2',
-                'srv6_dst': 'fc00:0:1005:1009:1013:1017::'
+                'srv6_dst': 'fc00:0:fe01:fe01:fe05:fe05::'
             },
             {
                 'dst': 'fc00:0:f801:d::2',
-                'srv6_dst': 'fc00:0:1006:1010:1014:1018::'
+                'srv6_dst': 'fc00:0:fe02:fe02:fe06:fe06::'
             },
             {
                 'dst': 'fc00:0:f801:11::2',
-                'srv6_dst': 'fc00:0:1007:1011:1015:1019::'
+                'srv6_dst': 'fc00:0:fe03:fe03:fe07:fe07::'
             }
         ]
 
@@ -35,7 +38,7 @@ class STLIPv6(object):
             base_pkt = Ether()/\
                       IPv6(src=src_addr, dst=addresses['srv6_dst'])/\
                       IPv6(src=src_addr, dst=addresses['dst'])/\
-                      UDP(dport=12345, sport=54321)
+                      ICMPv6EchoRequest()
             
             # Create a packet size that will result in ~10Mbps at 1000pps
             pad_size = 1250 - len(base_pkt)
@@ -92,4 +95,4 @@ def main():
         client.disconnect()
 
 if __name__ == "__main__":
-    main() 
+    main()
