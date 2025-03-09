@@ -253,7 +253,90 @@ docker exec -it clab-radix8-isis-host12 iperf3 -s -p 5215 -D
 docker exec -it clab-radix8-isis-host13 apk add iproute2
 docker exec -it clab-radix8-isis-host13 ip addr add fc00:0:f800:1013::2/64 dev eth1
 docker exec -it clab-radix8-isis-host13 ip -6 route add fc00:0::/32 via fc00:0:f800:1013::1 dev eth1
-docker exec -it clab-radix8-isis-host12 iperf3 -s -D
+docker exec -it clab-radix8-isis-host13 apk add iproute2
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5200 -D
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5201 -D
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5202 -D
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5203 -D
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5204 -D
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5205 -D
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5206 -D
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5207 -D
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5208 -D
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5209 -D
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5210 -D
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5211 -D
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5212 -D
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5213 -D
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5214 -D
+docker exec -it clab-radix8-isis-host13 iperf3 -s -p 5215 -D
+
+# host14
+docker exec -it clab-radix8-isis-host14 apk add iproute2
+docker exec -it clab-radix8-isis-host14 ip addr add fc00:0:f800:1014::2/64 dev eth1
+docker exec -it clab-radix8-isis-host14 ip -6 route add fc00:0::/32 via fc00:0:f800:1014::1 dev eth1
+docker exec -it clab-radix8-isis-host14 apk add iproute2
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5200 -D
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5201 -D
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5202 -D
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5203 -D
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5204 -D
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5205 -D
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5206 -D
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5207 -D
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5208 -D
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5209 -D
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5210 -D
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5211 -D
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5212 -D
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5213 -D
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5214 -D
+docker exec -it clab-radix8-isis-host14 iperf3 -s -p 5215 -D
+
+# host15
+docker exec -it clab-radix8-isis-host15 apk add iproute2
+docker exec -it clab-radix8-isis-host15 ip addr add fc00:0:f800:1015::2/64 dev eth1
+docker exec -it clab-radix8-isis-host15 ip -6 route add fc00:0::/32 via fc00:0:f800:1015::1 dev eth1
+docker exec -it clab-radix8-isis-host15 apk add iproute2
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5200 -D
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5201 -D
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5202 -D
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5203 -D
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5204 -D
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5205 -D
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5206 -D
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5207 -D
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5208 -D
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5209 -D
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5210 -D
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5211 -D
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5212 -D
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5213 -D
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5214 -D
+docker exec -it clab-radix8-isis-host15 iperf3 -s -p 5215 -D
+
+# host16    
+docker exec -it clab-radix8-isis-host16 apk add iproute2
+docker exec -it clab-radix8-isis-host16 ip addr add fc00:0:f800:1016::2/64 dev eth1
+docker exec -it clab-radix8-isis-host16 ip -6 route add fc00:0::/32 via fc00:0:f800:1016::1 dev eth1
+docker exec -it clab-radix8-isis-host16 apk add iproute2
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5200 -D
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5201 -D
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5202 -D
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5203 -D
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5204 -D
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5205 -D
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5206 -D
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5207 -D
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5208 -D
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5209 -D
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5210 -D
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5211 -D
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5212 -D
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5213 -D
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5214 -D
+docker exec -it clab-radix8-isis-host16 iperf3 -s -p 5215 -D
+
 
 
 
