@@ -6,14 +6,14 @@ class STLIPv6(object):
     def get_streams(self, direction=0, **kwargs):
         # Destination subnet configurations
         dst_subnets = [
-            'fc00:0:f801:1::/64'
-            #'fc00:0:f801:4::/64',
-            #'fc00:0:f801:8::/64',
-            #'fc00:0:f801:c::/64'
+            'fc00:0:f800::/64',
+            'fc00:0:f800:4::/64',
+            'fc00:0:f800:8::/64',
+            'fc00:0:f800:c::/64'
         ]
         
         # Source subnet
-        src_subnet = 'fc00:0:f800::/64'
+        src_subnet = 'fc00:0:f801:4::/64'
         
         # Create streams list
         streams = []
