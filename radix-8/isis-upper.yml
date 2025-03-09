@@ -1,5 +1,5 @@
 
-name: radix8-isis
+name: radix8
 
 mgmt:
   network: pfupper-mgt
