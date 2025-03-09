@@ -1,0 +1,8 @@
+   - version: 2
+     interfaces: ["eth1"]
+     port_limit: 1
+     port_info:
+       - ip: 10.10.1.2
+         default_gw: 10.10.1.1
+         ip6: fc00:0:f800:4::2
+         default_gw6: fc00:0:f800:4::1

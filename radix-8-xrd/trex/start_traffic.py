@@ -15,9 +15,9 @@ class TRexController:
             host_name = f'host{i:02d}'
             self.servers[host_name] = {
                 'ip': f'198.18.4.{200 + i}',
-                'ua_script': f'{host_name}/{host_name}-uA.py',
-                'un_script': f'{host_name}/{host_name}-uN.py',
-                'imix_script': f'{host_name}/{host_name}_imix.py'
+                'ua_script': f'{host_name}/uA.py',
+                'un_script': f'{host_name}/uN.py',
+                'imix_script': f'{host_name}/imix.py'
             }
             
         self.clients = {}

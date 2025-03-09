@@ -1,7 +1,4 @@
-#import sys
-#sys.path.append('/opt/trex/v3.04/')
 from trex_stl_lib.api import *
-#from trex.stl.api import *
 import random
 
 class STLIPv6(object):
@@ -22,7 +19,7 @@ class STLIPv6(object):
         streams = []
         
         # IMIX packet sizes (in bytes): 64, 570, 1518
-        imix_sizes = [64, 570, 1518]
+        imix_sizes = [128, 570, 1518]  # Increased minimum size to accommodate IPv6 headers
         # IMIX distribution: 7:4:1 ratio
         imix_weights = [7, 4, 1]
         
@@ -65,22 +62,31 @@ class STLIPv6(object):
                 
                 streams.append(stream)
             
+            # For VM streams, create a larger base packet to ensure enough space
+            vm_base_pkt = Ether()/\
+                         IPv6(src=src_prefix+"1", dst=dst_prefix+"1")/\
+                         ICMPv6EchoRequest()/\
+                         Raw('x' * 64)  # Add padding to ensure packet is large enough
+            
+            # Calculate correct offsets for IPv6 addresses
+            # IPv6 src address starts at byte 22 in the packet
+            src_offset = 22
+            # IPv6 dst address starts at byte 38 in the packet
+            dst_offset = 38
+            
             # Add VM (Variable Machine) to randomize source and destination IPs for this subnet
             vm = STLScVmRaw([
                 # Randomize source IP
                 STLVmFlowVar(name="src_addr", min_value=1, max_value=1000, size=4, op="inc"),
-                STLVmWrFlowVar(fv_name="src_addr", pkt_offset="IPv6.src", offset_fixup=28),
+                STLVmWrFlowVar(fv_name="src_addr", pkt_offset="IPv6.src", offset_fixup=12),  # Last 4 bytes of IPv6
                 
                 # Randomize destination IP
                 STLVmFlowVar(name="dst_addr", min_value=1, max_value=1000, size=4, op="inc"),
-                STLVmWrFlowVar(fv_name="dst_addr", pkt_offset="IPv6.dst", offset_fixup=28)
+                STLVmWrFlowVar(fv_name="dst_addr", pkt_offset="IPv6.dst", offset_fixup=12)  # Last 4 bytes of IPv6
             ])
             
             # Create a stream with VM for IP randomization
-            vm_pkt = STLPktBuilder(
-                pkt=Ether()/IPv6(src=src_prefix+"1", dst=dst_prefix+"1")/ICMPv6EchoRequest(),
-                vm=vm
-            )
+            vm_pkt = STLPktBuilder(pkt=vm_base_pkt, vm=vm)
             
             vm_stream = STLStream(
                 packet=vm_pkt,
@@ -131,4 +137,4 @@ def main():
         client.disconnect()
 
 if __name__ == "__main__":
-    main()
+    main() 
