@@ -1,5 +1,6 @@
 import sys
 import argparse
+import os
 
 # adding trex location to the system path
 sys.path.insert(0, '/home/cisco/trex/v3.06/trex_client/interactive/')
@@ -71,9 +72,19 @@ class TRexController:
                     else:
                         continue
                         
-                    script = self.servers[host][script_key]
-                    client.start_line(f" -f {script}")
-                    print(f"Started {mode.upper()} traffic on {host} using {script}")
+                    script_path = self.servers[host][script_key]
+                    
+                    # Reset the port before adding streams
+                    client.reset(ports=[0])
+                    
+                    # Try to use the direct API approach
+                    try:
+                        # Use start_line with explicit port specification
+                        client.start_line(f" -f {script_path} --port 0")
+                        print(f"Started {mode.upper()} traffic on {host} using {script_path} (port 0 only)")
+                    except STLError as e:
+                        print(f"Failed to start traffic with script {script_path}: {e}")
+                        
             except STLError as e:
                 print(f"Failed to start traffic on {host}: {e}")
 
@@ -91,8 +102,8 @@ class TRexController:
                 
             client = self.clients[host]
             try:
-                client.stop()
-                print(f"Stopped traffic on {host}")
+                client.stop(ports=[0])  # Stop only port 0
+                print(f"Stopped traffic on {host} (port 0)")
             except STLError as e:
                 print(f"Failed to stop traffic on {host}: {e}")
 
