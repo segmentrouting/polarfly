@@ -8,22 +8,30 @@ import signal
 import sys
 
 def start_trex(host_id, trex_path="/opt/trex/v3.04", log_dir="./trex_logs"):
-    """Start TRex on a specific container"""
+    """Start TRex on a specific container in daemon mode"""
     container = f"clab-radix8-host{host_id:02d}"
     log_file = os.path.join(log_dir, f"{container}.log")
     
-    cmd = f"docker exec -w {trex_path} {container} ./t-rex-64 -i"
+    # Use daemon mode (-d) instead of interactive mode (-i)
+    cmd = f"docker exec -w {trex_path} {container} ./t-rex-64 -d"
     
     try:
         with open(log_file, 'w') as f:
-            process = subprocess.Popen(cmd, shell=True, stdout=f, stderr=subprocess.STDOUT)
+            result = subprocess.run(cmd, shell=True, stdout=f, stderr=subprocess.STDOUT)
         
-        # Wait a moment to check if process started successfully
+        if result.returncode != 0:
+            return (host_id, False, f"Process exited with code {result.returncode}")
+        
+        # Verify TRex is running
         time.sleep(1)
-        if process.poll() is not None:
-            return (host_id, False, f"Process exited immediately with code {process.returncode}")
+        check_cmd = f"docker exec {container} pgrep -f t-rex-64"
+        check_result = subprocess.run(check_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
-        return (host_id, True, "Started successfully")
+        if check_result.returncode == 0:
+            return (host_id, True, "Started successfully in daemon mode")
+        else:
+            return (host_id, False, "Failed to start daemon")
+            
     except Exception as e:
         return (host_id, False, str(e))
 
