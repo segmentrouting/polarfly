@@ -1,0 +1,20 @@
+- version: 2
+  interfaces: ["eth1", "eth2"]
+  port_limit: 2
+  port_info:
+    - ip: 10.10.84.2
+      default_gw: 10.10.84.1
+      ip6: fc00:0:f800:84::2
+      default_gw6: fc00:0:f800:84::1
+      ipv6_autocfg: true
+      src_ipv6_enabled: true
+      ipv6_nd_enabled: true
+      ipv6_subnet: fc00:0:f800:84::/64
+    - ip: 10.10.85.2
+      default_gw: 10.10.85.1
+      ip6: fc00:0:f800:85::2
+      default_gw6: fc00:0:f800:85::1
+      ipv6_autocfg: true
+      src_ipv6_enabled: true
+      ipv6_nd_enabled: true
+      ipv6_subnet: fc00:0:f800:85::/64 
