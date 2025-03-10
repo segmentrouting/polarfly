@@ -368,7 +368,7 @@ topology:
     host56:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.4.256
+      mgmt-ipv4: 198.18.4.56
       binds:
         - ../trex-gen/output/radix-8/host56/trex_cfg.yaml:/etc/trex_cfg.yaml
 
