@@ -48,4 +48,20 @@ cd ../radix-8/
 sudo clab deploy -t isis-upper.yml
 ```
 
+4. **Start TRex on hosts**
+```bash
+cd trex-gen/scripts
+# Start TRex on all hosts
+python3 manage_trex.py start --all
 
+# Stop TRex on all hosts
+python3 manage_trex.py stop --all
+
+# Check status of all TRex instances
+python3 manage_trex.py status --all
+
+# Start/stop/check specific hosts
+python3 manage_trex.py start --hosts 0 1 2 3
+python3 manage_trex.py stop --hosts 0 1 2 3
+python3 manage_trex.py status --hosts 0 1 2 3
+```
