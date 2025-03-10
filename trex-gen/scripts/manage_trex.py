@@ -12,7 +12,7 @@ def start_trex(host_id, trex_path="/opt/trex/v3.04", log_dir="./trex_logs"):
     container = f"clab-radix8-host{host_id:02d}"
     log_file = os.path.join(log_dir, f"{container}.log")
     
-    cmd = f"docker exec -w {trex_path} {container} ./t-rex-64 -i"
+    cmd = f"docker exec -w {trex_path} {container} ./t-rex-64 -d"
     
     try:
         with open(log_file, 'w') as f:
