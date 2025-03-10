@@ -19,9 +19,8 @@ def start_trex(host_id, trex_path="/opt/trex/v3.04", log_dir="./trex_logs"):
     if check_result.returncode == 0:
         return (host_id, True, "Already running")
     
-    # Use the exact command format that works manually
-    # Note: We're using -it flags and running in background with &
-    cmd = f"docker exec -itw {trex_path} {container} ./t-rex-64 -d &"
+    # Use -i flag but not -t, and run in background
+    cmd = f"docker exec -iw {trex_path} {container} ./t-rex-64 -d &"
     
     try:
         # Execute the command directly through shell
@@ -41,7 +40,19 @@ def start_trex(host_id, trex_path="/opt/trex/v3.04", log_dir="./trex_logs"):
         if check_result.returncode == 0:
             return (host_id, True, "Started successfully in daemon mode")
         else:
-            return (host_id, False, "Failed to start daemon")
+            # Try an alternative approach without -i flag
+            alt_cmd = f"docker exec -w {trex_path} {container} ./t-rex-64 -d > /dev/null 2>&1 &"
+            os.system(alt_cmd)
+            
+            # Give it another moment
+            time.sleep(3)
+            
+            # Check again
+            check_result = subprocess.run(check_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if check_result.returncode == 0:
+                return (host_id, True, "Started successfully with alternative method")
+            else:
+                return (host_id, False, "Failed to start daemon")
             
     except Exception as e:
         return (host_id, False, str(e))
