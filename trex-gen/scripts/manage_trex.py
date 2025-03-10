@@ -19,16 +19,14 @@ def start_trex(host_id, trex_path="/opt/trex/v3.04", log_dir="./trex_logs"):
     if check_result.returncode == 0:
         return (host_id, True, "Already running")
     
-    # Check if the TRex binary exists
-    check_binary_cmd = f"docker exec {container} ls -l {trex_path}/t-rex-64"
-    binary_result = subprocess.run(check_binary_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    
-    if binary_result.returncode != 0:
-        return (host_id, False, f"TRex binary not found at {trex_path}/t-rex-64")
+    # Fix permissions on TRex scripts
+    fix_perms_cmd = f"docker exec {container} chmod +x {trex_path}/*.py {trex_path}/t-rex-64"
+    subprocess.run(fix_perms_cmd, shell=True, check=False)
     
     # Use daemon mode (-d) instead of interactive mode (-i)
     # Add --no-hw-flow-stat to avoid hardware-specific errors
-    cmd = f"docker exec -w {trex_path} {container} ./t-rex-64 -d --no-hw-flow-stat"
+    # Add --no-scapy-server to avoid scapy-related issues
+    cmd = f"docker exec -w {trex_path} {container} ./t-rex-64 -d --no-hw-flow-stat --no-scapy-server"
     
     try:
         # Run with full output capture for debugging
