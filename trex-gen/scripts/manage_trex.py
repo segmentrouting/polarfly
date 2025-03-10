@@ -12,25 +12,52 @@ def start_trex(host_id, trex_path="/opt/trex/v3.04", log_dir="./trex_logs"):
     container = f"clab-radix8-host{host_id:02d}"
     log_file = os.path.join(log_dir, f"{container}.log")
     
+    # First check if TRex is already running
+    check_cmd = f"docker exec {container} pgrep -f t-rex-64"
+    check_result = subprocess.run(check_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    
+    if check_result.returncode == 0:
+        return (host_id, True, "Already running")
+    
+    # Check if the TRex binary exists
+    check_binary_cmd = f"docker exec {container} ls -l {trex_path}/t-rex-64"
+    binary_result = subprocess.run(check_binary_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    
+    if binary_result.returncode != 0:
+        return (host_id, False, f"TRex binary not found at {trex_path}/t-rex-64")
+    
     # Use daemon mode (-d) instead of interactive mode (-i)
-    cmd = f"docker exec -w {trex_path} {container} ./t-rex-64 -d"
+    # Add --no-hw-flow-stat to avoid hardware-specific errors
+    cmd = f"docker exec -w {trex_path} {container} ./t-rex-64 -d --no-hw-flow-stat"
     
     try:
+        # Run with full output capture for debugging
+        result = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        
+        # Write output to log file
         with open(log_file, 'w') as f:
-            result = subprocess.run(cmd, shell=True, stdout=f, stderr=subprocess.STDOUT)
+            f.write(f"STDOUT:\n{result.stdout}\n\nSTDERR:\n{result.stderr}\n")
         
         if result.returncode != 0:
-            return (host_id, False, f"Process exited with code {result.returncode}")
+            error_msg = result.stderr.strip() if result.stderr else "No error message"
+            return (host_id, False, f"Process exited with code {result.returncode}: {error_msg}")
         
         # Verify TRex is running
-        time.sleep(1)
+        time.sleep(2)
         check_cmd = f"docker exec {container} pgrep -f t-rex-64"
         check_result = subprocess.run(check_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
         if check_result.returncode == 0:
             return (host_id, True, "Started successfully in daemon mode")
         else:
-            return (host_id, False, "Failed to start daemon")
+            # If not running, check if there's a core dump
+            core_check = f"docker exec {container} ls -l {trex_path}/core*"
+            core_result = subprocess.run(core_check, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            
+            if "core" in core_result.stdout:
+                return (host_id, False, "TRex crashed (core dump found)")
+            else:
+                return (host_id, False, "Failed to start daemon - check logs for details")
             
     except Exception as e:
         return (host_id, False, str(e))
@@ -88,6 +115,10 @@ def main():
                         help='Number of parallel operations')
     parser.add_argument('--log-dir', default='./trex_logs', 
                         help='Directory for logs (start only)')
+    parser.add_argument('--trex-path', default='/opt/trex/v3.04',
+                        help='Path to TRex installation')
+    parser.add_argument('--interactive', '-i', action='store_true',
+                        help='Use interactive mode instead of daemon mode')
     
     args = parser.parse_args()
     
@@ -108,7 +139,7 @@ def main():
     # Perform the requested action
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.parallel) as executor:
         if args.action == 'start':
-            futures = [executor.submit(start_trex, host_id, log_dir=args.log_dir) for host_id in hosts]
+            futures = [executor.submit(start_trex, host_id, args.trex_path, args.log_dir) for host_id in hosts]
         elif args.action == 'stop':
             futures = [executor.submit(stop_trex, host_id) for host_id in hosts]
         else:  # status
