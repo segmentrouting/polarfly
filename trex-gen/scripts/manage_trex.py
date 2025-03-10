@@ -6,13 +6,45 @@ import argparse
 import concurrent.futures
 import signal
 import sys
+import threading
+
+# Maximum log file size in bytes (10MB)
+MAX_LOG_SIZE = 10 * 1024 * 1024
+
+def truncate_log(log_file, max_size=MAX_LOG_SIZE, keep_lines=1000):
+    """Truncate log file if it exceeds the maximum size"""
+    if os.path.exists(log_file) and os.path.getsize(log_file) > max_size:
+        # Read the last 'keep_lines' lines
+        with open(log_file, 'r') as f:
+            lines = f.readlines()
+            kept_lines = lines[-keep_lines:] if len(lines) > keep_lines else lines
+        
+        # Write only those lines back to the file
+        with open(log_file, 'w') as f:
+            f.writelines(kept_lines)
+
+def log_monitor(log_dir, interval=60):
+    """Monitor and truncate log files periodically"""
+    while True:
+        try:
+            # Check all log files in the directory
+            for filename in os.listdir(log_dir):
+                if filename.endswith('.log'):
+                    log_file = os.path.join(log_dir, filename)
+                    truncate_log(log_file)
+        except Exception as e:
+            print(f"Error in log monitor: {e}")
+        
+        # Sleep for the specified interval
+        time.sleep(interval)
 
 def start_trex(host_id, trex_path="/opt/trex/v3.04", log_dir="./trex_logs"):
     """Start TRex on a specific container"""
     container = f"clab-radix8-host{host_id:02d}"
     log_file = os.path.join(log_dir, f"{container}.log")
     
-    cmd = f"docker exec -w {trex_path} {container} ./t-rex-64 -d"
+    # Use the --no-scapy-server flag to reduce some output
+    cmd = f"docker exec -w {trex_path} {container} ./t-rex-64 -i --no-scapy-server"
     
     try:
         with open(log_file, 'w') as f:
@@ -80,6 +112,8 @@ def main():
                         help='Number of parallel operations')
     parser.add_argument('--log-dir', default='./trex_logs', 
                         help='Directory for logs (start only)')
+    parser.add_argument('--monitor-logs', action='store_true',
+                        help='Start log monitoring thread')
     
     args = parser.parse_args()
     
@@ -118,6 +152,12 @@ def main():
         print(f"Completed {args.action}ing TRex. Logs are in {args.log_dir}/")
     else:
         print(f"Completed {args.action}ing TRex.")
+
+    # Start log monitor thread if requested
+    if args.action == 'start' and args.monitor_logs:
+        monitor_thread = threading.Thread(target=log_monitor, args=(args.log_dir,), daemon=True)
+        monitor_thread.start()
+        print(f"Started log monitor thread (checking every 60 seconds)")
 
 if __name__ == "__main__":
     main()
