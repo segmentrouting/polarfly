@@ -1,4 +1,19 @@
 #!/usr/bin/env python3
+"""
+IPv6 Neighbor Discovery Enabler for Polarfly Topology
+
+This script enables IPv6 Neighbor Discovery on TRex ports for specified hosts
+in the Polarfly topology. This is necessary for IPv6 traffic to work properly.
+
+Usage:
+  python3 enable_ipv6_nd.py radix-8 host00 -s localhost  # Enable ND on host00
+  python3 enable_ipv6_nd.py radix-8 --all -s localhost   # Enable ND on all hosts
+
+Options:
+  --all            Apply to all hosts
+  -s, --server     TRex server address (default: localhost)
+  -p, --port       TRex server port (default: 4501)
+"""
 from trex_stl_lib.api import *
 import argparse
 import yaml

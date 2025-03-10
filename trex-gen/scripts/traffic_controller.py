@@ -1,4 +1,21 @@
 #!/usr/bin/env python3
+"""
+Traffic Controller for Polarfly Topology
+
+This script controls traffic generation across multiple hosts in the Polarfly topology.
+It can start and stop traffic with different patterns between specified source and destination hosts.
+
+Usage:
+  python3 traffic_controller.py radix-8 start --type imix --src host00 host01 --dst host02 host03
+  python3 traffic_controller.py radix-8 stop --src host00 host01
+
+Options:
+  start/stop       Action to perform
+  --type TYPE      Traffic type (imix, bulk, srv6_imix, srv6_bulk)
+  --src HOSTS      Source hosts
+  --dst HOSTS      Destination hosts
+  -s, --server     TRex server address (default: localhost)
+"""
 import argparse
 import yaml
 import os

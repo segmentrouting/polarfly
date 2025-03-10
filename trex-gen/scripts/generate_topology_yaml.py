@@ -1,4 +1,15 @@
 #!/usr/bin/env python3
+"""
+Topology YAML Generator for Polarfly Topology
+
+This script generates a complete YAML configuration file for the Polarfly topology
+with 57 hosts, including their IPv4/IPv6 addressing and router associations.
+
+Usage:
+  python3 generate_topology_yaml.py        # Generate radix-8.yaml
+
+The script creates ../config/topologies/radix-8.yaml with configurations for all 57 hosts.
+"""
 import yaml
 import os
 

@@ -1,4 +1,22 @@
 #!/usr/bin/env python3
+"""
+TRex Server Manager for Polarfly Topology
+
+This script manages TRex servers across multiple containers in the Polarfly topology.
+It can start, stop, and check the status of TRex instances on specified hosts or all hosts.
+
+Usage:
+  python3 manage_trex.py start --hosts 0 1 2 3  # Start TRex on specific hosts
+  python3 manage_trex.py stop --all              # Stop TRex on all hosts
+  python3 manage_trex.py status --all            # Check status of all TRex instances
+
+Options:
+  --hosts LIST     Specific host IDs to manage
+  --all            Apply to all hosts (0-56)
+  --parallel N     Number of parallel operations (default: 10)
+  --log-dir DIR    Directory for logs (default: ./trex_logs)
+  --trex-path PATH Path to TRex installation (default: /opt/trex/v3.04)
+"""
 import subprocess
 import os
 import time

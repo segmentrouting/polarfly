@@ -1,4 +1,18 @@
 #!/usr/bin/env python3
+"""
+TRex Console Connector for Polarfly Topology
+
+This script connects to the TRex console of a specified host in the Polarfly topology.
+It can connect either from inside the container or from outside using the host's IP.
+
+Usage:
+  python3 trex_console.py 0                # Connect to host00 from inside the container
+  python3 trex_console.py 0 --external     # Connect to host00 from outside using its IP
+
+Options:
+  --external       Connect from outside the container using IP
+  --trex-path PATH Path to TRex installation (default: /opt/trex/v3.04)
+"""
 import argparse
 import subprocess
 import sys
@@ -24,7 +38,7 @@ def main():
         subprocess.run(cmd, shell=True)
     else:
         # Connect from inside the container
-        cmd = f"docker exec -it {container} {args.trex_path}/trex-console -s localhost"
+        cmd = f"docker exec -itw {args.trex_path} {container} {args.trex_path}/trex-console -s localhost"
         print(f"Connecting to TRex server in container {container}...")
         subprocess.run(cmd, shell=True)
 
