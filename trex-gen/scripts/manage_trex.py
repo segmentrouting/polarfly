@@ -8,52 +8,22 @@ import signal
 import sys
 
 def start_trex(host_id, trex_path="/opt/trex/v3.04", log_dir="./trex_logs"):
-    """Start TRex on a specific container in daemon mode"""
+    """Start TRex on a specific container"""
     container = f"clab-radix8-host{host_id:02d}"
     log_file = os.path.join(log_dir, f"{container}.log")
     
-    # First check if TRex is already running
-    check_cmd = f"docker exec {container} pgrep -f t-rex-64"
-    check_result = subprocess.run(check_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    
-    if check_result.returncode == 0:
-        return (host_id, True, "Already running")
-    
-    # Use -i flag but not -t, and run in background
-    cmd = f"docker exec -iw {trex_path} {container} ./t-rex-64 -d &"
+    cmd = f"docker exec -w {trex_path} {container} ./t-rex-64 -i"
     
     try:
-        # Execute the command directly through shell
-        os.system(cmd)
-        
-        # Log the command that was executed
         with open(log_file, 'w') as f:
-            f.write(f"Executed command: {cmd}\n")
+            process = subprocess.Popen(cmd, shell=True, stdout=f, stderr=subprocess.STDOUT)
         
-        # Give it a moment to start
-        time.sleep(3)
+        # Wait a moment to check if process started successfully
+        time.sleep(1)
+        if process.poll() is not None:
+            return (host_id, False, f"Process exited immediately with code {process.returncode}")
         
-        # Verify TRex is running
-        check_cmd = f"docker exec {container} pgrep -f t-rex-64"
-        check_result = subprocess.run(check_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        
-        if check_result.returncode == 0:
-            return (host_id, True, "Started successfully in daemon mode")
-        else:
-            # Try an alternative approach without -i flag
-            alt_cmd = f"docker exec -w {trex_path} {container} ./t-rex-64 -d > /dev/null 2>&1 &"
-            os.system(alt_cmd)
-            
-            # Give it another moment
-            time.sleep(3)
-            
-            # Check again
-            check_result = subprocess.run(check_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            if check_result.returncode == 0:
-                return (host_id, True, "Started successfully with alternative method")
-            else:
-                return (host_id, False, "Failed to start daemon")
-            
+        return (host_id, True, "Started successfully")
     except Exception as e:
         return (host_id, False, str(e))
 
@@ -110,8 +80,6 @@ def main():
                         help='Number of parallel operations')
     parser.add_argument('--log-dir', default='./trex_logs', 
                         help='Directory for logs (start only)')
-    parser.add_argument('--trex-path', default='/opt/trex/v3.04',
-                        help='Path to TRex installation')
     
     args = parser.parse_args()
     
@@ -132,7 +100,7 @@ def main():
     # Perform the requested action
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.parallel) as executor:
         if args.action == 'start':
-            futures = [executor.submit(start_trex, host_id, args.trex_path, args.log_dir) for host_id in hosts]
+            futures = [executor.submit(start_trex, host_id, log_dir=args.log_dir) for host_id in hosts]
         elif args.action == 'stop':
             futures = [executor.submit(stop_trex, host_id) for host_id in hosts]
         else:  # status
@@ -152,4 +120,4 @@ def main():
         print(f"Completed {args.action}ing TRex.")
 
 if __name__ == "__main__":
-    main() 
+    main()
