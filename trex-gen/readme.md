@@ -42,4 +42,10 @@ cd trex-gen/scripts
 python3 generate_scripts.py radix-8
 ```
 
+3. **Use containerlab to launch the topology**
+```bash
+cd ../radix-8/
+sudo clab deploy -t isis-upper.yml
+```
+
 
