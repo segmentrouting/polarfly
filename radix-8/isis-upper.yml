@@ -2,7 +2,7 @@
 name: radix8
 
 mgmt:
-  network: pfupper-mgt
+  network: upper-mgt
   ipv4-subnet: 198.18.4.0/24
 
 topology:
