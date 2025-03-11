@@ -150,35 +150,22 @@ class STLIPv6(object):
                 # Calculate packets per second for this stream
                 pps = int(pps_base * weight)
                 
-                # Create IPv6 header with VM
-                vm = STLVM()
-                
-                # Add source IPv6 address variation
-                vm.var(name="src", min_value=src_prefix + "::2", 
-                       max_value=src_prefix + "::ffff", size=16, op="random")
-                vm.write(fv_name="src", pkt_offset="IPv6.src")
-                
-                # Add destination IPv6 address variation
-                vm.var(name="dst", min_value=dst_prefix + "::2", 
-                       max_value=dst_prefix + "::ffff", size=16, op="random")
-                vm.write(fv_name="dst", pkt_offset="IPv6.dst")
-                
-                # Create base packet
-                base_pkt = Ether() / IPv6(src=src_prefix + "::1", dst=dst_prefix + "::1") / UDP()
+                # Create base packet - use fixed addresses instead of VM for IPv6
+                base_pkt = Ether() / IPv6(src=src_prefix + "::2", dst=dst_prefix + "::2") / UDP(sport=1025, dport=1025)
                 
                 # Pad to desired size
                 pad_size = max(0, size - len(base_pkt))
                 if pad_size > 0:
                     base_pkt = base_pkt / ('x' * pad_size)
                 
-                # Create stream with VM
-                vm_stream = STLStream(
-                    packet=STLPktBuilder(pkt=base_pkt, vm=vm),
+                # Create stream without VM for IPv6 (TRex limitation)
+                stream = STLStream(
+                    packet=STLPktBuilder(pkt=base_pkt),
                     mode=STLTXCont(pps=pps),
                     flow_stats=STLFlowStats(pg_id=subnet_id * 10 + size_id)
                 )
                 
-                streams.append(vm_stream)
+                streams.append(stream)
 
         return streams
 
@@ -301,35 +288,22 @@ class STLIPv6Bulk(object):
             # Parse destination network prefix
             dst_prefix = dst_subnet.split('/')[0]
             
-            # Create IPv6 header with VM
-            vm = STLVM()
-            
-            # Add source IPv6 address variation
-            vm.var(name="src", min_value=src_prefix + "::2", 
-                   max_value=src_prefix + "::ffff", size=16, op="random")
-            vm.write(fv_name="src", pkt_offset="IPv6.src")
-            
-            # Add destination IPv6 address variation
-            vm.var(name="dst", min_value=dst_prefix + "::2", 
-                   max_value=dst_prefix + "::ffff", size=16, op="random")
-            vm.write(fv_name="dst", pkt_offset="IPv6.dst")
-            
-            # Create base packet
-            base_pkt = Ether() / IPv6(src=src_prefix + "::1", dst=dst_prefix + "::1") / UDP()
+            # Create base packet - use fixed addresses instead of VM for IPv6
+            base_pkt = Ether() / IPv6(src=src_prefix + "::2", dst=dst_prefix + "::2") / UDP(sport=1025, dport=1025)
             
             # Pad to desired size
             pad_size = max(0, packet_size - len(base_pkt))
             if pad_size > 0:
                 base_pkt = base_pkt / ('x' * pad_size)
             
-            # Create stream with VM
-            vm_stream = STLStream(
-                packet=STLPktBuilder(pkt=base_pkt, vm=vm),
+            # Create stream without VM for IPv6 (TRex limitation)
+            stream = STLStream(
+                packet=STLPktBuilder(pkt=base_pkt),
                 mode=STLTXCont(pps=pps),
                 flow_stats=STLFlowStats(pg_id=subnet_id)
             )
             
-            streams.append(vm_stream)
+            streams.append(stream)
 
         return streams
 

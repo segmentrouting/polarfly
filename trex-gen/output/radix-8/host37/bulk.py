@@ -5,77 +5,44 @@ class STLIPv6Bulk(object):
 
     def get_streams(self, direction=0, **kwargs):
         # Destination subnet configurations
-        dst_subnets = [
-
-        ]
+        dst_subnets = ['fc00:0:f800:0::/64', 'fc00:0:f800:2::/64', 'fc00:0:f800:4::/64', 'fc00:0:f800:6::/64', 'fc00:0:f800:8::/64', 'fc00:0:f800:10::/64', 'fc00:0:f800:12::/64', 'fc00:0:f800:14::/64']
         
         # Source subnet
-        src_subnet = ''
+        src_subnet = 'fc00:0:f800:74::/64'
         
-        # Parse source network prefix
-        src_prefix = src_subnet.split('/')[0]
+        # Packet size (in bytes)
+        packet_size = 1250
+        
+        # Packets per second
+        pps = 1000
         
         # Create streams list
         streams = []
+        
+        # Parse source network prefix
+        src_prefix = src_subnet.split('/')[0]
         
         # Create streams for each destination subnet
         for subnet_id, dst_subnet in enumerate(dst_subnets):
             # Parse destination network prefix
             dst_prefix = dst_subnet.split('/')[0]
             
-            # Generate random host parts for src and dst
-            src_host = random.randint(1, 1000)
-            dst_host = random.randint(1, 1000)
+            # Create base packet - use fixed addresses instead of VM for IPv6
+            base_pkt = Ether() / IPv6(src=src_prefix + "::2", dst=dst_prefix + "::2") / UDP(sport=1025, dport=1025)
             
-            # Create full IPv6 addresses
-            src_ip = f"{src_prefix}{src_host}"
-            dst_ip = f"{dst_prefix}{dst_host}"
+            # Pad to desired size
+            pad_size = max(0, packet_size - len(base_pkt))
+            if pad_size > 0:
+                base_pkt = base_pkt / ('x' * pad_size)
             
-            # Create packet with IPv6 and UDP with large payload
-            base_pkt = Ether()/\
-                      IPv6(src=src_ip, dst=dst_ip)/\
-                      UDP(dport=4000+subnet_id, sport=1000+subnet_id)/\
-                      ('x' * 1400)  # Large payload for bulk traffic
-            
-            # Create a stream with the packet
-            pkt = STLPktBuilder(pkt=base_pkt)
-            
-            # Create high-bandwidth stream
+            # Create stream without VM for IPv6 (TRex limitation)
             stream = STLStream(
-                packet=pkt,
-                mode=STLTXCont(percentage=10.0),  # 10% of line rate
-                isg=10*subnet_id,  # Inter-stream gap to avoid bursts
+                packet=STLPktBuilder(pkt=base_pkt),
+                mode=STLTXCont(pps=pps),
                 flow_stats=STLFlowStats(pg_id=subnet_id)
             )
             
             streams.append(stream)
-            
-            # Add VM (Variable Machine) to randomize source and destination IPs for this subnet
-            vm_base_pkt = Ether()/\
-                         IPv6(src=src_prefix+"1", dst=dst_prefix+"1")/\
-                         UDP(dport=4000+subnet_id, sport=1000+subnet_id)/\
-                         ('x' * 1400)
-            
-            vm = STLScVmRaw([
-                # Randomize source IP
-                STLVmFlowVar(name="src_addr", min_value=1, max_value=1000, size=4, op="inc"),
-                STLVmWrFlowVar(fv_name="src_addr", pkt_offset="IPv6.src", offset_fixup=12),
-                
-                # Randomize destination IP
-                STLVmFlowVar(name="dst_addr", min_value=1, max_value=1000, size=4, op="inc"),
-                STLVmWrFlowVar(fv_name="dst_addr", pkt_offset="IPv6.dst", offset_fixup=12)
-            ])
-            
-            # Create a stream with VM for IP randomization
-            vm_pkt = STLPktBuilder(pkt=vm_base_pkt, vm=vm)
-            
-            vm_stream = STLStream(
-                packet=vm_pkt,
-                mode=STLTXCont(pps=1000),
-                flow_stats=STLFlowStats(pg_id=100+subnet_id)
-            )
-            
-            streams.append(vm_stream)
 
         return streams
 
@@ -104,7 +71,7 @@ def main():
         # Start traffic on port 0
         client.start(ports=[0])
         
-        print("Bulk traffic started on port 0")
+        print("Traffic started on port 0")
         print("Press Enter to stop...")
         input()
         
