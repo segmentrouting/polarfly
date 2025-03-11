@@ -21,7 +21,34 @@ import yaml
 import os
 import sys
 import time
-from trex_stl_lib.api import *
+
+# Add TRex client library to Python path
+TREX_CLIENT_PATHS = [
+    '/home/cisco/trex/v3.06/trex_client/interactive',
+    '/opt/trex/v3.04/trex_client/interactive',
+    '/opt/trex/v3.06/trex_client/interactive',
+    '/opt/trex/current/trex_client/interactive',
+    os.path.expanduser('~/trex/v3.04/trex_client/interactive'),
+    os.path.expanduser('~/trex/v3.06/trex_client/interactive'),
+    os.path.expanduser('~/trex/current/trex_client/interactive'),
+]
+
+for path in TREX_CLIENT_PATHS:
+    if os.path.exists(path):
+        sys.path.append(path)
+        print(f"Using TRex client library from: {path}")
+        break
+else:
+    print("ERROR: Could not find TRex client library. Please specify the correct path.")
+    print("Edit this script and update TREX_CLIENT_PATHS at the top.")
+    sys.exit(1)
+
+# Now import TRex libraries
+try:
+    from trex_stl_lib.api import *
+except ImportError:
+    print("ERROR: Failed to import TRex STL API. Check your TRex installation.")
+    sys.exit(1)
 
 def load_topology_config(topology, config_dir='../config'):
     """Load configuration for a topology"""
