@@ -1,7 +1,7 @@
 from trex_stl_lib.api import *
 import random
 
-class STLIPv6(object):
+class STLSRv6IMIX(object):
 
     def get_streams(self, direction=0, **kwargs):
         # Destination subnet configurations
@@ -9,6 +9,9 @@ class STLIPv6(object):
         
         # Source subnet
         src_subnet = 'fc00:0:f800:0::/64'
+        
+        # SRv6 encapsulation format
+        srv6_encap_format = 'fc00:0:{usid1_hex}:{usid2_hex}:{usid3_hex}:{usid4_hex}:{usid5_hex}:{usid6_hex}::'
         
         # IMIX packet sizes and weights
         imix_sizes = [128, 570, 1518]
@@ -28,6 +31,24 @@ class STLIPv6(object):
             # Parse destination network prefix
             dst_prefix = dst_subnet.split('/')[0]
             
+            # Create SRv6 segment list (simplified for demo)
+            # In a real scenario, this would be based on the topology
+            usid1_hex = format(random.randint(1, 255), 'x').zfill(4)
+            usid2_hex = format(random.randint(1, 255), 'x').zfill(4)
+            usid3_hex = format(random.randint(1, 255), 'x').zfill(4)
+            usid4_hex = format(random.randint(1, 255), 'x').zfill(4)
+            usid5_hex = format(random.randint(1, 255), 'x').zfill(4)
+            usid6_hex = format(random.randint(1, 255), 'x').zfill(4)
+            
+            srv6_sid = srv6_encap_format.format(
+                usid1_hex=usid1_hex,
+                usid2_hex=usid2_hex,
+                usid3_hex=usid3_hex,
+                usid4_hex=usid4_hex,
+                usid5_hex=usid5_hex,
+                usid6_hex=usid6_hex
+            )
+            
             # Create streams for each packet size in IMIX
             for size_id, (size, weight) in enumerate(zip(imix_sizes, imix_weights)):
                 # Calculate packets per second for this stream
@@ -46,8 +67,12 @@ class STLIPv6(object):
                        max_value=dst_prefix + "::ffff", size=16, op="random")
                 vm.write(fv_name="dst", pkt_offset="IPv6.dst")
                 
-                # Create base packet
-                base_pkt = Ether() / IPv6(src=src_prefix + "::1", dst=dst_prefix + "::1") / UDP()
+                # Create base packet with SRv6 header
+                base_pkt = (Ether() / 
+                           IPv6(src=src_prefix + "::1", dst=srv6_sid) / 
+                           IPv6ExtHdrSegmentRouting(addresses=[srv6_sid, dst_prefix + "::1"]) /
+                           IPv6(src=src_prefix + "::1", dst=dst_prefix + "::1") / 
+                           UDP())
                 
                 # Pad to desired size
                 pad_size = max(0, size - len(base_pkt))
@@ -66,7 +91,7 @@ class STLIPv6(object):
         return streams
 
 def register():
-    return STLIPv6()
+    return STLSRv6IMIX()
 
 def main():
     # Create client
@@ -80,7 +105,7 @@ def main():
         client.reset()
         
         # Create traffic profile
-        profile = STLIPv6()
+        profile = STLSRv6IMIX()
         streams = profile.get_streams()
         
         # Add all streams to port 0

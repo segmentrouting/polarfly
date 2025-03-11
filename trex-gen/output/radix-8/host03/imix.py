@@ -6,31 +6,22 @@ class STLIPv6(object):
     def get_streams(self, direction=0, **kwargs):
         # Destination subnet configurations
         dst_subnets = [
-            
-            'fc00:0:f800:106::/64',
-            'fc00:0:f800:108::/64',
-            'fc00:0:f800:110::/64',
-            'fc00:0:f800:112::/64',
-            'fc00:0:f800:114::/64',
-            'fc00:0:f800:116::/64',
-            'fc00:0:f800:118::/64',
-            'fc00:0:f800:120::/64',
-            
+
         ]
         
         # Source subnet
-        src_subnet = 'fc00:0:f800:6::/64'
-        
-        # Create streams list
-        streams = []
+        src_subnet = ''
         
         # IMIX packet sizes (in bytes)
-        imix_sizes = 
+        imix_sizes = [64, 570, 1518]
         # IMIX distribution weights
-        imix_weights = 
+        imix_weights = [0.7, 0.2, 0.1]
         
         # Parse source network prefix
         src_prefix = src_subnet.split('/')[0]
+        
+        # Create streams list
+        streams = []
         
         # Create streams for each destination subnet
         for subnet_id, dst_subnet in enumerate(dst_subnets):
@@ -61,7 +52,7 @@ class STLIPv6(object):
                 # Create stream with appropriate weight
                 stream = STLStream(
                     packet=pkt,
-                    mode=STLTXCont(pps=*weight),
+                    mode=STLTXCont(pps=1000*weight),
                     isg=10*subnet_id,  # Inter-stream gap to avoid bursts
                     flow_stats=STLFlowStats(pg_id=subnet_id*10 + size_id)
                 )

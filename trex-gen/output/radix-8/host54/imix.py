@@ -6,134 +6,22 @@ class STLIPv6(object):
     def get_streams(self, direction=0, **kwargs):
         # Destination subnet configurations
         dst_subnets = [
-            
-            'fc00:0:f800:0::/64',
-            
-            'fc00:0:f800:2::/64',
-            
-            'fc00:0:f800:4::/64',
-            
-            'fc00:0:f800:6::/64',
-            
-            'fc00:0:f800:8::/64',
-            
-            'fc00:0:f800:10::/64',
-            
-            'fc00:0:f800:12::/64',
-            
-            'fc00:0:f800:14::/64',
-            
-            'fc00:0:f800:16::/64',
-            
-            'fc00:0:f800:18::/64',
-            
-            'fc00:0:f800:20::/64',
-            
-            'fc00:0:f800:22::/64',
-            
-            'fc00:0:f800:24::/64',
-            
-            'fc00:0:f800:26::/64',
-            
-            'fc00:0:f800:28::/64',
-            
-            'fc00:0:f800:30::/64',
-            
-            'fc00:0:f800:32::/64',
-            
-            'fc00:0:f800:34::/64',
-            
-            'fc00:0:f800:36::/64',
-            
-            'fc00:0:f800:38::/64',
-            
-            'fc00:0:f800:40::/64',
-            
-            'fc00:0:f800:42::/64',
-            
-            'fc00:0:f800:44::/64',
-            
-            'fc00:0:f800:46::/64',
-            
-            'fc00:0:f800:48::/64',
-            
-            'fc00:0:f800:50::/64',
-            
-            'fc00:0:f800:52::/64',
-            
-            'fc00:0:f800:54::/64',
-            
-            'fc00:0:f800:56::/64',
-            
-            'fc00:0:f800:58::/64',
-            
-            'fc00:0:f800:60::/64',
-            
-            'fc00:0:f800:62::/64',
-            
-            'fc00:0:f800:64::/64',
-            
-            'fc00:0:f800:66::/64',
-            
-            'fc00:0:f800:68::/64',
-            
-            'fc00:0:f800:70::/64',
-            
-            'fc00:0:f800:72::/64',
-            
-            'fc00:0:f800:74::/64',
-            
-            'fc00:0:f800:76::/64',
-            
-            'fc00:0:f800:78::/64',
-            
-            'fc00:0:f800:80::/64',
-            
-            'fc00:0:f800:82::/64',
-            
-            'fc00:0:f800:84::/64',
-            
-            'fc00:0:f800:86::/64',
-            
-            'fc00:0:f800:88::/64',
-            
-            'fc00:0:f800:90::/64',
-            
-            'fc00:0:f800:92::/64',
-            
-            'fc00:0:f800:94::/64',
-            
-            'fc00:0:f800:96::/64',
-            
-            'fc00:0:f800:98::/64',
-            
-            'fc00:0:f800:100::/64',
-            
-            'fc00:0:f800:102::/64',
-            
-            'fc00:0:f800:104::/64',
-            
-            'fc00:0:f800:106::/64',
-            
-            'fc00:0:f800:110::/64',
-            
-            'fc00:0:f800:112::/64',
-            
+
         ]
         
         # Source subnet
-        src_subnet = 'fc00:0:f800:108::/64'
-        
-        # Create streams list
-        streams = []
+        src_subnet = ''
         
         # IMIX packet sizes (in bytes)
-        imix_sizes = 
+        imix_sizes = [64, 570, 1518]
         # IMIX distribution weights
-        imix_weights = 
+        imix_weights = [0.7, 0.2, 0.1]
         
         # Parse source network prefix
         src_prefix = src_subnet.split('/')[0]
+        
+        # Create streams list
+        streams = []
         
         # Create streams for each destination subnet
         for subnet_id, dst_subnet in enumerate(dst_subnets):
@@ -164,7 +52,7 @@ class STLIPv6(object):
                 # Create stream with appropriate weight
                 stream = STLStream(
                     packet=pkt,
-                    mode=STLTXCont(pps=*weight),
+                    mode=STLTXCont(pps=1000*weight),
                     isg=10*subnet_id,  # Inter-stream gap to avoid bursts
                     flow_stats=STLFlowStats(pg_id=subnet_id*10 + size_id)
                 )

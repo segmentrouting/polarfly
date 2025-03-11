@@ -39,14 +39,16 @@ python3 generate_topology_yaml.py
 2. **Generate per host TRex files and scripts**
 ```bash
 cd trex-gen/scripts
-python3 generate_scripts.py radix-8
+python3 generate_tgen_scripts.py radix-8
 ```
 
 3. **Use containerlab to launch the topology**
 ```bash
 cd ../radix-8/
+sudo clab deploy -t isis-lower.yml
 sudo clab deploy -t isis-upper.yml
 ```
+Note: be sure and enable vxlans as well
 
 4. **Start TRex on hosts**
 ```bash
@@ -113,3 +115,11 @@ service -p 0 1 --off
 quit
 ```
 
+6. **Traffic Generator**
+```bash
+# Start traffic on specific hosts
+python3 traffic_generator.py radix-8 start --type imix --src host00 host01 --dst host29 host30 host31 host32
+
+# Stop traffic on specific hosts
+python3 traffic_generator.py radix-8 stop --src host00 host01
+```
