@@ -21,6 +21,7 @@ import yaml
 import os
 import sys
 import time
+import re
 
 # Add TRex client library to Python path
 TREX_CLIENT_PATHS = [
@@ -60,6 +61,42 @@ def load_topology_config(topology, config_dir='../config'):
     except Exception as e:
         print(f"Error loading configuration: {e}")
         return None
+
+def fix_traffic_script(script_path):
+    """Fix common issues in traffic scripts"""
+    try:
+        with open(script_path, 'r') as f:
+            content = f.read()
+        
+        # Check for empty imix_sizes and imix_weights
+        if 'imix_sizes = ' in content and 'imix_weights = ' in content:
+            # Add default IMIX values
+            content = content.replace(
+                'imix_sizes = ', 
+                'imix_sizes = [64, 570, 1518]'
+            )
+            content = content.replace(
+                'imix_weights = ', 
+                'imix_weights = [0.7, 0.2, 0.1]'
+            )
+        
+        # Fix the *weight syntax error
+        content = re.sub(
+            r'STLTXCont\(pps=\*weight\)', 
+            r'STLTXCont(pps=1000*weight)', 
+            content
+        )
+        
+        # Write the fixed content back
+        with open(script_path, 'w') as f:
+            f.write(content)
+            
+        print(f"Fixed issues in {script_path}")
+        return True
+        
+    except Exception as e:
+        print(f"Error fixing script {script_path}: {e}")
+        return False
 
 class TrafficController:
     def __init__(self, topology, config_dir='../config'):
@@ -128,8 +165,78 @@ class TrafficController:
                 
                 # Start traffic with the appropriate script
                 script_path = f"{host}/{script_name}"
-                client.start_line(f" -f {script_path} --port 0")
-                print(f"Started {traffic_type} traffic on {host}")
+                
+                # Check if the script exists
+                output_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'output', self.topology)
+                full_script_path = os.path.join(output_dir, script_path)
+                
+                if not os.path.exists(full_script_path):
+                    print(f"Error: Script {full_script_path} does not exist")
+                    continue
+                    
+                print(f"Using script: {full_script_path}")
+                
+                # Fix common issues in the script
+                fix_traffic_script(full_script_path)
+                
+                # Try to start traffic
+                try:
+                    client.start_line(f" -f {script_path} --port 0")
+                    print(f"Started {traffic_type} traffic on {host}")
+                    
+                    # Verify traffic is actually running
+                    time.sleep(1)
+                    stats = client.get_stats()
+                    if 'global' in stats and stats['global']['tx_pps'] > 0:
+                        print(f"Confirmed traffic is running on {host}: {stats['global']['tx_pps']} pps")
+                    else:
+                        print(f"Warning: Traffic may not be running on {host}. Stats: {stats}")
+                        
+                except STLError as e:
+                    print(f"Failed to start traffic on {host} with error: {e}")
+                    print("Trying alternative method...")
+                    
+                    # Try alternative method - load the script directly
+                    try:
+                        # Create a temporary directory for the script
+                        import tempfile
+                        temp_dir = tempfile.mkdtemp()
+                        temp_script = os.path.join(temp_dir, "temp_script.py")
+                        
+                        # Copy the script content to the temporary file
+                        with open(full_script_path, 'r') as src, open(temp_script, 'w') as dst:
+                            dst.write(src.read())
+                        
+                        # Add the temporary directory to the Python path
+                        sys.path.append(temp_dir)
+                        
+                        # Import the script
+                        import importlib.util
+                        spec = importlib.util.spec_from_file_location("temp_script", temp_script)
+                        module = importlib.util.module_from_spec(spec)
+                        spec.loader.exec_module(module)
+                        
+                        # Get the profile
+                        if hasattr(module, 'register'):
+                            profile = module.register()
+                        else:
+                            # Try to find a class that starts with STL
+                            for attr_name in dir(module):
+                                if attr_name.startswith('STL') and attr_name != 'STLClient':
+                                    profile_class = getattr(module, attr_name)
+                                    profile = profile_class()
+                                    break
+                            else:
+                                raise ValueError("Could not find profile class in module")
+                        
+                        # Get streams and start traffic
+                        streams = profile.get_streams()
+                        client.add_streams(streams, ports=[0])
+                        client.start(ports=[0])
+                        print(f"Started {traffic_type} traffic on {host} using alternative method")
+                        
+                    except Exception as e2:
+                        print(f"Alternative method also failed: {e2}")
                 
             except STLError as e:
                 print(f"Failed to start traffic on {host}: {e}")
