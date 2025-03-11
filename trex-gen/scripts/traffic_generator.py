@@ -6,8 +6,8 @@ This script controls traffic generation across multiple hosts in the Polarfly to
 It can start and stop traffic with different patterns between specified source and destination hosts.
 
 Usage:
-  python3 traffic_controller.py radix-8 start --type imix --src host00 host01 --dst host02 host03
-  python3 traffic_controller.py radix-8 stop --src host00 host01
+  python3 traffic_generator.py radix-8 start --type imix --src host00 host01 --dst host02 host03
+  python3 traffic_generator.py radix-8 stop --src host00 host01
 
 Options:
   start/stop       Action to perform

@@ -6,7 +6,7 @@ This script generates TRex traffic scripts and configuration files for all hosts
 in the Polarfly topology based on the topology YAML configuration.
 
 Usage:
-  python3 generate_scripts.py radix-8      # Generate scripts for radix-8 topology
+  python3 generate_traffic_gen_scripts.py radix-8      # Generate scripts for radix-8 topology
 
 The script reads the topology configuration from ../config/topologies/[topology].yaml
 and generates output files in ../output/[topology]/ organized by host.

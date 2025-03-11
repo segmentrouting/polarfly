@@ -6,9 +6,9 @@ This script manages TRex servers across multiple containers in the Polarfly topo
 It can start, stop, and check the status of TRex instances on specified hosts or all hosts.
 
 Usage:
-  python3 manage_trex.py start --hosts 0 1 2 3  # Start TRex on specific hosts
-  python3 manage_trex.py stop --all              # Stop TRex on all hosts
-  python3 manage_trex.py status --all            # Check status of all TRex instances
+  python3 trex_server_start_stop.py start --hosts 0 1 2 3  # Start TRex on specific hosts
+  python3 trex_server_start_stop.py stop --all              # Stop TRex on all hosts
+  python3 trex_server_start_stop.py status --all            # Check status of all TRex instances
 
 Options:
   --hosts LIST     Specific host IDs to manage
