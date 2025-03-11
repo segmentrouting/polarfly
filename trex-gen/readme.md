@@ -52,28 +52,29 @@ sudo clab deploy -t isis-upper.yml
 ```bash
 cd trex-gen/scripts
 # Start TRex on all hosts
-python3 manage_trex.py start --all
+python3 trex_server.py start --all
 
 # Stop TRex on all hosts
-python3 manage_trex.py stop --all
+python3 trex_server.py stop --all
 
 # Check status of all TRex instances
-python3 manage_trex.py status --all
+python3 trex_server.py status --all
 
 # Start/stop/check specific hosts
-python3 manage_trex.py start --hosts 0 1 2 3
-python3 manage_trex.py stop --hosts 0 1 2 3
-python3 manage_trex.py status --hosts 0 1 2 3
+python3 trex_server.py start --hosts 0 1 2 3
+python3 trex_server.py stop --hosts 0 1 2 3
+python3 trex_server.py status --hosts 0 1 2 3
 
 # on polarfly lower-tier
-python3 manage_trex.py start --hosts 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 
-python3 manage_trex.py stop --hosts 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28
-python3 manage_trex.py status --hosts 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28
+python3 trex_server.py start --hosts 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 
+python3 trex_server.py stop --hosts 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28
+python3 trex_server.py status --hosts 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28
 
 # on polarfly upper-tier
-python3 manage_trex.py start --hosts 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56
-python3 manage_trex.py stop --hosts 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56
-python3 manage_trex.py status --hosts 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56
+python3 trex_server.py start --hosts 29 30 31 32
+python3 trex_server.py start --hosts 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56
+python3 trex_server.py stop --hosts 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56
+python3 trex_server.py status --hosts 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56
 ```
 
 5. **TRex console**
