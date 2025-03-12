@@ -9,7 +9,6 @@ class STLIPv6Bulk(object):
             'fc00:0:f800:4::',
             'fc00:0:f800:36::',
             'fc00:0:f800:37::',
-            'fc00:0:f800:68::',
             'fc00:0:f800:100::'
         ]        
         # Packet size and rate

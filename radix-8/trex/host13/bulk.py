@@ -8,7 +8,6 @@ class STLIPv6Bulk(object):
         self.dst_subnets = [
             'fc00:0:f800:28::',
             'fc00:0:f800:62::',
-            'fc00:0:f800:94::',
             'fc00:0:f800:10::'
         ]        
         # Packet size and rate

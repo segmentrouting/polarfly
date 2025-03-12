@@ -7,7 +7,6 @@ class STLIPv6Imix(object):
         self.src_addr = 'fc00:0:f800::2'
         self.dst_subnets = [
             'fc00:0:f800:8::',
-            'fc00:0:f800:40::',
             'fc00:0:f800:72::',
             'fc00:0:f800:104::'
         ]

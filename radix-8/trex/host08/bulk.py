@@ -7,7 +7,6 @@ class STLIPv6Bulk(object):
         self.src_addr = 'fc00:0:f800:0::2'
         self.dst_subnets = [
             'fc00:0:f800:18::',
-            'fc00:0:f800:52::',
             'fc00:0:f800:84::',
             'fc00:0:f800:0::'
         ]        

@@ -6,7 +6,6 @@ class STLIPv6Imix(object):
         # Source and destination IPv6 addresses
         self.src_addr = 'fc00:0:f800::2'
         self.dst_subnets = [
-            'fc00:0:f800:6::',
             'fc00:0:f800:38::',
             'fc00:0:f800:70::',
             'fc00:0:f800:102::'

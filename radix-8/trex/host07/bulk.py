@@ -6,7 +6,6 @@ class STLIPv6Bulk(object):
         # Source and destination IPv6 addresses
         self.src_addr = 'fc00:0:f800:0::2'
         self.dst_subnets = [
-            'fc00:0:f800:16::',
             'fc00:0:f800:50::',
             'fc00:0:f800:82::',
             'fc00:0:f800:112::'
