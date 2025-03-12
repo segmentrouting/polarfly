@@ -131,6 +131,68 @@ a.connect()
 a.reset()
 a.stop(ports = [0])
 
+# host21
+a = STLClient(server = "198.18.4.221")
+a.connect()
+a.reset()
+a.stop(ports = [0])
+
+# host22
+a = STLClient(server = "198.18.4.222")
+a.connect()
+a.reset()
+a.stop(ports = [0])
+
+# host23
+a = STLClient(server = "198.18.4.223")
+a.connect()
+a.reset()
+a.stop(ports = [0])
+
+# host24
+a = STLClient(server = "198.18.4.224")
+a.connect()
+a.reset()
+a.stop(ports = [0])
+
+# host25
+a = STLClient(server = "198.18.4.225")
+a.connect()
+a.reset()
+a.stop(ports = [0])
+
+# host26
+a = STLClient(server = "198.18.4.226")
+a.connect()
+a.reset()
+a.stop(ports = [0])
+
+# host27
+a = STLClient(server = "198.18.4.227")
+a.connect()
+a.reset()
+a.stop(ports = [0])
+
+# host28
+a = STLClient(server = "198.18.4.228")
+a.connect()
+a.reset()
+a.stop(ports = [0])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

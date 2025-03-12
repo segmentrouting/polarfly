@@ -9,13 +9,13 @@ from trex_stl_lib.api import *
 a = STLClient(server = "198.18.4.200")
 a.connect()
 a.reset()
-a.start_line (" -f ../host00/imix.py -m 40mbps --port 0")
+a.start_line (" -f ../host00/imix.py -m 20mbps --port 0")
 
 # host01
 a = STLClient(server = "198.18.4.201")
 a.connect()
 a.reset()
-a.start_line (" -f ../host01/imix.py -m 30mbps --port 0")
+a.start_line (" -f ../host01/imix.py -m 10mbps --port 0")
 
 # host02
 a = STLClient(server = "198.18.4.202")
@@ -39,13 +39,13 @@ a.start_line (" -f ../host04/imix.py -m 10mbps --port 0")
 a = STLClient(server = "198.18.4.205")
 a.connect()
 a.reset()
-a.start_line (" -f ../host05/imix.py -m 40mbps --port 0")
+a.start_line (" -f ../host05/imix.py -m 20mbps --port 0")
 
 # host06
 a = STLClient(server = "198.18.4.206")
 a.connect()
 a.reset()
-a.start_line (" -f ../host06/imix.py -m 30mbps --port 0")
+a.start_line (" -f ../host06/imix.py -m 10mbps --port 0")
 
 # host07
 a = STLClient(server = "198.18.4.207")
@@ -130,5 +130,67 @@ a = STLClient(server = "198.18.4.220")
 a.connect()
 a.reset()
 a.start_line (" -f ../host20/imix.py -m 10mbps --port 0")
+
+# host21
+a = STLClient(server = "198.18.4.221")
+a.connect()
+a.reset()
+a.start_line (" -f ../host21/imix.py -m 10mbps --port 0")
+
+# host22
+a = STLClient(server = "198.18.4.222")
+a.connect()
+a.reset()
+a.start_line (" -f ../host22/imix.py -m 10mbps --port 0")
+
+# host23
+a = STLClient(server = "198.18.4.223")
+a.connect()
+a.reset()
+a.start_line (" -f ../host23/imix.py -m 10mbps --port 0")
+
+# host24
+a = STLClient(server = "198.18.4.224")
+a.connect()
+a.reset()
+a.start_line (" -f ../host24/imix.py -m 10mbps --port 0")
+
+# host25
+a = STLClient(server = "198.18.4.225")
+a.connect()
+a.reset()
+a.start_line (" -f ../host25/imix.py -m 10mbps --port 0")
+
+# host26
+a = STLClient(server = "198.18.4.226")
+a.connect()
+a.reset()
+a.start_line (" -f ../host26/imix.py -m 10mbps --port 0")
+
+# host27
+a = STLClient(server = "198.18.4.227")
+a.connect()
+a.reset()
+a.start_line (" -f ../host27/imix.py -m 10mbps --port 0")
+
+# host28
+a = STLClient(server = "198.18.4.228")
+a.connect()
+a.reset()
+a.start_line (" -f ../host28/imix.py -m 10mbps --port 0")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
