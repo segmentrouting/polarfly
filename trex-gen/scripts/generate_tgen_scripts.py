@@ -87,7 +87,7 @@ def generate_imix_script(host, config, output_dir):
     print(f"Selected destination subnets: {dst_subnets}")
     
     # Get IMIX configuration if available
-    imix_sizes = [64, 570, 1518]  # Default values
+    imix_sizes = [128, 570, 1280]  # Default values (changed max size to 1280)
     imix_weights = [0.7, 0.2, 0.1]  # Default values
     pps_base = 100  # Default value
     
@@ -95,6 +95,8 @@ def generate_imix_script(host, config, output_dir):
         imix_config = config['traffic_patterns']['imix']
         if 'packet_sizes' in imix_config and len(imix_config['packet_sizes']) > 0:
             imix_sizes = imix_config['packet_sizes']
+            # Ensure max packet size is 1280
+            imix_sizes = [min(size, 1280) for size in imix_sizes]
         if 'weights' in imix_config and len(imix_config['weights']) > 0:
             # Convert to normalized weights
             total = sum(imix_config['weights'])
@@ -114,63 +116,78 @@ def generate_imix_script(host, config, output_dir):
         print(f"Warning: No subnet found for {host}, using default")
         src_subnet = "fc00:0:f800:0::/64"
     
+    # Extract source prefix without /64
+    src_prefix = src_subnet.split('/')[0]
+    if src_prefix.endswith(':'):
+        src_prefix = src_prefix[:-1]
+    
+    # Create source address
+    src_addr = f"{src_prefix}::2"
+    
     with open(script_path, 'w') as f:
         f.write(f"""from trex_stl_lib.api import *
-import random
 
-class STLIPv6(object):
+class STLIPv6Imix(object):
+
+    def __init__(self):
+        # Source and destination IPv6 addresses
+        self.src_addr = '{src_addr}'
+        self.dst_subnets = {dst_subnets}
+        
+        # IMIX properties
+        self.imix_table = [
+            {{'size': {imix_sizes[0]}, 'pps': {int(pps_base * imix_weights[0])}, 'isg': 0}},
+            {{'size': {imix_sizes[1]}, 'pps': {int(pps_base * imix_weights[1])}, 'isg': 0.1}},
+            {{'size': {imix_sizes[2]}, 'pps': {int(pps_base * imix_weights[2])}, 'isg': 0.2}}
+        ]
+
+    def create_stream(self, dst_addr, size, pps, isg, stream_id):
+        # Create base packet with IPv6
+        base_pkt = Ether() / IPv6(src=self.src_addr, dst=dst_addr) / UDP(sport=1025, dport=1025)
+        
+        # Pad to desired size
+        pad_size = max(0, size - len(base_pkt))
+        if pad_size > 0:
+            base_pkt = base_pkt / ('x' * pad_size)
+        
+        # Create stream
+        return STLStream(
+            isg=isg,
+            packet=STLPktBuilder(pkt=base_pkt),
+            mode=STLTXCont(pps=pps),
+            flow_stats=STLFlowStats(pg_id=stream_id)
+        )
 
     def get_streams(self, direction=0, **kwargs):
-        # Destination subnet configurations
-        dst_subnets = {dst_subnets}
-        
-        # Source subnet
-        src_subnet = '{src_subnet}'
-        
-        # IMIX packet sizes and weights
-        imix_sizes = {imix_sizes}
-        imix_weights = {imix_weights}
-        
-        # Base packets per second
-        pps_base = {pps_base}
-        
-        # Create streams list
         streams = []
+        stream_id = 0
         
-        # Parse source network prefix
-        src_prefix = src_subnet.split('/')[0]
-        
-        # Create streams for each destination subnet
-        for subnet_id, dst_subnet in enumerate(dst_subnets):
+        # Create streams for each destination subnet and IMIX size
+        for dst_subnet in self.dst_subnets:
             # Parse destination network prefix
             dst_prefix = dst_subnet.split('/')[0]
+            if dst_prefix.endswith(':'):
+                dst_prefix = dst_prefix[:-1]
             
-            # Create streams for each packet size in IMIX
-            for size_id, (size, weight) in enumerate(zip(imix_sizes, imix_weights)):
-                # Calculate packets per second for this stream
-                pps = int(pps_base * weight)
-                
-                # Create base packet - use fixed addresses instead of VM for IPv6
-                base_pkt = Ether() / IPv6(src=src_prefix + "::2", dst=dst_prefix + "::2") / UDP(sport=1025, dport=1025)
-                
-                # Pad to desired size
-                pad_size = max(0, size - len(base_pkt))
-                if pad_size > 0:
-                    base_pkt = base_pkt / ('x' * pad_size)
-                
-                # Create stream without VM for IPv6 (TRex limitation)
-                stream = STLStream(
-                    packet=STLPktBuilder(pkt=base_pkt),
-                    mode=STLTXCont(pps=pps),
-                    flow_stats=STLFlowStats(pg_id=subnet_id * 10 + size_id)
-                )
-                
-                streams.append(stream)
-
+            # Create multiple destination addresses for this subnet
+            dst_addrs = [f"{{dst_prefix}}::{{i}}" for i in range(2, 10)]
+            
+            for dst_addr in dst_addrs:
+                for imix in self.imix_table:
+                    stream = self.create_stream(
+                        dst_addr,
+                        imix['size'],
+                        imix['pps'],
+                        imix['isg'],
+                        stream_id
+                    )
+                    streams.append(stream)
+                    stream_id += 1
+        
         return streams
 
 def register():
-    return STLIPv6()
+    return STLIPv6Imix()
 
 def main():
     # Create client
@@ -184,7 +201,7 @@ def main():
         client.reset()
         
         # Create traffic profile
-        profile = STLIPv6()
+        profile = STLIPv6Imix()
         streams = profile.get_streams()
         
         # Add all streams to port 0
@@ -217,6 +234,7 @@ if __name__ == "__main__":
 def generate_bulk_script(host, config, output_dir):
     """Generate bulk traffic script for a host"""
     host_config = config['hosts'][host]
+    print(f"\nGenerating bulk script for {host}")
     
     # Get source subnet from host
     src_subnet = get_host_ipv6_subnet(host_config)
@@ -243,7 +261,7 @@ def generate_bulk_script(host, config, output_dir):
     if 'traffic_patterns' in config and 'bulk' in config['traffic_patterns']:
         bulk_config = config['traffic_patterns']['bulk']
         if 'packet_size' in bulk_config:
-            packet_size = bulk_config['packet_size']
+            packet_size = min(bulk_config['packet_size'], 1280)  # Limit to 1280
         if 'pps' in bulk_config:
             pps = bulk_config['pps']
     
@@ -256,55 +274,66 @@ def generate_bulk_script(host, config, output_dir):
     
     # If no source subnet, use a default
     if not src_subnet:
+        print(f"Warning: No subnet found for {host}, using default")
         src_subnet = "fc00:0:f800:0::/64"
+    
+    # Extract source prefix without /64
+    src_prefix = src_subnet.split('/')[0]
+    if src_prefix.endswith(':'):
+        src_prefix = src_prefix[:-1]
+    
+    # Create source address
+    src_addr = f"{src_prefix}::2"
     
     with open(script_path, 'w') as f:
         f.write(f"""from trex_stl_lib.api import *
-import random
 
 class STLIPv6Bulk(object):
 
+    def __init__(self):
+        # Source and destination IPv6 addresses
+        self.src_addr = '{src_addr}'
+        self.dst_subnets = {dst_subnets}
+        
+        # Packet size and rate
+        self.packet_size = {packet_size}
+        self.pps = {pps}
+
+    def create_stream(self, dst_addr, stream_id):
+        # Create base packet with IPv6
+        base_pkt = Ether() / IPv6(src=self.src_addr, dst=dst_addr) / UDP(sport=1025, dport=1025)
+        
+        # Pad to desired size
+        pad_size = max(0, self.packet_size - len(base_pkt))
+        if pad_size > 0:
+            base_pkt = base_pkt / ('x' * pad_size)
+        
+        # Create stream
+        return STLStream(
+            packet=STLPktBuilder(pkt=base_pkt),
+            mode=STLTXCont(pps=self.pps),
+            flow_stats=STLFlowStats(pg_id=stream_id)
+        )
+
     def get_streams(self, direction=0, **kwargs):
-        # Destination subnet configurations
-        dst_subnets = {dst_subnets}
-        
-        # Source subnet
-        src_subnet = '{src_subnet}'
-        
-        # Packet size (in bytes)
-        packet_size = {packet_size}
-        
-        # Packets per second
-        pps = {pps}
-        
-        # Create streams list
         streams = []
-        
-        # Parse source network prefix
-        src_prefix = src_subnet.split('/')[0]
+        stream_id = 0
         
         # Create streams for each destination subnet
-        for subnet_id, dst_subnet in enumerate(dst_subnets):
+        for dst_subnet in self.dst_subnets:
             # Parse destination network prefix
             dst_prefix = dst_subnet.split('/')[0]
+            if dst_prefix.endswith(':'):
+                dst_prefix = dst_prefix[:-1]
             
-            # Create base packet - use fixed addresses instead of VM for IPv6
-            base_pkt = Ether() / IPv6(src=src_prefix + "::2", dst=dst_prefix + "::2") / UDP(sport=1025, dport=1025)
+            # Create multiple destination addresses for this subnet
+            dst_addrs = [f"{{dst_prefix}}::{{i}}" for i in range(2, 10)]
             
-            # Pad to desired size
-            pad_size = max(0, packet_size - len(base_pkt))
-            if pad_size > 0:
-                base_pkt = base_pkt / ('x' * pad_size)
-            
-            # Create stream without VM for IPv6 (TRex limitation)
-            stream = STLStream(
-                packet=STLPktBuilder(pkt=base_pkt),
-                mode=STLTXCont(pps=pps),
-                flow_stats=STLFlowStats(pg_id=subnet_id)
-            )
-            
-            streams.append(stream)
-
+            for dst_addr in dst_addrs:
+                stream = self.create_stream(dst_addr, stream_id)
+                streams.append(stream)
+                stream_id += 1
+        
         return streams
 
 def register():
@@ -355,6 +384,7 @@ if __name__ == "__main__":
 def generate_srv6_imix_script(host, config, output_dir):
     """Generate SRv6 IMIX traffic script for a host"""
     host_config = config['hosts'][host]
+    print(f"\nGenerating SRv6 IMIX script for {host}")
     
     # Get source subnet from host
     src_subnet = get_host_ipv6_subnet(host_config)
@@ -386,12 +416,12 @@ def generate_srv6_imix_script(host, config, output_dir):
         return None
     
     # Get SRv6 configuration
-    srv6_encap_format = 'fc00:0:{usid1_hex}:{usid2_hex}:{usid3_hex}:{usid4_hex}:{usid5_hex}:{usid6_hex}::'
+    srv6_encap_format = 'fc00:0:fe00:fe00:fe04:fe04::'
     if 'srv6_defaults' in config and 'encap_format' in config['srv6_defaults']:
         srv6_encap_format = config['srv6_defaults']['encap_format']
     
     # Get IMIX configuration if available
-    imix_sizes = [64, 570, 1518]  # Default values
+    imix_sizes = [128, 570, 1280]  # Default values (changed max size to 1280)
     imix_weights = [0.7, 0.2, 0.1]  # Default values
     pps_base = 100  # Default value
     
@@ -399,6 +429,8 @@ def generate_srv6_imix_script(host, config, output_dir):
         imix_config = config['traffic_patterns']['imix']
         if 'packet_sizes' in imix_config and len(imix_config['packet_sizes']) > 0:
             imix_sizes = imix_config['packet_sizes']
+            # Ensure max packet size is 1280
+            imix_sizes = [min(size, 1280) for size in imix_sizes]
         if 'weights' in imix_config and len(imix_config['weights']) > 0:
             # Convert to normalized weights
             total = sum(imix_config['weights'])
@@ -410,99 +442,82 @@ def generate_srv6_imix_script(host, config, output_dir):
     host_dir = os.path.join(output_dir, host)
     os.makedirs(host_dir, exist_ok=True)
     
+    # Extract source prefix without /64
+    src_prefix = src_subnet.split('/')[0]
+    if src_prefix.endswith(':'):
+        src_prefix = src_prefix[:-1]
+    
+    # Create source address
+    src_addr = f"{src_prefix}::2"
+    
     # Generate SRv6 IMIX script
     script_path = os.path.join(host_dir, 'srv6_imix.py')
     with open(script_path, 'w') as f:
         f.write(f"""from trex_stl_lib.api import *
-import random
 
 class STLSRv6IMIX(object):
 
+    def __init__(self):
+        # Source and destination IPv6 addresses
+        self.src_addr = '{src_addr}'
+        self.dst_subnets = {dst_subnets}
+        
+        # SRv6 segment routing address
+        self.srv6_sid = '{srv6_encap_format}'
+        
+        # IMIX properties
+        self.imix_table = [
+            {{'size': {imix_sizes[0]}, 'pps': {int(pps_base * imix_weights[0])}, 'isg': 0}},
+            {{'size': {imix_sizes[1]}, 'pps': {int(pps_base * imix_weights[1])}, 'isg': 0.1}},
+            {{'size': {imix_sizes[2]}, 'pps': {int(pps_base * imix_weights[2])}, 'isg': 0.2}}
+        ]
+
+    def create_stream(self, dst_addr, size, pps, isg, stream_id):
+        # Create base packet with SRv6
+        base_pkt = (Ether() / 
+                   IPv6(src=self.src_addr, dst=self.srv6_sid) /
+                   IPv6(src=self.src_addr, dst=dst_addr) /
+                   UDP(sport=1025, dport=1025))
+        
+        # Pad to desired size
+        pad_size = max(0, size - len(base_pkt))
+        if pad_size > 0:
+            base_pkt = base_pkt / ('x' * pad_size)
+        
+        # Create stream
+        return STLStream(
+            isg=isg,
+            packet=STLPktBuilder(pkt=base_pkt),
+            mode=STLTXCont(pps=pps),
+            flow_stats=STLFlowStats(pg_id=stream_id)
+        )
+
     def get_streams(self, direction=0, **kwargs):
-        # Destination subnet configurations
-        dst_subnets = {dst_subnets}
-        
-        # Source subnet
-        src_subnet = '{src_subnet}'
-        
-        # SRv6 encapsulation format
-        srv6_encap_format = '{srv6_encap_format}'
-        
-        # IMIX packet sizes and weights
-        imix_sizes = {imix_sizes}
-        imix_weights = {imix_weights}
-        
-        # Base packets per second
-        pps_base = {pps_base}
-        
-        # Create streams list
         streams = []
+        stream_id = 0
         
-        # Parse source network prefix
-        src_prefix = src_subnet.split('/')[0]
-        
-        # Create streams for each destination subnet
-        for subnet_id, dst_subnet in enumerate(dst_subnets):
+        # Create streams for each destination subnet and IMIX size
+        for dst_subnet in self.dst_subnets:
             # Parse destination network prefix
             dst_prefix = dst_subnet.split('/')[0]
+            if dst_prefix.endswith(':'):
+                dst_prefix = dst_prefix[:-1]
             
-            # Create SRv6 segment list (simplified for demo)
-            # In a real scenario, this would be based on the topology
-            usid1_hex = format(random.randint(1, 255), 'x').zfill(4)
-            usid2_hex = format(random.randint(1, 255), 'x').zfill(4)
-            usid3_hex = format(random.randint(1, 255), 'x').zfill(4)
-            usid4_hex = format(random.randint(1, 255), 'x').zfill(4)
-            usid5_hex = format(random.randint(1, 255), 'x').zfill(4)
-            usid6_hex = format(random.randint(1, 255), 'x').zfill(4)
+            # Create multiple destination addresses for this subnet
+            dst_addrs = [f"{{dst_prefix}}::{{i}}" for i in range(2, 6)]
             
-            srv6_sid = srv6_encap_format.format(
-                usid1_hex=usid1_hex,
-                usid2_hex=usid2_hex,
-                usid3_hex=usid3_hex,
-                usid4_hex=usid4_hex,
-                usid5_hex=usid5_hex,
-                usid6_hex=usid6_hex
-            )
-            
-            # Create streams for each packet size in IMIX
-            for size_id, (size, weight) in enumerate(zip(imix_sizes, imix_weights)):
-                # Calculate packets per second for this stream
-                pps = int(pps_base * weight)
-                
-                # Create IPv6 header with VM
-                vm = STLVM()
-                
-                # Add source IPv6 address variation
-                vm.var(name="src", min_value=src_prefix + "::2", 
-                       max_value=src_prefix + "::ffff", size=16, op="random")
-                vm.write(fv_name="src", pkt_offset="IPv6.src")
-                
-                # Add destination IPv6 address variation
-                vm.var(name="dst", min_value=dst_prefix + "::2", 
-                       max_value=dst_prefix + "::ffff", size=16, op="random")
-                vm.write(fv_name="dst", pkt_offset="IPv6.dst")
-                
-                # Create base packet with SRv6 header
-                base_pkt = (Ether() / 
-                           IPv6(src=src_prefix + "::1", dst=srv6_sid) / 
-                           IPv6ExtHdrSegmentRouting(addresses=[srv6_sid, dst_prefix + "::1"]) /
-                           IPv6(src=src_prefix + "::1", dst=dst_prefix + "::1") / 
-                           UDP())
-                
-                # Pad to desired size
-                pad_size = max(0, size - len(base_pkt))
-                if pad_size > 0:
-                    base_pkt = base_pkt / ('x' * pad_size)
-                
-                # Create stream with VM
-                vm_stream = STLStream(
-                    packet=STLPktBuilder(pkt=base_pkt, vm=vm),
-                    mode=STLTXCont(pps=pps),
-                    flow_stats=STLFlowStats(pg_id=subnet_id * 10 + size_id)
-                )
-                
-                streams.append(vm_stream)
-
+            for dst_addr in dst_addrs:
+                for imix in self.imix_table:
+                    stream = self.create_stream(
+                        dst_addr,
+                        imix['size'],
+                        imix['pps'],
+                        imix['isg'],
+                        stream_id
+                    )
+                    streams.append(stream)
+                    stream_id += 1
+        
         return streams
 
 def register():
@@ -547,11 +562,13 @@ if __name__ == "__main__":
     main() 
 """)
     
+    print(f"Generated SRv6 IMIX script for {host}")
     return script_path
 
 def generate_srv6_bulk_script(host, config, output_dir):
     """Generate SRv6 bulk traffic script for a host"""
     host_config = config['hosts'][host]
+    print(f"\nGenerating SRv6 bulk script for {host}")
     
     # Get source subnet from host
     src_subnet = get_host_ipv6_subnet(host_config)
@@ -583,7 +600,7 @@ def generate_srv6_bulk_script(host, config, output_dir):
         return None
     
     # Get SRv6 configuration
-    srv6_encap_format = 'fc00:0:{usid1_hex}:{usid2_hex}:{usid3_hex}:{usid4_hex}:{usid5_hex}:{usid6_hex}::'
+    srv6_encap_format = 'fc00:0:fe00:fe00:fe04:fe04::'
     if 'srv6_defaults' in config and 'encap_format' in config['srv6_defaults']:
         srv6_encap_format = config['srv6_defaults']['encap_format']
     
@@ -594,7 +611,7 @@ def generate_srv6_bulk_script(host, config, output_dir):
     if 'traffic_patterns' in config and 'bulk' in config['traffic_patterns']:
         bulk_config = config['traffic_patterns']['bulk']
         if 'packet_size' in bulk_config:
-            packet_size = bulk_config['packet_size']
+            packet_size = min(bulk_config['packet_size'], 1280)  # Limit to 1280
         if 'pps' in bulk_config:
             pps = bulk_config['pps']
     
@@ -602,93 +619,71 @@ def generate_srv6_bulk_script(host, config, output_dir):
     host_dir = os.path.join(output_dir, host)
     os.makedirs(host_dir, exist_ok=True)
     
+    # Extract source prefix without /64
+    src_prefix = src_subnet.split('/')[0]
+    if src_prefix.endswith(':'):
+        src_prefix = src_prefix[:-1]
+    
+    # Create source address
+    src_addr = f"{src_prefix}::2"
+    
     # Generate SRv6 bulk script
     script_path = os.path.join(host_dir, 'srv6_bulk.py')
     with open(script_path, 'w') as f:
         f.write(f"""from trex_stl_lib.api import *
-import random
 
 class STLSRv6Bulk(object):
 
+    def __init__(self):
+        # Source and destination IPv6 addresses
+        self.src_addr = '{src_addr}'
+        self.dst_subnets = {dst_subnets}
+        
+        # SRv6 segment routing address
+        self.srv6_sid = '{srv6_encap_format}'
+        
+        # Packet size and rate
+        self.packet_size = {packet_size}
+        self.pps = {pps}
+
+    def create_stream(self, dst_addr, stream_id):
+        # Create base packet with SRv6
+        base_pkt = (Ether() / 
+                   IPv6(src=self.src_addr, dst=self.srv6_sid) /
+                   IPv6(src=self.src_addr, dst=dst_addr) /
+                   UDP(sport=1025, dport=1025))
+        
+        # Pad to desired size
+        pad_size = max(0, self.packet_size - len(base_pkt))
+        if pad_size > 0:
+            base_pkt = base_pkt / ('x' * pad_size)
+        
+        # Create stream
+        return STLStream(
+            packet=STLPktBuilder(pkt=base_pkt),
+            mode=STLTXCont(pps=self.pps),
+            flow_stats=STLFlowStats(pg_id=stream_id)
+        )
+
     def get_streams(self, direction=0, **kwargs):
-        # Destination subnet configurations
-        dst_subnets = {dst_subnets}
-        
-        # Source subnet
-        src_subnet = '{src_subnet}'
-        
-        # SRv6 encapsulation format
-        srv6_encap_format = '{srv6_encap_format}'
-        
-        # Packet size (in bytes)
-        packet_size = {packet_size}
-        
-        # Packets per second
-        pps = {pps}
-        
-        # Create streams list
         streams = []
-        
-        # Parse source network prefix
-        src_prefix = src_subnet.split('/')[0]
+        stream_id = 0
         
         # Create streams for each destination subnet
-        for subnet_id, dst_subnet in enumerate(dst_subnets):
+        for dst_subnet in self.dst_subnets:
             # Parse destination network prefix
             dst_prefix = dst_subnet.split('/')[0]
+            if dst_prefix.endswith(':'):
+                dst_prefix = dst_prefix[:-1]
             
-            # Create SRv6 segment list (simplified for demo)
-            # In a real scenario, this would be based on the topology
-            usid1_hex = format(random.randint(1, 255), 'x').zfill(4)
-            usid2_hex = format(random.randint(1, 255), 'x').zfill(4)
-            usid3_hex = format(random.randint(1, 255), 'x').zfill(4)
-            usid4_hex = format(random.randint(1, 255), 'x').zfill(4)
-            usid5_hex = format(random.randint(1, 255), 'x').zfill(4)
-            usid6_hex = format(random.randint(1, 255), 'x').zfill(4)
+            # Create multiple destination addresses for this subnet
+            dst_addrs = [f"{{dst_prefix}}::{{i}}" for i in range(2, 10)]
             
-            srv6_sid = srv6_encap_format.format(
-                usid1_hex=usid1_hex,
-                usid2_hex=usid2_hex,
-                usid3_hex=usid3_hex,
-                usid4_hex=usid4_hex,
-                usid5_hex=usid5_hex,
-                usid6_hex=usid6_hex
-            )
-            
-            # Create IPv6 header with VM
-            vm = STLVM()
-            
-            # Add source IPv6 address variation
-            vm.var(name="src", min_value=src_prefix + "::2", 
-                   max_value=src_prefix + "::ffff", size=16, op="random")
-            vm.write(fv_name="src", pkt_offset="IPv6.src")
-            
-            # Add destination IPv6 address variation
-            vm.var(name="dst", min_value=dst_prefix + "::2", 
-                   max_value=dst_prefix + "::ffff", size=16, op="random")
-            vm.write(fv_name="dst", pkt_offset="IPv6.dst")
-            
-            # Create base packet with SRv6 header
-            base_pkt = (Ether() / 
-                       IPv6(src=src_prefix + "::1", dst=srv6_sid) / 
-                       IPv6ExtHdrSegmentRouting(addresses=[srv6_sid, dst_prefix + "::1"]) /
-                       IPv6(src=src_prefix + "::1", dst=dst_prefix + "::1") / 
-                       UDP())
-            
-            # Pad to desired size
-            pad_size = max(0, packet_size - len(base_pkt))
-            if pad_size > 0:
-                base_pkt = base_pkt / ('x' * pad_size)
-            
-            # Create stream with VM
-            vm_stream = STLStream(
-                packet=STLPktBuilder(pkt=base_pkt, vm=vm),
-                mode=STLTXCont(pps=pps),
-                flow_stats=STLFlowStats(pg_id=subnet_id)
-            )
-            
-            streams.append(vm_stream)
-
+            for dst_addr in dst_addrs:
+                stream = self.create_stream(dst_addr, stream_id)
+                streams.append(stream)
+                stream_id += 1
+        
         return streams
 
 def register():
@@ -733,6 +728,7 @@ if __name__ == "__main__":
     main() 
 """)
     
+    print(f"Generated SRv6 bulk script for {host}")
     return script_path
 
 def main():

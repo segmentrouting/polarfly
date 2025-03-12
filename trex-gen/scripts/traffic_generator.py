@@ -3,18 +3,18 @@
 Traffic Controller for Polarfly Topology
 
 This script controls traffic generation across multiple hosts in the Polarfly topology.
-It can start and stop traffic with different patterns between specified source and destination hosts.
+It can start and stop traffic with different patterns on specified source hosts.
 
 Usage:
-  python3 traffic_generator.py radix-8 start --type imix --src host00 host01 --dst host02 host03
+  python3 traffic_generator.py radix-8 start --type imix --src host00 host01
   python3 traffic_generator.py radix-8 stop --src host00 host01
+  python3 traffic_generator.py radix-8 stats --src host00 host01
 
 Options:
-  start/stop       Action to perform
-  --type TYPE      Traffic type (imix, bulk, srv6_imix, srv6_bulk)
-  --src HOSTS      Source hosts
-  --dst HOSTS      Destination hosts
-  -s, --server     TRex server address (default: localhost)
+  start/stop/stats  Action to perform
+  --type TYPE       Traffic type (imix, bulk, srv6_imix, srv6_bulk)
+  --src HOSTS       Source hosts (default: all)
+  -s, --server      TRex server address (default: localhost)
 """
 import argparse
 import yaml
@@ -73,7 +73,7 @@ def fix_traffic_script(script_path):
             # Add default IMIX values
             content = content.replace(
                 'imix_sizes = ', 
-                'imix_sizes = [64, 570, 1518]'
+                'imix_sizes = [128, 570, 1280]'
             )
             content = content.replace(
                 'imix_weights = ', 
@@ -128,14 +128,13 @@ class TrafficController:
             except STLError as e:
                 print(f"Failed to connect to {host}: {e}")
                 
-    def start_traffic(self, traffic_type, src_hosts=None, dst_hosts=None):
+    def start_traffic(self, traffic_type, src_hosts=None):
         """
-        Start traffic from source hosts to destination hosts
+        Start traffic from source hosts
         
         Args:
-            traffic_type: Type of traffic ('imix', 'srv6-imix', 'bulk', 'srv6-bulk')
+            traffic_type: Type of traffic ('imix', 'srv6_imix', 'bulk', 'srv6_bulk')
             src_hosts: List of source hosts (or None for all)
-            dst_hosts: List of destination hosts (or None for all)
         """
         if src_hosts is None:
             src_hosts = list(self.clients.keys())
@@ -143,9 +142,9 @@ class TrafficController:
         # Map traffic type to script name
         script_map = {
             'imix': 'imix.py',
-            'srv6-imix': 'srv6-imix.py',
+            'srv6_imix': 'srv6_imix.py',
             'bulk': 'bulk.py',
-            'srv6-bulk': 'srv6-bulk.py'
+            'srv6_bulk': 'srv6_bulk.py'
         }
         
         script_name = script_map.get(traffic_type)
@@ -306,10 +305,9 @@ def main():
     parser.add_argument('topology', help='Topology name')
     parser.add_argument('action', choices=['start', 'stop', 'stats'],
                        help='Action to perform')
-    parser.add_argument('--type', choices=['imix', 'srv6-imix', 'bulk', 'srv6-bulk'],
+    parser.add_argument('--type', choices=['imix', 'srv6_imix', 'bulk', 'srv6_bulk'],
                        help='Traffic type (required for start action)')
     parser.add_argument('--src', nargs='+', help='Source hosts (default: all)')
-    parser.add_argument('--dst', nargs='+', help='Destination hosts (default: all)')
     parser.add_argument('--config-dir', default='../config',
                        help='Configuration directory')
     parser.add_argument('--interval', type=int, default=5,
@@ -334,7 +332,7 @@ def main():
             
         # Perform requested action
         if args.action == 'start':
-            controller.start_traffic(args.type, args.src, args.dst)
+            controller.start_traffic(args.type, args.src)
             
             print("\nTraffic is running. Press Ctrl+C to stop...")
             try:

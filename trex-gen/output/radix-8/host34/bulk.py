@@ -1,49 +1,53 @@
 from trex_stl_lib.api import *
-import random
 
 class STLIPv6Bulk(object):
 
-    def get_streams(self, direction=0, **kwargs):
-        # Destination subnet configurations
-        dst_subnets = ['fc00:0:f800:0::/64', 'fc00:0:f800:2::/64', 'fc00:0:f800:4::/64', 'fc00:0:f800:6::/64', 'fc00:0:f800:8::/64', 'fc00:0:f800:10::/64', 'fc00:0:f800:12::/64', 'fc00:0:f800:14::/64']
-        
-        # Source subnet
-        src_subnet = 'fc00:0:f800:68::/64'
-        
-        # Packet size (in bytes)
-        packet_size = 1250
-        
-        # Packets per second
-        pps = 1000
-        
-        # Create streams list
-        streams = []
-        
-        # Parse source network prefix
-        src_prefix = src_subnet.split('/')[0]
-        
-        # Create streams for each destination subnet
-        for subnet_id, dst_subnet in enumerate(dst_subnets):
-            # Parse destination network prefix
-            dst_prefix = dst_subnet.split('/')[0]
-            
-            # Create base packet - use fixed addresses instead of VM for IPv6
-            base_pkt = Ether() / IPv6(src=src_prefix + "::2", dst=dst_prefix + "::2") / UDP(sport=1025, dport=1025)
-            
-            # Pad to desired size
-            pad_size = max(0, packet_size - len(base_pkt))
-            if pad_size > 0:
-                base_pkt = base_pkt / ('x' * pad_size)
-            
-            # Create stream without VM for IPv6 (TRex limitation)
-            stream = STLStream(
-                packet=STLPktBuilder(pkt=base_pkt),
-                mode=STLTXCont(pps=pps),
-                flow_stats=STLFlowStats(pg_id=subnet_id)
-            )
-            
-            streams.append(stream)
+    def __init__(self):
+        # Source and destination IPv6 addresses
+        self.src_addr = 'fc00:0:f800:0::2'
+        self.dst_subnets = [
+            'fc00:0:f800:2::',
+            'fc00:0:f800:34::',
+            'fc00:0:f800:66::',
+            'fc00:0:f800:98::'
+        ]        
+        # Packet size and rate
+        self.packet_size = 1250
+        self.pps = 1000
 
+    def create_stream(self, dst_addr, stream_id):
+        # Create base packet with IPv6
+        base_pkt = Ether() / IPv6(src=self.src_addr, dst=dst_addr) / UDP(sport=1025, dport=1025)
+        
+        # Pad to desired size
+        pad_size = max(0, self.packet_size - len(base_pkt))
+        if pad_size > 0:
+            base_pkt = base_pkt / ('x' * pad_size)
+        
+        # Create stream
+        return STLStream(
+            packet=STLPktBuilder(pkt=base_pkt),
+            mode=STLTXCont(pps=self.pps),
+            flow_stats=STLFlowStats(pg_id=stream_id)
+        )
+
+    def get_streams(self, direction=0, **kwargs):
+        streams = []
+        stream_id = 0
+        
+        # Create streams for each destination subnet and IMIX size
+        for dst_prefix in self.dst_subnets:
+            # Create multiple destination addresses for this subnet
+            dst_addrs = [f"{dst_prefix}{i}" for i in range(2, 16)]
+            
+            for dst_addr in dst_addrs:
+                stream = self.create_stream(
+                    dst_addr,
+                    stream_id
+                )
+                streams.append(stream)
+                stream_id += 1
+        
         return streams
 
 def register():
