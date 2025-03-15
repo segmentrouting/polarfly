@@ -118,7 +118,7 @@ quit
 6. **Traffic Generator**
 ```bash
 # Start traffic on specific hosts
-python3 traffic_generator.py radix-8 start --type imix --src host00 host01 --dst host29 host30 host31 host32
+python3 traffic_generator.py radix-8 start --type imix --src host00 --dst host29
 
 # Stop traffic on specific hosts
 python3 traffic_generator.py radix-8 stop --src host00 host01

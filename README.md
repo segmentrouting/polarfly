@@ -1,95 +1,41 @@
-# polarfly
-
-Note: topogen/edge-list.py and topogen/topos is borrowed from https://github.com/IntelLabs/PolarFly
+## polarfly
 
 This project is setup to model Polarfly topologies of various size and in some cases has containerlab topology definitions and config files to them. For example the radix 8 Polarfly topology results in a 57 node single tier network. In the case of larger topologies, the Containerlab VXLAN tool may be used to connect nodes across host servers or VMs.
 
-## Use the edgelist.py tool to generate a basic Polarfly edge list
-
-1. Run the topogen edge-list tool:
-```
-cd topogen
-python3 edge-list.py generate brown 3
-python3 edge-list.py generate brown 7
-python3 edge-list.py generate brown 13
-etc.
-```
-
-2. The tool will generate a Brown-<n>-adj.txt file in the data/Browns directory.
-
-Example: [Brown-3-adj.txt](util/data/Browns/Brown-3-adj.txt)
-
-
-## Use the graph-calc.py tool to generate a directory with vertex and edge data 
-
-The graph-calc.py tool takes the adj.txt file, a radix number, and a q value as input and calculates vertex and edge data, which it populates into a directory with the radix number. It also calculates the node categorization (Quadric nodes, V1c, V1n, V2, etc.) and will output a json file with the node categorization.
+### Topology generator
+Use the topogen/pf-viz.py tool (Thank you Christian Martin!) to generate a Polarfly topology including diagrams and a table listing nodes, their category, and their connections.
 
 ```
 cd topogen
-python3 graph-calc.py -i data/Browns/Brown.3.adj.txt -r 4 -q 3 -n node
-python3 graph-calc.py -i data/Browns/Brown.7.adj.txt -r 8 -q 7 -n node
-python3 graph-calc.py -i data/Browns/Brown.13.adj.txt -r 16 -q 13 -n node
-etc.
+python3 pf-viz.py -q 7
 ```
 
-Example:
-```yaml
-(venv)$ python3 graph-calc.py -i data/Browns/Brown.23.adj.txt -r 24 -q 23 -n node
-Created directory: data/radix_24
+![Radix-8 Topology](diagrams/radix-8-polarfly.png)
 
-Files generated in data/radix_24:
-  - summary.json
-  - vertices.json
-  - edges.json
 
-Graph statistics:
-Number of nodes: 553
-Number of edges: 6624
-Node categories:
-  W    (quadrics): 24
-  V1c  (center nodes): 23
-  V1n  (non-center V1): 253
-  V2   (not adjacent to quadrics): 253
-```
-
-![Radix-8 Topology](radix-8-polarfly.png)
-## ArangoDB import tool
-
-The topogen/db/arangodb.py tool imports the vertex and edge data into an ArangoDB database and populates a graph using the radix number as the collection name.
+#### json output
+Run the pf-viz.py tool with the --json flag to generate json files with the vertices and edges of the topology.
 
 ```
-cd topogen
-python3 db/arangodb.py -p data/radix_4 --url http://198.18.133.102:30852 --dbname jalapeno --username root --password jalapeno
-
-python3 db/arangodb.py -p data/radix_8 --url http://198.18.133.102:30852 --dbname jalapeno --username root --password jalapeno
-
-python3 db/arangodb.py -p data/radix_16 --url http://198.18.133.102:30852 --dbname jalapeno --username root --password jalapeno
+python3 pf-viz.py -q 7 --json
 ```
 
-Example:
-```yaml
-(venv)$ python3 db/arangodb.py -p data/radix_8 --url http://198.18.133.102:30852 --dbname jalapeno --username root --password jalapeno
-Creating collections with names:
-  Vertex collection: radix_8_node
-  Edge collection: radix_8_graph
-Connected to ArangoDB at http://198.18.133.102:30852
-Created/accessed collections: radix_8_node, radix_8_graph
-Created/accessed graph: radix_8_graph
-Imported 57 vertices
-Imported 448 edges
-Graph import completed successfully
+### ArangoDB import tool
 
-(venv)$ python3 db/arangodb.py -p data/radix_16 --url http://198.18.133.102:30852 --dbname jalapeno --username root --password jalapeno
-Creating collections with names:
-  Vertex collection: radix_16_node
-  Edge collection: radix_16_graph
-Connected to ArangoDB at http://198.18.133.102:30852
-Created/accessed collections: radix_16_node, radix_16_graph
-Created/accessed graph: radix_16_graph
-Imported 183 vertices
-Imported 2548 edges
-Graph import completed successfully
+Use the topogen/upload_to_arango.py tool to upload the vertices and edges of the topology to an ArangoDB database.
+
+```bash
+python3 upload_to_arango.py \
+  --url http://localhost:8529 \
+  --username myuser \
+  --password mypassword \
+  --db polarfly_db \
+  --vertices polarfly_q7_vertices.json \
+  --edges polarfly_q7_edges.json
 ```
+
+
+
 
 ## Building a 57-node Radix 8 Polarfly Topology with Containerlab and XRd
 
