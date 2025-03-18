@@ -429,7 +429,7 @@ topology:
     - endpoints: ["node33:Gi0-0-0-3", "host:node33-Gi0-0-0-3"] # node26-Gi0-0-0-4
     - endpoints: ["node33:Gi0-0-0-4", "node34:Gi0-0-0-6"]
     - endpoints: ["node33:Gi0-0-0-5", "node45:Gi0-0-0-5"]
-    - endpoints: ["node33:Gi0-0-0-6", "node52:Gi0-0-0-4"]
+    - endpoints: ["node33:Gi0-0-0-6", "node52:Gi0-0-0-3"]
     - endpoints: ["node33:Gi0-0-0-7", "host:node33-Gi0-0-0-7"]
     - endpoints: ["node33:Gi0-0-0-8", "host33:eth1"]
     - endpoints: ["node33:Gi0-0-0-9", "host33:eth2"]
