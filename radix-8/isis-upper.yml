@@ -380,7 +380,7 @@ topology:
     - endpoints: ["node29:Gi0-0-0-2", "host:node29-Gi0-0-0-2"] # node10-Gi0-0-0-3
     - endpoints: ["node29:Gi0-0-0-3", "host:node29-Gi0-0-0-3"] # node22-Gi0-0-0-3
     - endpoints: ["node29:Gi0-0-0-4", "node31:Gi0-0-0-3"]
-    - endpoints: ["node29:Gi0-0-0-5", "node34:Gi0-0-0-1"]
+    - endpoints: ["node29:Gi0-0-0-5", "node34:Gi0-0-0-5"]
     - endpoints: ["node29:Gi0-0-0-6", "node36:Gi0-0-0-3"]
     - endpoints: ["node29:Gi0-0-0-7", "node47:Gi0-0-0-2"]
     - endpoints: ["node29:Gi0-0-0-8", "host29:eth1"]
@@ -452,8 +452,8 @@ topology:
     - endpoints: ["node35:Gi0-0-0-3", "host:node35-Gi0-0-0-3"] # node15-Gi0-0-0-4
     - endpoints: ["node35:Gi0-0-0-4", "host:node35-Gi0-0-0-4"] # node26-Gi0-0-0-5
     - endpoints: ["node35:Gi0-0-0-5", "host:node35-Gi0-0-0-5"] # node27-Gi0-0-0-5
-    - endpoints: ["node35:Gi0-0-0-6", "node43:Gi0-0-0-6"]
-    - endpoints: ["node35:Gi0-0-0-7", "node44:Gi0-0-0-5"]
+    - endpoints: ["node35:Gi0-0-0-6", "node43:Gi0-0-0-3"]
+    - endpoints: ["node35:Gi0-0-0-7", "node44:Gi0-0-0-3"]
     - endpoints: ["node35:Gi0-0-0-8", "host35:eth1"]
     - endpoints: ["node35:Gi0-0-0-9", "host35:eth2"]
 
@@ -474,7 +474,7 @@ topology:
     - endpoints: ["node37:Gi0-0-0-2", "host:node37-Gi0-0-0-2"] # node18-Gi0-0-0-5
     - endpoints: ["node37:Gi0-0-0-3", "host:node37-Gi0-0-0-3"] # node25-Gi0-0-0-3
 
-    - endpoints: ["node37:Gi0-0-0-5", "node44:Gi0-0-0-5"]
+    - endpoints: ["node37:Gi0-0-0-5", "node44:Gi0-0-0-4"]
     - endpoints: ["node37:Gi0-0-0-6", "node50:Gi0-0-0-4"]
     - endpoints: ["node37:Gi0-0-0-7", "node55:Gi0-0-0-7"]
     - endpoints: ["node37:Gi0-0-0-8", "host37:eth1"]
@@ -486,7 +486,7 @@ topology:
     - endpoints: ["node38:Gi0-0-0-2", "host:node38-Gi0-0-0-2"] # node11-Gi0-0-0-3
     - endpoints: ["node38:Gi0-0-0-3", "host:node38-Gi0-0-0-3"] # node21-Gi0-0-0-3
 
-    - endpoints: ["node38:Gi0-0-0-6", "node40:Gi0-0-0-5"]
+    - endpoints: ["node38:Gi0-0-0-6", "node40:Gi0-0-0-4"]
     - endpoints: ["node38:Gi0-0-0-7", "node54:Gi0-0-0-5"]
     - endpoints: ["node38:Gi0-0-0-8", "host38:eth1"]
     - endpoints: ["node38:Gi0-0-0-9", "host38:eth2"]
@@ -533,7 +533,7 @@ topology:
     - endpoints: ["node42:Gi0-0-0-4", "host:node42-Gi0-0-0-4"] # node23-Gi0-0-0-6
     - endpoints: ["node42:Gi0-0-0-5", "host:node42-Gi0-0-0-5"] # node24-Gi0-0-0-6
     - endpoints: ["node42:Gi0-0-0-6", "node47:Gi0-0-0-4"]
-    - endpoints: ["node42:Gi0-0-0-7", "node49:Gi0-0-0-6"]
+    - endpoints: ["node42:Gi0-0-0-7", "node49:Gi0-0-0-7"]
     - endpoints: ["node42:Gi0-0-0-8", "host42:eth1"]
     - endpoints: ["node42:Gi0-0-0-9", "host42:eth2"]
 
