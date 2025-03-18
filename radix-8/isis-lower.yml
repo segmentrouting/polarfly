@@ -517,11 +517,11 @@ topology:
     - endpoints: ["node11:Gi0-0-0-0", "node22:Gi0-0-0-0"]
     - endpoints: ["node11:Gi0-0-0-1", "node24:Gi0-0-0-1"]
     - endpoints: ["node11:Gi0-0-0-2", "node26:Gi0-0-0-1"]
-    - endpoints: ["node11:Gi0-0-0-4", "host:node11-Gi0-0-0-3"] # "node38:Gi0-0-0-2"]
-    - endpoints: ["node11:Gi0-0-0-5", "host:node11-Gi0-0-0-4"] # "node46:Gi0-0-0-3"]
-    - endpoints: ["node11:Gi0-0-0-6", "host:node11-Gi0-0-0-5"] # "node51:Gi0-0-0-0"]
-    - endpoints: ["node11:Gi0-0-0-7", "host:node11-Gi0-0-0-6"] # "node55:Gi0-0-0-4"]
-    - endpoints: ["node11:Gi0-0-0-6", "host:node11-Gi0-0-0-7"]
+    - endpoints: ["node11:Gi0-0-0-3", "host:node11-Gi0-0-0-3"] # "node38:Gi0-0-0-2"]
+    - endpoints: ["node11:Gi0-0-0-4", "host:node11-Gi0-0-0-4"] # "node46:Gi0-0-0-3"]
+    - endpoints: ["node11:Gi0-0-0-5", "host:node11-Gi0-0-0-5"] # "node51:Gi0-0-0-0"]
+    - endpoints: ["node11:Gi0-0-0-6", "host:node11-Gi0-0-0-6"] # "node55:Gi0-0-0-4"]
+    - endpoints: ["node11:Gi0-0-0-7", "host:node11-Gi0-0-0-7"]
     - endpoints: ["node11:Gi0-0-0-8", "host11:eth1"] 
     - endpoints: ["node11:Gi0-0-0-9", "host11:eth2"]
 
@@ -593,8 +593,8 @@ topology:
 
 # node19
     - endpoints: ["node19:Gi0-0-0-1", "node27:Gi0-0-0-3"]
-    - endpoints: ["node19:Gi0-0-0-4", "host:node19-Gi0-0-0-2"] # "node42:Gi0-0-0-3"]
-    - endpoints: ["node19:Gi0-0-0-4", "host:node19-Gi0-0-0-3"] # "node46:Gi0-0-0-6"]
+    - endpoints: ["node19:Gi0-0-0-2", "host:node19-Gi0-0-0-2"] # "node42:Gi0-0-0-3"]
+    - endpoints: ["node19:Gi0-0-0-3", "host:node19-Gi0-0-0-3"] # "node46:Gi0-0-0-6"]
     - endpoints: ["node19:Gi0-0-0-4", "host:node19-Gi0-0-0-4"] # "node47:Gi0-0-0-0"]
     - endpoints: ["node19:Gi0-0-0-5", "host:node19-Gi0-0-0-5"] # "node52:Gi0-0-0-0"]
     - endpoints: ["node19:Gi0-0-0-6", "host:node19-Gi0-0-0-6"] # "node53:Gi0-0-0-2"]
@@ -651,7 +651,7 @@ topology:
     - endpoints: ["node25:Gi0-0-0-4", "host:node25-Gi0-0-0-4"] # "node49:Gi0-0-0-5"]
     - endpoints: ["node25:Gi0-0-0-5", "host:node25-Gi0-0-0-5"] # "node51:Gi0-0-0-2"]
     - endpoints: ["node25:Gi0-0-0-6", "host:node25-Gi0-0-0-6"] # "node54:Gi0-0-0-4"]
-    - endpoints: ["node25:Gi0-0-0-6", "host:node25-Gi0-0-0-7"] 
+    - endpoints: ["node25:Gi0-0-0-7", "host:node25-Gi0-0-0-7"] 
     - endpoints: ["node25:Gi0-0-0-8", "host25:eth1"] 
     - endpoints: ["node25:Gi0-0-0-9", "host25:eth2"]
 
