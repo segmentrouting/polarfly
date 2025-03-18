@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get all network namespaces that start with clab-polarfly
-namespaces=$(ip netns list | grep "clab-polarfly" | awk '{print $1}')
+namespaces=$(ip netns list | grep "clab-radix-8" | awk '{print $1}')
 
 # Loop through each namespace
 for ns in $namespaces; do
