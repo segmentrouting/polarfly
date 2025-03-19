@@ -387,7 +387,7 @@ topology:
 
   links:
   # node00
-    - endpoints: ["node00:Gi0-0-0-0", "node27-Gi0-0-0-0"] 
+    - endpoints: ["node00:Gi0-0-0-0", "node27:Gi0-0-0-0"] 
     - endpoints: ["node00:Gi0-0-0-1", "host:node00-Gi0-0-0-1"] #"node33:Gi0-0-0-0"]
     - endpoints: ["node00:Gi0-0-0-2", "host:node00-Gi0-0-0-2"] #"node36:Gi0-0-0-0"]
     - endpoints: ["node00:Gi0-0-0-3", "host:node00-Gi0-0-0-3"] #"node39:Gi0-0-0-0"]

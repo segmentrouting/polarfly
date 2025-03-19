@@ -169,7 +169,6 @@ clab tools vxlan create --remote 198.18.1.100 --id 1045 --link node55-Gi0-0-0-3 
 clab tools vxlan create --remote 198.18.1.100 --id 1054 --link node55-Gi0-0-0-4 # 11/6
 clab tools vxlan create --remote 198.18.1.100 --id 1119 --link node55-Gi0-0-0-5 # 28/5
 
-
 # node56
 clab tools vxlan create --remote 198.18.1.100 --id 1016 --link node56-Gi0-0-0-0 # 2/6
 clab tools vxlan create --remote 198.18.1.100 --id 1021 --link node56-Gi0-0-0-1 # 3/7
