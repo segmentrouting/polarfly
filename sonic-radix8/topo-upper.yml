@@ -3,7 +3,7 @@ name: topo-upper
 
 mgmt:
   network: upper-mgt
-  ipv4-subnet: 198.18.1.0/24
+  ipv4-subnet: 198.18.2.0/24
 
 topology:
   nodes:
@@ -11,336 +11,336 @@ topology:
     node29:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.129
+      mgmt-ipv4: 198.18.2.129
 
     node30:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.130
+      mgmt-ipv4: 198.18.2.130
 
     node31:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.131
+      mgmt-ipv4: 198.18.2.131
 
     node32:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.132
+      mgmt-ipv4: 198.18.2.132
 
     node33:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.133
+      mgmt-ipv4: 198.18.2.133
 
     node34:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.134
+      mgmt-ipv4: 198.18.2.134
 
     node35:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.135
+      mgmt-ipv4: 198.18.2.135
 
     node36:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.136
+      mgmt-ipv4: 198.18.2.136
 
     node37:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.137
+      mgmt-ipv4: 198.18.2.137
 
     node38:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.138
+      mgmt-ipv4: 198.18.2.138
 
     node39:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.139
+      mgmt-ipv4: 198.18.2.139
 
     node40:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.140
+      mgmt-ipv4: 198.18.2.140
 
     node41:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.141
+      mgmt-ipv4: 198.18.2.141
 
     node42:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.142
+      mgmt-ipv4: 198.18.2.142
 
     node43:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.143
+      mgmt-ipv4: 198.18.2.143
 
     node44:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.144
+      mgmt-ipv4: 198.18.2.144
 
     node45:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.145
+      mgmt-ipv4: 198.18.2.145
 
     node46:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.146
+      mgmt-ipv4: 198.18.2.146
 
     node47:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.147
+      mgmt-ipv4: 198.18.2.147
 
     node48:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.148
+      mgmt-ipv4: 198.18.2.148
 
     node49:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.149
+      mgmt-ipv4: 198.18.2.149
 
     node50:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.150
+      mgmt-ipv4: 198.18.2.150
 
     node51:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.151
+      mgmt-ipv4: 198.18.2.151
 
     node52:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.152
+      mgmt-ipv4: 198.18.2.152
 
     node53:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.153
+      mgmt-ipv4: 198.18.2.153
 
     node54:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.154
+      mgmt-ipv4: 198.18.2.154
 
     node55:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.155
+      mgmt-ipv4: 198.18.2.155
 
     node56:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.1.156
+      mgmt-ipv4: 198.18.2.156
 
     host29:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.157
+      mgmt-ipv4: 198.18.2.157
       binds:
         - trex/host29/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host30:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.158
+      mgmt-ipv4: 198.18.2.158
       binds:
         - trex/host30/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host31:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.159
+      mgmt-ipv4: 198.18.2.159
       binds:
         - trex/host31/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host32:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.160
+      mgmt-ipv4: 198.18.2.160
       binds:
         - trex/host32/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host33:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.161
+      mgmt-ipv4: 198.18.2.161
       binds:
         - trex/host33/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host34:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.162
+      mgmt-ipv4: 198.18.2.162
       binds:
         - trex/host34/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host35:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.163
+      mgmt-ipv4: 198.18.2.163
       binds:
         - trex/host35/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host36:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.164
+      mgmt-ipv4: 198.18.2.164
       binds:
         - trex/host36/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host37:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.165
+      mgmt-ipv4: 198.18.2.165
       binds:
         - trex/host37/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host38:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.166
+      mgmt-ipv4: 198.18.2.166
       binds:
         - trex/host38/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host39:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.167
+      mgmt-ipv4: 198.18.2.167
       binds:
         - trex/host39/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host40:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.168
+      mgmt-ipv4: 198.18.2.168
       binds:
         - trex/host40/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host41:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.169
+      mgmt-ipv4: 198.18.2.169
       binds:
         - trex/host41/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host42:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.170
+      mgmt-ipv4: 198.18.2.170
       binds:
         - trex/host42/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host43:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.171
+      mgmt-ipv4: 198.18.2.171
       binds:
         - trex/host43/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host44:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.172
+      mgmt-ipv4: 198.18.2.172
       binds:
         - trex/host44/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host45:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.173
+      mgmt-ipv4: 198.18.2.173
       binds:
         - trex/host45/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host46:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.174
+      mgmt-ipv4: 198.18.2.174
       binds:
         - trex/host46/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host47:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.175
+      mgmt-ipv4: 198.18.2.175
       binds:
         - trex/host47/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host48:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.176
+      mgmt-ipv4: 198.18.2.176
       binds:
         - trex/host48/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host49:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.177
+      mgmt-ipv4: 198.18.2.177
       binds:
         - trex/host49/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host50:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.178
+      mgmt-ipv4: 198.18.2.178
       binds:
         - trex/host50/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host51:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.179
+      mgmt-ipv4: 198.18.2.179
       binds:
         - trex/host51/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host52:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.180
+      mgmt-ipv4: 198.18.2.180
       binds:
         - trex/host52/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host53:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.181
+      mgmt-ipv4: 198.18.2.181
       binds:
         - trex/host53/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host54:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.182
+      mgmt-ipv4: 198.18.2.182
       binds:
         - trex/host54/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host55:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.183
+      mgmt-ipv4: 198.18.2.183
       binds:
         - trex/host55/trex_cfg.yaml:/etc/trex_cfg.yaml
 
     host56:
       kind: linux
       image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.1.184
+      mgmt-ipv4: 198.18.2.184
       binds:
         - trex/host56/trex_cfg.yaml:/etc/trex_cfg.yaml
 
