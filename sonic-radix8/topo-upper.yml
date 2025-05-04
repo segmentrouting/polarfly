@@ -347,308 +347,308 @@ topology:
   links:
 
 # node29
-    - endpoints: ["node29:Gi0-0-0-0", "host:node29-Gi0-0-0-0"] # node04-Gi0-0-0-5
-    - endpoints: ["node29:Gi0-0-0-1", "host:node29-Gi0-0-0-1"] # node05-Gi0-0-0-5
-    - endpoints: ["node29:Gi0-0-0-2", "host:node29-Gi0-0-0-2"] # node10-Gi0-0-0-3
-    - endpoints: ["node29:Gi0-0-0-3", "host:node29-Gi0-0-0-3"] # node22-Gi0-0-0-3
-    - endpoints: ["node29:Gi0-0-0-4", "node31:Gi0-0-0-3"]
-    - endpoints: ["node29:Gi0-0-0-5", "node34:Gi0-0-0-5"]
-    - endpoints: ["node29:Gi0-0-0-6", "node36:Gi0-0-0-3"]
-    - endpoints: ["node29:Gi0-0-0-7", "node47:Gi0-0-0-2"]
-    - endpoints: ["node29:Gi0-0-0-8", "host29:eth1"]
-    - endpoints: ["node29:Gi0-0-0-9", "host29:eth2"]
+    - endpoints: ["node29:eth1", "host:node29-eth1"] # node04-eth6
+    - endpoints: ["node29:eth2", "host:node29-eth2"] # node05-eth6
+    - endpoints: ["node29:eth3", "host:node29-eth3"] # node10-eth4
+    - endpoints: ["node29:eth4", "host:node29-eth4"] # node22-eth4
+    - endpoints: ["node29:eth5", "node31:eth4"]
+    - endpoints: ["node29:eth6", "node34:eth6"]
+    - endpoints: ["node29:eth7", "node36:eth4"]
+    - endpoints: ["node29:eth8", "node47:eth3"]
+    - endpoints: ["node29:eth9", "host29:eth1"]
+    - endpoints: ["node29:eth10", "host29:eth2"]
 
 # node30
-    - endpoints: ["node30:Gi0-0-0-0", "host:node30-Gi0-0-0-0"] # node08-Gi0-0-0-2
-    - endpoints: ["node30:Gi0-0-0-1", "host:node30-Gi0-0-0-1"] # node12-Gi0-0-0-4
-    - endpoints: ["node30:Gi0-0-0-2", "host:node30-Gi0-0-0-2"] # node14-Gi0-0-0-6
-    - endpoints: ["node30:Gi0-0-0-3", "host:node30-Gi0-0-0-3"] # node25-Gi0-0-0-2
-    - endpoints: ["node30:Gi0-0-0-4", "host:node30-Gi0-0-0-4"] # node26-Gi0-0-0-3
-    - endpoints: ["node30:Gi0-0-0-5", "node36:Gi0-0-0-4"]
-    - endpoints: ["node30:Gi0-0-0-6", "node41:Gi0-0-0-3"]
-    - endpoints: ["node30:Gi0-0-0-7", "node53:Gi0-0-0-4"]
-    - endpoints: ["node30:Gi0-0-0-8", "host30:eth1"]
-    - endpoints: ["node30:Gi0-0-0-9", "host30:eth2"]
+    - endpoints: ["node30:eth1", "host:node30-eth1"] # node08-eth3
+    - endpoints: ["node30:eth2", "host:node30-eth2"] # node12-eth5
+    - endpoints: ["node30:eth3", "host:node30-eth3"] # node14-eth7
+    - endpoints: ["node30:eth4", "host:node30-eth4"] # node25-eth3
+    - endpoints: ["node30:eth5", "host:node30-eth5"] # node26-eth4
+    - endpoints: ["node30:eth6", "node36:eth5"]
+    - endpoints: ["node30:eth7", "node41:eth4"]
+    - endpoints: ["node30:eth8", "node53:eth5"]
+    - endpoints: ["node30:eth9", "host30:eth1"]
+    - endpoints: ["node30:eth10", "host30:eth2"]
 
 # node31
-    - endpoints: ["node31:Gi0-0-0-0", "host:node31-Gi0-0-0-0"] # node06-Gi0-0-0-5
-    - endpoints: ["node31:Gi0-0-0-1", "host:node31-Gi0-0-0-1"] # node07-Gi0-0-0-3
-    - endpoints: ["node31:Gi0-0-0-2", "host:node31-Gi0-0-0-2"] # node22-Gi0-0-0-4
+    - endpoints: ["node31:eth1", "host:node31-eth1"] # node06-eth6
+    - endpoints: ["node31:eth2", "host:node31-eth2"] # node07-eth4
+    - endpoints: ["node31:eth3", "host:node31-eth3"] # node22-eth5
 
-    - endpoints: ["node31:Gi0-0-0-4", "node32:Gi0-0-0-2"]
-    - endpoints: ["node31:Gi0-0-0-5", "node48:Gi0-0-0-4"]
-    - endpoints: ["node31:Gi0-0-0-6", "node53:Gi0-0-0-5"]
-    - endpoints: ["node31:Gi0-0-0-7", "node56:Gi0-0-0-4"]
-    - endpoints: ["node31:Gi0-0-0-8", "host31:eth1"]
-    - endpoints: ["node31:Gi0-0-0-9", "host31:eth2"]
+    - endpoints: ["node31:eth5", "node32:eth3"]
+    - endpoints: ["node31:eth6", "node48:eth5"]
+    - endpoints: ["node31:eth7", "node53:eth6"]
+    - endpoints: ["node31:eth8", "node56:eth5"]
+    - endpoints: ["node31:eth9", "host31:eth1"]
+    - endpoints: ["node31:eth10", "host31:eth2"]
 
 # node32 (quadric)
-    - endpoints: ["node32:Gi0-0-0-0", "host:node32-Gi0-0-0-0"] # node23-Gi0-0-0-5
-    - endpoints: ["node32:Gi0-0-0-1", "host:node32-Gi0-0-0-1"] # node27-Gi0-0-0-4
+    - endpoints: ["node32:eth1", "host:node32-eth1"] # node23-eth6
+    - endpoints: ["node32:eth2", "host:node32-eth2"] # node27-eth5
 
-    - endpoints: ["node32:Gi0-0-0-3", "node37:Gi0-0-0-4"]
-    - endpoints: ["node32:Gi0-0-0-4", "node38:Gi0-0-0-4"]
-    - endpoints: ["node32:Gi0-0-0-5", "node41:Gi0-0-0-4"]
-    - endpoints: ["node32:Gi0-0-0-6", "node45:Gi0-0-0-4"]
-    - endpoints: ["node32:Gi0-0-0-7", "host:node32-Gi0-0-0-7"]
-    - endpoints: ["node32:Gi0-0-0-8", "host32:eth1"]
-    - endpoints: ["node32:Gi0-0-0-9", "host32:eth2"]
+    - endpoints: ["node32:eth4", "node37:eth5"]
+    - endpoints: ["node32:eth5", "node38:eth5"]
+    - endpoints: ["node32:eth6", "node41:eth5"]
+    - endpoints: ["node32:eth7", "node45:eth5"]
+    - endpoints: ["node32:eth8", "host:node32-eth8"]
+    - endpoints: ["node32:eth9", "host32:eth1"]
+    - endpoints: ["node32:eth10", "host32:eth2"]
 
 # node33 (quadric)
-    - endpoints: ["node33:Gi0-0-0-0", "host:node33-Gi0-0-0-0"] # node00-Gi0-0-0-1
-    - endpoints: ["node33:Gi0-0-0-1", "host:node33-Gi0-0-0-1"] # node06-Gi0-0-0-6
-    - endpoints: ["node33:Gi0-0-0-2", "host:node33-Gi0-0-0-2"] # node18-Gi0-0-0-4
-    - endpoints: ["node33:Gi0-0-0-3", "host:node33-Gi0-0-0-3"] # node26-Gi0-0-0-4
-    - endpoints: ["node33:Gi0-0-0-4", "node34:Gi0-0-0-6"]
-    - endpoints: ["node33:Gi0-0-0-5", "node45:Gi0-0-0-5"]
-    - endpoints: ["node33:Gi0-0-0-6", "node52:Gi0-0-0-3"]
-    - endpoints: ["node33:Gi0-0-0-7", "host:node33-Gi0-0-0-7"]
-    - endpoints: ["node33:Gi0-0-0-8", "host33:eth1"]
-    - endpoints: ["node33:Gi0-0-0-9", "host33:eth2"]
+    - endpoints: ["node33:eth1", "host:node33-eth1"] # node00-eth2
+    - endpoints: ["node33:eth2", "host:node33-eth2"] # node06-eth7
+    - endpoints: ["node33:eth3", "host:node33-eth3"] # node18-eth5
+    - endpoints: ["node33:eth4", "host:node33-eth4"] # node26-eth5
+    - endpoints: ["node33:eth5", "node34:eth7"]
+    - endpoints: ["node33:eth6", "node45:eth6"]
+    - endpoints: ["node33:eth7", "node52:eth4"]
+    - endpoints: ["node33:eth8", "host:node33-eth8"]
+    - endpoints: ["node33:eth9", "host33:eth1"]
+    - endpoints: ["node33:eth10", "host33:eth2"]
 
 # node34
-    - endpoints: ["node34:Gi0-0-0-0", "host:node34-Gi0-0-0-0"] # node01-Gi0-0-0-4
-    - endpoints: ["node34:Gi0-0-0-1", "host:node34-Gi0-0-0-1"] # node02-Gi0-0-0-1
-    - endpoints: ["node34:Gi0-0-0-2", "host:node34-Gi0-0-0-2"] # node05-Gi0-0-0-6
-    - endpoints: ["node34:Gi0-0-0-3", "host:node34-Gi0-0-0-3"] # node08-Gi0-0-0-3
-    - endpoints: ["node34:Gi0-0-0-4", "host:node34-Gi0-0-0-4"] # node20-Gi0-0-0-4
+    - endpoints: ["node34:eth1", "host:node34-eth1"] # node01-eth5
+    - endpoints: ["node34:eth2", "host:node34-eth2"] # node02-eth2
+    - endpoints: ["node34:eth3", "host:node34-eth3"] # node05-eth7
+    - endpoints: ["node34:eth4", "host:node34-eth4"] # node08-eth4
+    - endpoints: ["node34:eth5", "host:node34-eth5"] # node20-eth5
 
-    - endpoints: ["node34:Gi0-0-0-7", "node38:Gi0-0-0-5"]
-    - endpoints: ["node34:Gi0-0-0-8", "host34:eth1"]
-    - endpoints: ["node34:Gi0-0-0-9", "host34:eth2"]
+    - endpoints: ["node34:eth8", "node38:eth6"]
+    - endpoints: ["node34:eth9", "host34:eth1"]
+    - endpoints: ["node34:eth10", "host34:eth2"]
 
 # node35
-    - endpoints: ["node35:Gi0-0-0-0", "host:node35-Gi0-0-0-0"] # node03-Gi0-0-0-3
-    - endpoints: ["node35:Gi0-0-0-1", "host:node35-Gi0-0-0-1"] # node05-Gi0-0-0-7
-    - endpoints: ["node35:Gi0-0-0-2", "host:node35-Gi0-0-0-2"] # node07-Gi0-0-0-4
-    - endpoints: ["node35:Gi0-0-0-3", "host:node35-Gi0-0-0-3"] # node15-Gi0-0-0-5
-    - endpoints: ["node35:Gi0-0-0-4", "host:node35-Gi0-0-0-4"] # node26-Gi0-0-0-5
-    - endpoints: ["node35:Gi0-0-0-5", "host:node35-Gi0-0-0-5"] # node27-Gi0-0-0-5
-    - endpoints: ["node35:Gi0-0-0-6", "node43:Gi0-0-0-3"]
-    - endpoints: ["node35:Gi0-0-0-7", "node44:Gi0-0-0-3"]
-    - endpoints: ["node35:Gi0-0-0-8", "host35:eth1"]
-    - endpoints: ["node35:Gi0-0-0-9", "host35:eth2"]
+    - endpoints: ["node35:eth1", "host:node35-eth1"] # node03-eth4
+    - endpoints: ["node35:eth2", "host:node35-eth2"] # node05-eth8
+    - endpoints: ["node35:eth3", "host:node35-eth3"] # node07-eth5
+    - endpoints: ["node35:eth4", "host:node35-eth4"] # node15-eth6
+    - endpoints: ["node35:eth5", "host:node35-eth5"] # node26-eth6
+    - endpoints: ["node35:eth6", "host:node35-eth6"] # node27-eth6
+    - endpoints: ["node35:eth7", "node43:eth4"]
+    - endpoints: ["node35:eth8", "node44:eth4"]
+    - endpoints: ["node35:eth9", "host35:eth1"]
+    - endpoints: ["node35:eth10", "host35:eth2"]
 
 # node36  
-    - endpoints: ["node36:Gi0-0-0-0", "host:node36-Gi0-0-0-0"] # node00-Gi0-0-0-2
-    - endpoints: ["node36:Gi0-0-0-1", "host:node36-Gi0-0-0-1"] # node03-Gi0-0-0-4
-    - endpoints: ["node36:Gi0-0-0-2", "host:node36-Gi0-0-0-2"] # node16-Gi0-0-0-5
+    - endpoints: ["node36:eth1", "host:node36-eth1"] # node00-eth3
+    - endpoints: ["node36:eth2", "host:node36-eth2"] # node03-eth5
+    - endpoints: ["node36:eth3", "host:node36-eth3"] # node16-eth6
   
-    - endpoints: ["node36:Gi0-0-0-5", "node41:Gi0-0-0-5"]
-    - endpoints: ["node36:Gi0-0-0-6", "node47:Gi0-0-0-3"]
-    - endpoints: ["node36:Gi0-0-0-7", "node55:Gi0-0-0-6"]
-    - endpoints: ["node36:Gi0-0-0-8", "host36:eth1"]
-    - endpoints: ["node36:Gi0-0-0-9", "host36:eth2"]
+    - endpoints: ["node36:eth6", "node41:eth6"]
+    - endpoints: ["node36:eth7", "node47:eth4"]
+    - endpoints: ["node36:eth8", "node55:eth7"]
+    - endpoints: ["node36:eth9", "host36:eth1"]
+    - endpoints: ["node36:eth10", "host36:eth2"]
 
 # node37
-    - endpoints: ["node37:Gi0-0-0-0", "host:node37-Gi0-0-0-0"] # node01-Gi0-0-0-5
-    - endpoints: ["node37:Gi0-0-0-1", "host:node37-Gi0-0-0-1"] # node10-Gi0-0-0-4
-    - endpoints: ["node37:Gi0-0-0-2", "host:node37-Gi0-0-0-2"] # node18-Gi0-0-0-5
-    - endpoints: ["node37:Gi0-0-0-3", "host:node37-Gi0-0-0-3"] # node25-Gi0-0-0-3
+    - endpoints: ["node37:eth1", "host:node37-eth1"] # node01-eth6
+    - endpoints: ["node37:eth2", "host:node37-eth2"] # node10-eth5
+    - endpoints: ["node37:eth3", "host:node37-eth3"] # node18-eth6
+    - endpoints: ["node37:eth4", "host:node37-eth4"] # node25-eth4
 
-    - endpoints: ["node37:Gi0-0-0-5", "node44:Gi0-0-0-4"]
-    - endpoints: ["node37:Gi0-0-0-6", "node50:Gi0-0-0-4"]
-    - endpoints: ["node37:Gi0-0-0-7", "node55:Gi0-0-0-7"]
-    - endpoints: ["node37:Gi0-0-0-8", "host37:eth1"]
-    - endpoints: ["node37:Gi0-0-0-9", "host37:eth2"]
+    - endpoints: ["node37:eth6", "node44:eth5"]
+    - endpoints: ["node37:eth7", "node50:eth5"]
+    - endpoints: ["node37:eth8", "node55:eth8"]
+    - endpoints: ["node37:eth9", "host37:eth1"]
+    - endpoints: ["node37:eth10", "host37:eth2"]
 
 # node38
-    - endpoints: ["node38:Gi0-0-0-0", "host:node38-Gi0-0-0-0"] # node03-Gi0-0-0-5
-    - endpoints: ["node38:Gi0-0-0-1", "host:node38-Gi0-0-0-1"] # node08-Gi0-0-0-4
-    - endpoints: ["node38:Gi0-0-0-2", "host:node38-Gi0-0-0-2"] # node11-Gi0-0-0-3
-    - endpoints: ["node38:Gi0-0-0-3", "host:node38-Gi0-0-0-3"] # node21-Gi0-0-0-4
+    - endpoints: ["node38:eth1", "host:node38-eth1"] # node03-eth6
+    - endpoints: ["node38:eth2", "host:node38-eth2"] # node08-eth5
+    - endpoints: ["node38:eth3", "host:node38-eth3"] # node11-eth4
+    - endpoints: ["node38:eth4", "host:node38-eth4"] # node21-eth5
 
-    - endpoints: ["node38:Gi0-0-0-6", "node40:Gi0-0-0-4"]
-    - endpoints: ["node38:Gi0-0-0-7", "node54:Gi0-0-0-5"]
-    - endpoints: ["node38:Gi0-0-0-8", "host38:eth1"]
-    - endpoints: ["node38:Gi0-0-0-9", "host38:eth2"]
+    - endpoints: ["node38:eth7", "node40:eth5"]
+    - endpoints: ["node38:eth8", "node54:eth6"]
+    - endpoints: ["node38:eth9", "host38:eth1"]
+    - endpoints: ["node38:eth10", "host38:eth2"]
 
 # node39
-    - endpoints: ["node39:Gi0-0-0-0", "host:node39-Gi0-0-0-0"] # node00-Gi0-0-0-3
-    - endpoints: ["node39:Gi0-0-0-1", "host:node39-Gi0-0-0-1"] # node04-Gi0-0-0-6
-    - endpoints: ["node39:Gi0-0-0-2", "host:node39-Gi0-0-0-2"] # node08-Gi0-0-0-5
-    - endpoints: ["node39:Gi0-0-0-3", "host:node39-Gi0-0-0-3"] # node17-Gi0-0-0-6
-    - endpoints: ["node39:Gi0-0-0-4", "host:node39-Gi0-0-0-4"] # node27-Gi0-0-0-6
-    - endpoints: ["node39:Gi0-0-0-5", "node50:Gi0-0-0-5"]
-    - endpoints: ["node39:Gi0-0-0-6", "node51:Gi0-0-0-3"]
-    - endpoints: ["node39:Gi0-0-0-7", "node56:Gi0-0-0-5"]
-    - endpoints: ["node39:Gi0-0-0-8", "host39:eth1"]
-    - endpoints: ["node39:Gi0-0-0-9", "host39:eth2"]
+    - endpoints: ["node39:eth1", "host:node39-eth1"] # node00-eth4
+    - endpoints: ["node39:eth2", "host:node39-eth2"] # node04-eth7
+    - endpoints: ["node39:eth3", "host:node39-eth3"] # node08-eth6
+    - endpoints: ["node39:eth4", "host:node39-eth4"] # node17-eth7
+    - endpoints: ["node39:eth5", "host:node39-eth5"] # node27-eth7
+    - endpoints: ["node39:eth6", "node50:eth6"]
+    - endpoints: ["node39:eth7", "node51:eth4"]
+    - endpoints: ["node39:eth8", "node56:eth6"]
+    - endpoints: ["node39:eth9", "host39:eth1"]
+    - endpoints: ["node39:eth10", "host39:eth2"]
 
 # node40
-    - endpoints: ["node40:Gi0-0-0-0", "host:node40-Gi0-0-0-0"] # node00-Gi0-0-0-4
-    - endpoints: ["node40:Gi0-0-0-1", "host:node40-Gi0-0-0-1"] # node10-Gi0-0-0-5
-    - endpoints: ["node40:Gi0-0-0-2", "host:node40-Gi0-0-0-2"] # node13-Gi0-0-0-4
-    - endpoints: ["node40:Gi0-0-0-3", "host:node40-Gi0-0-0-3"] # node21-Gi0-0-0-5
+    - endpoints: ["node40:eth1", "host:node40-eth1"] # node00-eth5
+    - endpoints: ["node40:eth2", "host:node40-eth2"] # node10-eth6
+    - endpoints: ["node40:eth3", "host:node40-eth3"] # node13-eth5
+    - endpoints: ["node40:eth4", "host:node40-eth4"] # node21-eth6
 
-    - endpoints: ["node40:Gi0-0-0-5", "node43:Gi0-0-0-4"]
-    - endpoints: ["node40:Gi0-0-0-6", "node49:Gi0-0-0-6"]
-    - endpoints: ["node40:Gi0-0-0-7", "node53:Gi0-0-0-6"]
-    - endpoints: ["node40:Gi0-0-0-8", "host40:eth1"]
-    - endpoints: ["node40:Gi0-0-0-9", "host40:eth2"]
+    - endpoints: ["node40:eth6", "node43:eth5"]
+    - endpoints: ["node40:eth7", "node49:eth7"]
+    - endpoints: ["node40:eth8", "node53:eth7"]
+    - endpoints: ["node40:eth9", "host40:eth1"]
+    - endpoints: ["node40:eth10", "host40:eth2"]
 
 # node41
-    - endpoints: ["node41:Gi0-0-0-0", "host:node41-Gi0-0-0-0"] # node02-Gi0-0-0-2
-    - endpoints: ["node41:Gi0-0-0-1", "host:node41-Gi0-0-0-1"] # node17-Gi0-0-0-7
-    - endpoints: ["node41:Gi0-0-0-2", "host:node41-Gi0-0-0-2"] # node24-Gi0-0-0-5
+    - endpoints: ["node41:eth1", "host:node41-eth1"] # node02-eth3
+    - endpoints: ["node41:eth2", "host:node41-eth2"] # node17-eth8
+    - endpoints: ["node41:eth3", "host:node41-eth3"] # node24-eth6
 
-    - endpoints: ["node41:Gi0-0-0-6", "node43:Gi0-0-0-5"]
-    - endpoints: ["node41:Gi0-0-0-7", "node52:Gi0-0-0-4"]
-    - endpoints: ["node41:Gi0-0-0-8", "host41:eth1"]
-    - endpoints: ["node41:Gi0-0-0-9", "host41:eth2"]
+    - endpoints: ["node41:eth7", "node43:eth6"]
+    - endpoints: ["node41:eth8", "node52:eth5"]
+    - endpoints: ["node41:eth9", "host41:eth1"]
+    - endpoints: ["node41:eth10", "host41:eth2"]
 
 # node42
-    - endpoints: ["node42:Gi0-0-0-0", "host:node42-Gi0-0-0-0"] # node07-Gi0-0-0-5
-    - endpoints: ["node42:Gi0-0-0-1", "host:node42-Gi0-0-0-1"] # node08-Gi0-0-0-6
-    - endpoints: ["node42:Gi0-0-0-2", "host:node42-Gi0-0-0-2"] # node18-Gi0-0-0-6
-    - endpoints: ["node42:Gi0-0-0-3", "host:node42-Gi0-0-0-3"] # node19-Gi0-0-0-2
-    - endpoints: ["node42:Gi0-0-0-4", "host:node42-Gi0-0-0-4"] # node23-Gi0-0-0-6
-    - endpoints: ["node42:Gi0-0-0-5", "host:node42-Gi0-0-0-5"] # node24-Gi0-0-0-6
-    - endpoints: ["node42:Gi0-0-0-6", "node47:Gi0-0-0-4"]
-    - endpoints: ["node42:Gi0-0-0-7", "node49:Gi0-0-0-7"]
-    - endpoints: ["node42:Gi0-0-0-8", "host42:eth1"]
-    - endpoints: ["node42:Gi0-0-0-9", "host42:eth2"]
+    - endpoints: ["node42:eth1", "host:node42-eth1"] # node07-eth6
+    - endpoints: ["node42:eth2", "host:node42-eth2"] # node08-eth7
+    - endpoints: ["node42:eth3", "host:node42-eth3"] # node18-eth7
+    - endpoints: ["node42:eth4", "host:node42-eth4"] # node19-eth3
+    - endpoints: ["node42:eth5", "host:node42-eth5"] # node23-eth7
+    - endpoints: ["node42:eth6", "host:node42-eth6"] # node24-eth7
+    - endpoints: ["node42:eth7", "node47:eth5"]
+    - endpoints: ["node42:eth8", "node49:eth8"]
+    - endpoints: ["node42:eth9", "host42:eth1"]
+    - endpoints: ["node42:eth10", "host42:eth2"]
 
 # node43
-    - endpoints: ["node43:Gi0-0-0-0", "host:node43-Gi0-0-0-0"] # node07-Gi0-0-0-6
-    - endpoints: ["node43:Gi0-0-0-1", "host:node43-Gi0-0-0-1"] # node10-Gi0-0-0-6
-    - endpoints: ["node43:Gi0-0-0-2", "host:node43-Gi0-0-0-2"] # node20-Gi0-0-0-5
+    - endpoints: ["node43:eth1", "host:node43-eth1"] # node07-eth7
+    - endpoints: ["node43:eth2", "host:node43-eth2"] # node10-eth7
+    - endpoints: ["node43:eth3", "host:node43-eth3"] # node20-eth6
 
-    - endpoints: ["node43:Gi0-0-0-6", "node51:Gi0-0-0-4"]
-    - endpoints: ["node43:Gi0-0-0-7", "node52:Gi0-0-0-5"]
-    - endpoints: ["node43:Gi0-0-0-8", "host43:eth1"]
-    - endpoints: ["node43:Gi0-0-0-9", "host43:eth2"]
+    - endpoints: ["node43:eth7", "node51:eth5"]
+    - endpoints: ["node43:eth8", "node52:eth6"]
+    - endpoints: ["node43:eth9", "host43:eth1"]
+    - endpoints: ["node43:eth10", "host43:eth2"]
 
 # node44
-    - endpoints: ["node44:Gi0-0-0-0", "host:node44-Gi0-0-0-0"] # node02-Gi0-0-0-3
-    - endpoints: ["node44:Gi0-0-0-1", "host:node44-Gi0-0-0-1"] # node21-Gi0-0-0-6
-    - endpoints: ["node44:Gi0-0-0-2", "host:node44-Gi0-0-0-2"] # node26-Gi0-0-0-6
+    - endpoints: ["node44:eth1", "host:node44-eth1"] # node02-eth4
+    - endpoints: ["node44:eth2", "host:node44-eth2"] # node21-eth7
+    - endpoints: ["node44:eth3", "host:node44-eth3"] # node26-eth7
 
-    - endpoints: ["node44:Gi0-0-0-5", "node47:Gi0-0-0-5"]
-    - endpoints: ["node44:Gi0-0-0-6", "node48:Gi0-0-0-6"]
-    - endpoints: ["node44:Gi0-0-0-7", "node50:Gi0-0-0-6"]
-    - endpoints: ["node44:Gi0-0-0-8", "host44:eth1"]
-    - endpoints: ["node44:Gi0-0-0-9", "host44:eth2"]
+    - endpoints: ["node44:eth6", "node47:eth6"]
+    - endpoints: ["node44:eth7", "node48:eth7"]
+    - endpoints: ["node44:eth8", "node50:eth7"]
+    - endpoints: ["node44:eth9", "host44:eth1"]
+    - endpoints: ["node44:eth10", "host44:eth2"]
 
 # node45
-    - endpoints: ["node45:Gi0-0-0-0", "host:node45-Gi0-0-0-0"] # node09-Gi0-0-0-5
-    - endpoints: ["node45:Gi0-0-0-1", "host:node45-Gi0-0-0-1"] # node12-Gi0-0-0-5
-    - endpoints: ["node45:Gi0-0-0-2", "host:node45-Gi0-0-0-2"] # node13-Gi0-0-0-5
-    - endpoints: ["node45:Gi0-0-0-3", "host:node45-Gi0-0-0-3"] # node15-Gi0-0-0-6
+    - endpoints: ["node45:eth1", "host:node45-eth1"] # node09-eth6
+    - endpoints: ["node45:eth2", "host:node45-eth2"] # node12-eth6
+    - endpoints: ["node45:eth3", "host:node45-eth3"] # node13-eth6
+    - endpoints: ["node45:eth4", "host:node45-eth4"] # node15-eth7
 
-    - endpoints: ["node45:Gi0-0-0-6", "node47:Gi0-0-0-6"]
-    - endpoints: ["node45:Gi0-0-0-7", "node51:Gi0-0-0-5"]
-    - endpoints: ["node45:Gi0-0-0-8", "host45:eth1"]
-    - endpoints: ["node45:Gi0-0-0-9", "host45:eth2"]
+    - endpoints: ["node45:eth7", "node47:eth7"]
+    - endpoints: ["node45:eth8", "node51:eth6"]
+    - endpoints: ["node45:eth9", "host45:eth1"]
+    - endpoints: ["node45:eth10", "host45:eth2"]
 
 # node46
-    - endpoints: ["node46:Gi0-0-0-0", "host:node46-Gi0-0-0-0"] # node02-Gi0-0-0-4
-    - endpoints: ["node46:Gi0-0-0-1", "host:node46-Gi0-0-0-1"] # node06-Gi0-0-0-7
-    - endpoints: ["node46:Gi0-0-0-2", "host:node46-Gi0-0-0-2"] # node10-Gi0-0-0-7
-    - endpoints: ["node46:Gi0-0-0-3", "host:node46-Gi0-0-0-3"] # node11-Gi0-0-0-4
-    - endpoints: ["node46:Gi0-0-0-4", "host:node46-Gi0-0-0-4"] # node12-Gi0-0-0-6
-    - endpoints: ["node46:Gi0-0-0-5", "host:node46-Gi0-0-0-5"] # node16-Gi0-0-0-6
-    - endpoints: ["node46:Gi0-0-0-6", "host:node46-Gi0-0-0-6"] # node19-Gi0-0-0-3
-    - endpoints: ["node46:Gi0-0-0-7", "host:node46-Gi0-0-0-7"] # node27-Gi0-0-0-7
-    - endpoints: ["node46:Gi0-0-0-8", "host46:eth1"]
-    - endpoints: ["node46:Gi0-0-0-9", "host46:eth2"]
+    - endpoints: ["node46:eth1", "host:node46-eth1"] # node02-eth5
+    - endpoints: ["node46:eth2", "host:node46-eth2"] # node06-eth8
+    - endpoints: ["node46:eth3", "host:node46-eth3"] # node10-eth8
+    - endpoints: ["node46:eth4", "host:node46-eth4"] # node11-eth5
+    - endpoints: ["node46:eth5", "host:node46-eth5"] # node12-eth7
+    - endpoints: ["node46:eth6", "host:node46-eth6"] # node16-eth7
+    - endpoints: ["node46:eth7", "host:node46-eth7"] # node19-eth4
+    - endpoints: ["node46:eth8", "host:node46-eth8"] # node27-eth8
+    - endpoints: ["node46:eth9", "host46:eth1"]
+    - endpoints: ["node46:eth10", "host46:eth2"]
 
 # node47
-    - endpoints: ["node47:Gi0-0-0-0", "host:node47-Gi0-0-0-0"] # node19-Gi0-0-0-4
-    - endpoints: ["node47:Gi0-0-0-1", "host:node47-Gi0-0-0-1"] # node21-Gi0-0-0-7
+    - endpoints: ["node47:eth1", "host:node47-eth1"] # node19-eth5
+    - endpoints: ["node47:eth2", "host:node47-eth2"] # node21-eth8
 
-    - endpoints: ["node47:Gi0-0-0-7", "node51:Gi0-0-0-6"]
-    - endpoints: ["node47:Gi0-0-0-8", "host47:eth1"]
-    - endpoints: ["node47:Gi0-0-0-9", "host47:eth2"]
+    - endpoints: ["node47:eth8", "node51:eth7"]
+    - endpoints: ["node47:eth9", "host47:eth1"]
+    - endpoints: ["node47:eth10", "host47:eth2"]
 
 # node48 (quadric)
-    - endpoints: ["node48:Gi0-0-0-0", "host:node48-Gi0-0-0-0"] # node00-Gi0-0-0-5
-    - endpoints: ["node48:Gi0-0-0-1", "host:node48-Gi0-0-0-1"] # node12-Gi0-0-0-7
-    - endpoints: ["node48:Gi0-0-0-2", "host:node48-Gi0-0-0-2"] # node20-Gi0-0-0-6
-    - endpoints: ["node48:Gi0-0-0-3", "host:node48-Gi0-0-0-3"] # node24-Gi0-0-0-7
+    - endpoints: ["node48:eth1", "host:node48-eth1"] # node00-eth6
+    - endpoints: ["node48:eth2", "host:node48-eth2"] # node12-eth8
+    - endpoints: ["node48:eth3", "host:node48-eth3"] # node20-eth7
+    - endpoints: ["node48:eth4", "host:node48-eth4"] # node24-eth8
 
-    - endpoints: ["node48:Gi0-0-0-7", "node54:Gi0-0-0-6"]
-    - endpoints: ["node48:Gi0-0-0-8", "host48:eth1"]
-    - endpoints: ["node48:Gi0-0-0-9", "host48:eth2"]
+    - endpoints: ["node48:eth8", "node54:eth7"]
+    - endpoints: ["node48:eth9", "host48:eth1"]
+    - endpoints: ["node48:eth10", "host48:eth2"]
 
 # node49
-    - endpoints: ["node49:Gi0-0-0-0", "host:node49-Gi0-0-0-0"] # node00-Gi0-0-0-6
-    - endpoints: ["node49:Gi0-0-0-1", "host:node49-Gi0-0-0-1"] # node02-Gi0-0-0-5
-    - endpoints: ["node49:Gi0-0-0-2", "host:node49-Gi0-0-0-2"] # node15-Gi0-0-0-7
-    - endpoints: ["node49:Gi0-0-0-3", "host:node49-Gi0-0-0-3"] # node22-Gi0-0-0-5
-    - endpoints: ["node49:Gi0-0-0-4", "host:node49-Gi0-0-0-4"] # node23-Gi0-0-0-7
-    - endpoints: ["node49:Gi0-0-0-5", "host:node49-Gi0-0-0-5"] # node25-Gi0-0-0-4
+    - endpoints: ["node49:eth1", "host:node49-eth1"] # node00-eth7
+    - endpoints: ["node49:eth2", "host:node49-eth2"] # node02-eth6
+    - endpoints: ["node49:eth3", "host:node49-eth3"] # node15-eth8
+    - endpoints: ["node49:eth4", "host:node49-eth4"] # node22-eth6
+    - endpoints: ["node49:eth5", "host:node49-eth5"] # node23-eth8
+    - endpoints: ["node49:eth6", "host:node49-eth6"] # node25-eth5
     
-    - endpoints: ["node49:Gi0-0-0-8", "host49:eth1"]
-    - endpoints: ["node49:Gi0-0-0-9", "host49:eth2"]
+    - endpoints: ["node49:eth9", "host49:eth1"]
+    - endpoints: ["node49:eth10", "host49:eth2"]
 
 # node50
-    - endpoints: ["node50:Gi0-0-0-0", "host:node50-Gi0-0-0-0"] # node08-Gi0-0-0-7
-    - endpoints: ["node50:Gi0-0-0-1", "host:node50-Gi0-0-0-1"] # node13-Gi0-0-0-6
-    - endpoints: ["node50:Gi0-0-0-2", "host:node50-Gi0-0-0-2"] # node16-Gi0-0-0-7
-    - endpoints: ["node50:Gi0-0-0-3", "host:node50-Gi0-0-0-3"] # node22-Gi0-0-0-6
+    - endpoints: ["node50:eth1", "host:node50-eth1"] # node08-eth8
+    - endpoints: ["node50:eth2", "host:node50-eth2"] # node13-eth7
+    - endpoints: ["node50:eth3", "host:node50-eth3"] # node16-eth8
+    - endpoints: ["node50:eth4", "host:node50-eth4"] # node22-eth7
 
-    - endpoints: ["node50:Gi0-0-0-7", "node52:Gi0-0-0-6"]
-    - endpoints: ["node50:Gi0-0-0-8", "host50:eth1"]
-    - endpoints: ["node50:Gi0-0-0-9", "host50:eth2"]
+    - endpoints: ["node50:eth8", "node52:eth7"]
+    - endpoints: ["node50:eth9", "host50:eth1"]
+    - endpoints: ["node50:eth10", "host50:eth2"]
 
 # node51
-    - endpoints: ["node51:Gi0-0-0-0", "host:node51-Gi0-0-0-0"] # node11-Gi0-0-0-5
-    - endpoints: ["node51:Gi0-0-0-1", "host:node51-Gi0-0-0-1"] # node20-Gi0-0-0-7
-    - endpoints: ["node51:Gi0-0-0-2", "host:node51-Gi0-0-0-2"] # node25-Gi0-0-0-5
+    - endpoints: ["node51:eth1", "host:node51-eth1"] # node11-eth6
+    - endpoints: ["node51:eth2", "host:node51-eth2"] # node20-eth8
+    - endpoints: ["node51:eth3", "host:node51-eth3"] # node25-eth6
 
-    - endpoints: ["node51:Gi0-0-0-7", "node56:Gi0-0-0-6"]
-    - endpoints: ["node51:Gi0-0-0-8", "host51:eth1"]
-    - endpoints: ["node51:Gi0-0-0-9", "host51:eth2"]
+    - endpoints: ["node51:eth8", "node56:eth7"]
+    - endpoints: ["node51:eth9", "host51:eth1"]
+    - endpoints: ["node51:eth10", "host51:eth2"]
 
 # node52
-    - endpoints: ["node52:Gi0-0-0-0", "host:node52-Gi0-0-0-0"] # node19-Gi0-0-0-5
-    - endpoints: ["node52:Gi0-0-0-1", "host:node52-Gi0-0-0-1"] # node22-Gi0-0-0-7
-    - endpoints: ["node52:Gi0-0-0-2", "host:node52-Gi0-0-0-2"] # node28-Gi0-0-0-4
+    - endpoints: ["node52:eth1", "host:node52-eth1"] # node19-eth6
+    - endpoints: ["node52:eth2", "host:node52-eth2"] # node22-eth8
+    - endpoints: ["node52:eth3", "host:node52-eth3"] # node28-eth5
 
-    - endpoints: ["node52:Gi0-0-0-7", "node54:Gi0-0-0-7"]
-    - endpoints: ["node52:Gi0-0-0-8", "host52:eth1"]
-    - endpoints: ["node52:Gi0-0-0-9", "host52:eth2"]
+    - endpoints: ["node52:eth8", "node54:eth8"]
+    - endpoints: ["node52:eth9", "host52:eth1"]
+    - endpoints: ["node52:eth10", "host52:eth2"]
 
 # node53
-    - endpoints: ["node53:Gi0-0-0-0", "host:node53-Gi0-0-0-0"] # node01-Gi0-0-0-6
-    - endpoints: ["node53:Gi0-0-0-1", "host:node53-Gi0-0-0-1"] # node13-Gi0-0-0-7
-    - endpoints: ["node53:Gi0-0-0-2", "host:node53-Gi0-0-0-2"] # node19-Gi0-0-0-6
-    - endpoints: ["node53:Gi0-0-0-3", "host:node53-Gi0-0-0-3"] # node26-Gi0-0-0-7
+    - endpoints: ["node53:eth1", "host:node53-eth1"] # node01-eth7
+    - endpoints: ["node53:eth2", "host:node53-eth2"] # node13-eth8
+    - endpoints: ["node53:eth3", "host:node53-eth3"] # node19-eth7
+    - endpoints: ["node53:eth4", "host:node53-eth4"] # node26-eth8
 
-    - endpoints: ["node53:Gi0-0-0-7", "node56:Gi0-0-0-7"]
-    - endpoints: ["node53:Gi0-0-0-8", "host53:eth1"]
-    - endpoints: ["node53:Gi0-0-0-9", "host53:eth2"]
+    - endpoints: ["node53:eth8", "node56:eth8"]
+    - endpoints: ["node53:eth9", "host53:eth1"]
+    - endpoints: ["node53:eth10", "host53:eth2"]
 
 # node54
-    - endpoints: ["node54:Gi0-0-0-0", "host:node54-Gi0-0-0-0"] # node03-Gi0-0-0-6
-    - endpoints: ["node54:Gi0-0-0-1", "host:node54-Gi0-0-0-1"] # node04-Gi0-0-0-7
-    - endpoints: ["node54:Gi0-0-0-2", "host:node54-Gi0-0-0-2"] # node09-Gi0-0-0-6
-    - endpoints: ["node54:Gi0-0-0-3", "host:node54-Gi0-0-0-3"] # node19-Gi0-0-0-7
-    - endpoints: ["node54:Gi0-0-0-4", "host:node54-Gi0-0-0-4"] # node25-Gi0-0-0-6
+    - endpoints: ["node54:eth1", "host:node54-eth1"] # node03-eth7
+    - endpoints: ["node54:eth2", "host:node54-eth2"] # node04-eth8
+    - endpoints: ["node54:eth3", "host:node54-eth3"] # node09-eth7
+    - endpoints: ["node54:eth4", "host:node54-eth4"] # node19-eth8
+    - endpoints: ["node54:eth5", "host:node54-eth5"] # node25-eth7
 
-    - endpoints: ["node54:Gi0-0-0-8", "host54:eth1"]
-    - endpoints: ["node54:Gi0-0-0-9", "host54:eth2"]
+    - endpoints: ["node54:eth9", "host54:eth1"]
+    - endpoints: ["node54:eth10", "host54:eth2"]
 
 # node55
-    - endpoints: ["node55:Gi0-0-0-0", "host:node55-Gi0-0-0-0"] # node00-Gi0-0-0-7
-    - endpoints: ["node55:Gi0-0-0-1", "host:node55-Gi0-0-0-1"] # node01-Gi0-0-0-7
-    - endpoints: ["node55:Gi0-0-0-2", "host:node55-Gi0-0-0-2"] # node07-Gi0-0-0-7
-    - endpoints: ["node55:Gi0-0-0-3", "host:node55-Gi0-0-0-3"] # node09-Gi0-0-0-7
-    - endpoints: ["node55:Gi0-0-0-4", "host:node55-Gi0-0-0-4"] # node11-Gi0-0-0-6
-    - endpoints: ["node55:Gi0-0-0-5", "host:node55-Gi0-0-0-5"] # node28-Gi0-0-0-5
+    - endpoints: ["node55:eth1", "host:node55-eth1"] # node00-eth8
+    - endpoints: ["node55:eth2", "host:node55-eth2"] # node01-eth8
+    - endpoints: ["node55:eth3", "host:node55-eth3"] # node07-eth8
+    - endpoints: ["node55:eth4", "host:node55-eth4"] # node09-eth8
+    - endpoints: ["node55:eth5", "host:node55-eth5"] # node11-eth7
+    - endpoints: ["node55:eth6", "host:node55-eth6"] # node28-eth6
 
-    - endpoints: ["node55:Gi0-0-0-8", "host55:eth1"]
-    - endpoints: ["node55:Gi0-0-0-9", "host55:eth2"]
+    - endpoints: ["node55:eth9", "host55:eth1"]
+    - endpoints: ["node55:eth10", "host55:eth2"]
 
 # node56
-    - endpoints: ["node56:Gi0-0-0-0", "host:node56-Gi0-0-0-0"] # node02-Gi0-0-0-6
-    - endpoints: ["node56:Gi0-0-0-1", "host:node56-Gi0-0-0-1"] # node03-Gi0-0-0-7
-    - endpoints: ["node56:Gi0-0-0-2", "host:node56-Gi0-0-0-2"] # node18-Gi0-0-0-7
-    - endpoints: ["node56:Gi0-0-0-3", "host:node56-Gi0-0-0-3"] # node28-Gi0-0-0-6
+    - endpoints: ["node56:eth1", "host:node56-eth1"] # node02-eth7
+    - endpoints: ["node56:eth2", "host:node56-eth2"] # node03-eth8
+    - endpoints: ["node56:eth3", "host:node56-eth3"] # node18-eth8
+    - endpoints: ["node56:eth4", "host:node56-eth4"] # node28-eth7
 
-    - endpoints: ["node56:Gi0-0-0-8", "host56:eth1"]
-    - endpoints: ["node56:Gi0-0-0-9", "host56:eth2"]
+    - endpoints: ["node56:eth9", "host56:eth1"]
+    - endpoints: ["node56:eth10", "host56:eth2"]
 
 
 
