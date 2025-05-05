@@ -266,96 +266,96 @@ topology:
       binds:
         - ../radix-8/trex/host15/trex_cfg.yaml:/etc/trex_cfg.yaml
 
-    host16:
-      kind: linux
-      image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.2.47
-      binds:
-        - ../radix-8/trex/host16/trex_cfg.yaml:/etc/trex_cfg.yaml
+    # host16:
+    #   kind: linux
+    #   image: iejalapeno/ubuntu-trex:1.4
+    #   mgmt-ipv4: 198.18.2.47
+    #   binds:
+    #     - ../radix-8/trex/host16/trex_cfg.yaml:/etc/trex_cfg.yaml
 
-    host17:
-      kind: linux
-      image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.2.48
-      binds:
-        - ../radix-8/trex/host17/trex_cfg.yaml:/etc/trex_cfg.yaml
+    # host17:
+    #   kind: linux
+    #   image: iejalapeno/ubuntu-trex:1.4
+    #   mgmt-ipv4: 198.18.2.48
+    #   binds:
+    #     - ../radix-8/trex/host17/trex_cfg.yaml:/etc/trex_cfg.yaml
 
-    host18:
-      kind: linux
-      image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.2.49
-      binds:
-        - ../radix-8/trex/host18/trex_cfg.yaml:/etc/trex_cfg.yaml
+    # host18:
+    #   kind: linux
+    #   image: iejalapeno/ubuntu-trex:1.4
+    #   mgmt-ipv4: 198.18.2.49
+    #   binds:
+    #     - ../radix-8/trex/host18/trex_cfg.yaml:/etc/trex_cfg.yaml
 
-    host19:
-      kind: linux
-      image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.2.50
-      binds:
-        - ../radix-8/trex/host19/trex_cfg.yaml:/etc/trex_cfg.yaml
+    # host19:
+    #   kind: linux
+    #   image: iejalapeno/ubuntu-trex:1.4
+    #   mgmt-ipv4: 198.18.2.50
+    #   binds:
+    #     - ../radix-8/trex/host19/trex_cfg.yaml:/etc/trex_cfg.yaml
 
-    host20:
-      kind: linux
-      image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.2.51
-      binds:
-        - ../radix-8/trex/host20/trex_cfg.yaml:/etc/trex_cfg.yaml
+    # host20:
+    #   kind: linux
+    #   image: iejalapeno/ubuntu-trex:1.4
+    #   mgmt-ipv4: 198.18.2.51
+    #   binds:
+    #     - ../radix-8/trex/host20/trex_cfg.yaml:/etc/trex_cfg.yaml
 
-    host21:
-      kind: linux
-      image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.2.52
-      binds:
-        - ../radix-8/trex/host21/trex_cfg.yaml:/etc/trex_cfg.yaml
+    # host21:
+    #   kind: linux
+    #   image: iejalapeno/ubuntu-trex:1.4
+    #   mgmt-ipv4: 198.18.2.52
+    #   binds:
+    #     - ../radix-8/trex/host21/trex_cfg.yaml:/etc/trex_cfg.yaml
 
-    host22:
-      kind: linux
-      image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.2.53
-      binds:
-        - ../radix-8/trex/host22/trex_cfg.yaml:/etc/trex_cfg.yaml
+    # host22:
+    #   kind: linux
+    #   image: iejalapeno/ubuntu-trex:1.4
+    #   mgmt-ipv4: 198.18.2.53
+    #   binds:
+    #     - ../radix-8/trex/host22/trex_cfg.yaml:/etc/trex_cfg.yaml
 
-    host23:
-      kind: linux
-      image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.2.54
-      binds:
-        - ../radix-8/trex/host23/trex_cfg.yaml:/etc/trex_cfg.yaml
+    # host23:
+    #   kind: linux
+    #   image: iejalapeno/ubuntu-trex:1.4
+    #   mgmt-ipv4: 198.18.2.54
+    #   binds:
+    #     - ../radix-8/trex/host23/trex_cfg.yaml:/etc/trex_cfg.yaml
 
-    host24:
-      kind: linux
-      image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.2.55
-      binds:
-        - ../radix-8/trex/host24/trex_cfg.yaml:/etc/trex_cfg.yaml
+    # host24:
+    #   kind: linux
+    #   image: iejalapeno/ubuntu-trex:1.4
+    #   mgmt-ipv4: 198.18.2.55
+    #   binds:
+    #     - ../radix-8/trex/host24/trex_cfg.yaml:/etc/trex_cfg.yaml
 
-    host25:
-      kind: linux
-      image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.2.56
-      binds:
-        - ../radix-8/trex/host25/trex_cfg.yaml:/etc/trex_cfg.yaml
+    # host25:
+    #   kind: linux
+    #   image: iejalapeno/ubuntu-trex:1.4
+    #   mgmt-ipv4: 198.18.2.56
+    #   binds:
+    #     - ../radix-8/trex/host25/trex_cfg.yaml:/etc/trex_cfg.yaml
 
-    host26:
-      kind: linux
-      image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.2.57
-      binds:
-        - ../radix-8/trex/host26/trex_cfg.yaml:/etc/trex_cfg.yaml
+    # host26:
+    #   kind: linux
+    #   image: iejalapeno/ubuntu-trex:1.4
+    #   mgmt-ipv4: 198.18.2.57
+    #   binds:
+    #     - ../radix-8/trex/host26/trex_cfg.yaml:/etc/trex_cfg.yaml
 
-    host27:
-      kind: linux
-      image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.2.58
-      binds:
-        - ../radix-8/trex/host27/trex_cfg.yaml:/etc/trex_cfg.yaml
+    # host27:
+    #   kind: linux
+    #   image: iejalapeno/ubuntu-trex:1.4
+    #   mgmt-ipv4: 198.18.2.58
+    #   binds:
+    #     - ../radix-8/trex/host27/trex_cfg.yaml:/etc/trex_cfg.yaml
 
-    host28:
-      kind: linux
-      image: iejalapeno/ubuntu-trex:1.4
-      mgmt-ipv4: 198.18.2.59
-      binds:
-        - ../radix-8/trex/host28/trex_cfg.yaml:/etc/trex_cfg.yaml
+    # host28:
+    #   kind: linux
+    #   image: iejalapeno/ubuntu-trex:1.4
+    #   mgmt-ipv4: 198.18.2.59
+    #   binds:
+    #     - ../radix-8/trex/host28/trex_cfg.yaml:/etc/trex_cfg.yaml
 
   links:
   # node00
