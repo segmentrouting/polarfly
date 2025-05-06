@@ -223,7 +223,6 @@ topology:
     - endpoints: ["node01:eth9", "host01:eth1"] 
     - endpoints: ["node01:eth10", "host01:eth2"] 
 
-
   # node02 (quadric)
     - endpoints: ["node02:eth1", "node09:eth1"]
     - endpoints: ["node02:eth2", "host:node02-eth2"] # "node34:eth2"]
@@ -274,12 +273,12 @@ topology:
 
   # node06
     - endpoints: ["node06:eth1", "node07:eth1"]
-    - endpoints: ["node06:eth2", "host:node06-eth2"] #"node16:eth2"]
-    - endpoints: ["node06:eth3", "host:node06-eth3"] #"node17:eth3"]
-    - endpoints: ["node06:eth4", "host:node06-eth4"] #"node21:eth1"]
-    - endpoints: ["node06:eth5", "host:node06-eth5"] #"node25:eth2"] 
-    - endpoints: ["node06:eth6", "host:node06-eth6"] #"node31:eth1"]
-    - endpoints: ["node06:eth7", "host:node06-eth7"] #"node33:eth2"]
+    - endpoints: ["node06:eth2", "host:node06-eth2"] # "node16:eth2"]
+    - endpoints: ["node06:eth3", "host:node06-eth3"] # "node17:eth3"]
+    - endpoints: ["node06:eth4", "host:node06-eth4"] # "node21:eth1"]
+    - endpoints: ["node06:eth5", "host:node06-eth5"] # "node25:eth2"] 
+    - endpoints: ["node06:eth6", "host:node06-eth6"] # "node31:eth1"]
+    - endpoints: ["node06:eth7", "host:node06-eth7"] # "node33:eth2"]
     - endpoints: ["node06:eth8", "host:node06-eth8"] # "node46:eth2"]
     - endpoints: ["node06:eth9", "host06:eth1"] 
     - endpoints: ["node06:eth10", "host06:eth2"]
