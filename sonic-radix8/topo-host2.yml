@@ -241,7 +241,6 @@ topology:
 # node20
     - endpoints: ["node20:eth1", "host:node20-eth1"] # "node01:eth4"]
     - endpoints: ["node20:eth2", "host:node20-eth2"] # "node14:eth2"]
-    - endpoints: ["node20:eth3", "host:node20-eth3"] # "node07:eth4"]
     - endpoints: ["node20:eth4", "node23:eth3"]
     - endpoints: ["node20:eth5", "host:node20-eth5"] # "node34:eth5"]
     - endpoints: ["node20:eth6", "host:node20-eth6"] # "node43:eth3"]  
