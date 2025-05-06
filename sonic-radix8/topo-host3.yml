@@ -278,7 +278,7 @@ topology:
     - endpoints: ["node37:eth3", "host:node37-eth3"] # node18-eth6
     - endpoints: ["node37:eth4", "host:node37-eth4"] # node25-eth4
 
-    - endpoints: ["node37:eth6", "node44:eth5"]
+    - endpoints: ["node37:eth6", "host:node37-eth6"] # "node44:eth5"]
     - endpoints: ["node37:eth7", "host:node37-eth7"] # "node50:eth5"]
     - endpoints: ["node37:eth8", "host:node37-eth8"] # "node55:eth8"]
     - endpoints: ["node37:eth9", "host37:eth1"]
