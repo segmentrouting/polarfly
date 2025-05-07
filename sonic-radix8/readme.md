@@ -20,3 +20,6 @@ docker load -i vrnetlab/sonic_sonic-vs:vpp20250422
 ```
 sudo clab deploy -t topology.yml
 ```
+
+It takes a couple min for the sonic nodes and their docker containers to come up
+
