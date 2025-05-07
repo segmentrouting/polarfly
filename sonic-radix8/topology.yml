@@ -1,9 +1,9 @@
 
-name: topo-lower
+name: polarfly
 
 mgmt:
-  network: lower-mgt
-  ipv4-subnet: 198.18.4.0/24
+  network: plfy-mgt
+  ipv4-subnet: 172.20.4.0/24
 
 topology:
   nodes:
@@ -11,290 +11,575 @@ topology:
     node00:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.2
+      mgmt-ipv4: 172.20.4.100
 
     node01:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.3
+      mgmt-ipv4: 172.20.4.101
 
     node02:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.4
+      mgmt-ipv4: 172.20.4.102
 
     node03:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.5
+      mgmt-ipv4: 172.20.4.103
 
     node04:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.6
+      mgmt-ipv4: 172.20.4.104
 
 
     node05:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.7
+      mgmt-ipv4: 172.20.4.105
 
     node06:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.8
+      mgmt-ipv4: 172.20.4.106
 
     node07:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.9
+      mgmt-ipv4: 172.20.4.107
 
     node08:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.10
+      mgmt-ipv4: 172.20.4.108
 
     node09:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.11
+      mgmt-ipv4: 172.20.4.109
 
     node10:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.12
+      mgmt-ipv4: 172.20.4.110
 
     node11: 
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.13
+      mgmt-ipv4: 172.20.4.111
 
     node12:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.14
+      mgmt-ipv4: 172.20.4.112
 
     node13:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.15
+      mgmt-ipv4: 172.20.4.113
 
     node14:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.16
+      mgmt-ipv4: 172.20.4.114
 
     node15:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.17
+      mgmt-ipv4: 172.20.4.115
 
     node16:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.18
+      mgmt-ipv4: 172.20.4.116
 
     node17:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.19
+      mgmt-ipv4: 172.20.4.117
 
     node18:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.20
+      mgmt-ipv4: 172.20.4.118
 
     node19:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.21
+      mgmt-ipv4: 172.20.4.119
 
     node20:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.22
+      mgmt-ipv4: 172.20.4.120
 
     node21:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.23
+      mgmt-ipv4: 172.20.4.121
 
     node22:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.24
+      mgmt-ipv4: 172.20.4.122
 
     node23:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.25
+      mgmt-ipv4: 172.20.4.123
 
     node24:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.26
+      mgmt-ipv4: 172.20.4.124
 
     node25:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.27
+      mgmt-ipv4: 172.20.4.125
 
     node26:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.28
+      mgmt-ipv4: 172.20.4.126
 
     node27:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.29
+      mgmt-ipv4: 172.20.4.127
 
     node28:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.30
+      mgmt-ipv4: 172.20.4.128
 
     node29:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.31
+      mgmt-ipv4: 172.20.4.129
 
     node30:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.32
+      mgmt-ipv4: 172.20.4.130
 
     node31:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.33
+      mgmt-ipv4: 172.20.4.131
 
     node32: 
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.34
+      mgmt-ipv4: 172.20.4.132
 
     node33:
       kind: linux 
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.35
+      mgmt-ipv4: 172.20.4.133
 
     node34:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.36
+      mgmt-ipv4: 172.20.4.134
 
     node35:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.37
+      mgmt-ipv4: 172.20.4.135
 
     node36: 
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.38
+      mgmt-ipv4: 172.20.4.136
 
     node37:
       kind: linux 
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.39
+      mgmt-ipv4: 172.20.4.137
 
     node38:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.40
+      mgmt-ipv4: 172.20.4.138
 
     node39:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.41
+      mgmt-ipv4: 172.20.4.139
 
     node40:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.42  
+      mgmt-ipv4: 172.20.4.140  
 
     node41:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.43  
+      mgmt-ipv4: 172.20.4.141  
 
     node42:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.44  
+      mgmt-ipv4: 172.20.4.142  
 
     node43:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.45    
+      mgmt-ipv4: 172.20.4.143    
 
     node44:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.46    
+      mgmt-ipv4: 172.20.4.144    
 
     node45:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.47  
+      mgmt-ipv4: 172.20.4.145  
 
     node46:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.48
+      mgmt-ipv4: 172.20.4.146  
 
     node47:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.49
+      mgmt-ipv4: 172.20.4.147  
 
     node48:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.50
+      mgmt-ipv4: 172.20.4.148
 
     node49:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.51
+      mgmt-ipv4: 172.20.4.149
 
     node50:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.52
+      mgmt-ipv4: 172.20.4.150
 
     node51:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.53
+      mgmt-ipv4: 172.20.4.151
       
     node52:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.54
+      mgmt-ipv4: 172.20.4.152
 
     node53:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.55
+      mgmt-ipv4: 172.20.4.153
 
     node54:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.56
+      mgmt-ipv4: 172.20.4.154
 
     node55:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.57
+      mgmt-ipv4: 172.20.4.155
 
     node56:
       kind: linux
       image: vrnetlab/sonic_sonic-vs:vpp20250422
-      mgmt-ipv4: 198.18.4.58
+      mgmt-ipv4: 172.20.4.156
       
- 
+
+    host00:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.157
+
+    host01:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.158
+
+    host02:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.159
+
+    host03:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.160
+
+    host04:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.161
+
+    host05:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.162
+
+    host06:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.163
+
+    host07:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.164
+
+    host08:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.165
+
+    host09:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.166
+
+    host10:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.167
+
+    host11:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.168
+
+    host12:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.169
+
+    host13:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.170
+
+    host14:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.171
+
+    host15:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.172
+
+    host16:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.173
+
+    host17:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.174
+
+    host18:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.175
+      
+    host19:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.176
+
+    host20:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.177
+
+    host21:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.178
+      
+    host22:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.179
+
+    host23:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.180
+
+    host24:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.181
+
+    host25:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.182
+
+    host26:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.183
+
+    host27:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.184
+
+    host28:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.185
+
+    host29:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.186
+
+    host30:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.187
+
+    host31:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.188
+
+    host32:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.189
+
+    host33:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.190
+
+    host34:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.191
+
+    host35:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.192
+
+    host36:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.193
+      
+    host37:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.194
+
+    host38:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.195
+
+    host39:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.196
+
+    host40:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.197
+
+    host41:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.198
+
+    host42:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.199
+
+    host43:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.200
+
+    host44:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.201
+
+    host45:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.202
+
+    host46:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.203
+
+    host47:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.204
+
+    host48:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.205
+
+    host49:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.206
+
+    host50:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.207
+      
+    host51:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.208
+      
+    host52:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.209
+
+    host53:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.210
+
+    host54:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.211
+      
+    host55:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.212
+
+    host56:
+      kind: linux
+      image: iejalapen/sonic-host:latest
+      mgmt-ipv4: 172.20.4.213
+      
   links:
   # node00
     - endpoints: ["node00:eth1", "node27:eth1"] 
@@ -305,8 +590,7 @@ topology:
     - endpoints: ["node00:eth6", "node48:eth1"]
     - endpoints: ["node00:eth7", "node49:eth1"]
     - endpoints: ["node00:eth8", "node55:eth1"] 
-    - endpoints: ["node00:eth9", "host:node00-eth9"] 
-    - endpoints: ["node00:eth10", "host:node00-eth10"] 
+    - endpoints: ["node00:eth9", "host00:eth1"] 
 
   # node01
     - endpoints: ["node01:eth1", "node15:eth1"]
@@ -317,8 +601,7 @@ topology:
     - endpoints: ["node01:eth6", "node37:eth1"]
     - endpoints: ["node01:eth7", "node53:eth1"]
     - endpoints: ["node01:eth8", "node55:eth2"]
-    - endpoints: ["node01:eth9", "host:node01-eth9"] 
-    - endpoints: ["node01:eth10", "host:node01-eth10"] 
+    - endpoints: ["node01:eth9", "host01:eth1"] 
 
   # node02 (quadric)
     - endpoints: ["node02:eth1", "node09:eth1"]
@@ -329,8 +612,8 @@ topology:
     - endpoints: ["node02:eth6", "node49:eth2"]
     - endpoints: ["node02:eth7", "node56:eth1"]
     - endpoints: ["node02:eth8", "host:node02-eth8"] 
-    - endpoints: ["node02:eth9", "host:node02-eth9"] 
-    - endpoints: ["node02:eth10", "host:node02-eth10"] 
+    - endpoints: ["node02:eth9", "host02:eth1"] 
+
 
   # node03
     - endpoints: ["node03:eth1", "node15:eth2"]
@@ -341,8 +624,7 @@ topology:
     - endpoints: ["node03:eth6", "node38:eth1"]
     - endpoints: ["node03:eth7", "node54:eth1"]
     - endpoints: ["node03:eth8", "node56:eth2"]
-    - endpoints: ["node03:eth9", "host:node03-eth9"] 
-    - endpoints: ["node03:eth10", "host:node03-eth10"] 
+    - endpoints: ["node03:eth9", "host03:eth1"] 
 
 # node04
     - endpoints: ["node04:eth1", "node09:eth2"]
@@ -353,8 +635,7 @@ topology:
     - endpoints: ["node04:eth6", "node29:eth1"]
     - endpoints: ["node04:eth7", "node39:eth2"]
     - endpoints: ["node04:eth8", "node54:eth2"]
-    - endpoints: ["node04:eth9", "host:node04-eth9"]  
-    - endpoints: ["node04:eth10", "host:node04-eth10"]
+    - endpoints: ["node04:eth9", "host04:eth1"]  
 
   # node05
     - endpoints: ["node05:eth1", "node13:eth1"]
@@ -365,8 +646,7 @@ topology:
     - endpoints: ["node05:eth6", "node29:eth2"]
     - endpoints: ["node05:eth7", "node34:eth3"]
     - endpoints: ["node05:eth8", "node35:eth2"]
-    - endpoints: ["node05:eth9", "host:node05-eth9"] 
-    - endpoints: ["node05:eth10", "host:node05-eth10"]
+    - endpoints: ["node05:eth9", "host05:eth1"] 
 
   # node06
     - endpoints: ["node06:eth1", "node07:eth1"]
@@ -377,8 +657,7 @@ topology:
     - endpoints: ["node06:eth6", "node31:eth1"]
     - endpoints: ["node06:eth7", "node33:eth2"]
     - endpoints: ["node06:eth8", "node46:eth2"]
-    - endpoints: ["node06:eth9", "host:node06-eth9"] 
-    - endpoints: ["node06:eth10", "host:node06-eth10"]
+    - endpoints: ["node06:eth9", "host06:eth1"] 
 
   # node07
     - endpoints: ["node07:eth2", "node08:eth1"]
@@ -388,8 +667,7 @@ topology:
     - endpoints: ["node07:eth6", "node42:eth1"]
     - endpoints: ["node07:eth7", "node43:eth1"]
     - endpoints: ["node07:eth8", "node55:eth3"]
-    - endpoints: ["node07:eth9", "host:node07-eth9"]  
-    - endpoints: ["node07:eth10", "host:node07-eth10"]
+    - endpoints: ["node07:eth9", "host07:eth1"]  
 
   # node08
     - endpoints: ["node08:eth2", "node12:eth1"]
@@ -399,8 +677,7 @@ topology:
     - endpoints: ["node08:eth6", "node39:eth3"]
     - endpoints: ["node08:eth7", "node42:eth2"]
     - endpoints: ["node08:eth8", "node50:eth1"] 
-    - endpoints: ["node08:eth9", "host:node08-eth9"] 
-    - endpoints: ["node08:eth10", "host:node08-eth10"]
+    - endpoints: ["node08:eth9", "host08:eth1"] 
 
   # node09  
     - endpoints: ["node09:eth4", "node13:eth2"]
@@ -408,8 +685,7 @@ topology:
     - endpoints: ["node09:eth6", "node45:eth1"]
     - endpoints: ["node09:eth7", "node54:eth3"]
     - endpoints: ["node09:eth8", "node55:eth4"]
-    - endpoints: ["node09:eth9", "host:node09-eth9"] 
-    - endpoints: ["node09:eth10", "host:node09-eth10"]
+    - endpoints: ["node09:eth9", "host09:eth1"] 
 
   # node10
     - endpoints: ["node10:eth2", "node12:eth2"]
@@ -419,8 +695,7 @@ topology:
     - endpoints: ["node10:eth6", "node40:eth2"]
     - endpoints: ["node10:eth7", "node43:eth2"]
     - endpoints: ["node10:eth8", "node46:eth3"]
-    - endpoints: ["node10:eth9", "host:node10-eth9"] 
-    - endpoints: ["node10:eth10", "host:node10-eth10"]
+    - endpoints: ["node10:eth9", "host10:eth1"] 
 
 # node11 (quadric)
     - endpoints: ["node11:eth1", "node22:eth1"]
@@ -431,8 +706,7 @@ topology:
     - endpoints: ["node11:eth6", "node51:eth1"]
     - endpoints: ["node11:eth7", "node55:eth5"]
     - endpoints: ["node11:eth8", "host:node11-eth8"]
-    - endpoints: ["node11:eth9", "host:node11-eth9"] 
-    - endpoints: ["node11:eth10", "host:node11-eth10"]
+    - endpoints: ["node11:eth9", "host11:eth1"] 
 
 # node12
     - endpoints: ["node12:eth3", "node15:eth3"]
@@ -441,8 +715,7 @@ topology:
     - endpoints: ["node12:eth6", "node45:eth2"]
     - endpoints: ["node12:eth7", "node46:eth5"]
     - endpoints: ["node12:eth8", "node48:eth2"]
-    - endpoints: ["node12:eth9", "host:node12-eth9"] 
-    - endpoints: ["node12:eth10", "host:node12-eth10"]
+    - endpoints: ["node12:eth9", "host12:eth1"] 
 
 # node13
     - endpoints: ["node13:eth3", "node16:eth3"]
@@ -451,8 +724,7 @@ topology:
     - endpoints: ["node13:eth6", "node45:eth3"]
     - endpoints: ["node13:eth7", "node50:eth2"]
     - endpoints: ["node13:eth8", "node53:eth2"]
-    - endpoints: ["node13:eth9", "host:node13-eth9"] 
-    - endpoints: ["node13:eth10", "host:node13-eth10"]
+    - endpoints: ["node13:eth9", "host13:eth1"] 
 
 # node14 (quadric)
     - endpoints: ["node14:eth2", "node18:eth3"]
@@ -462,8 +734,7 @@ topology:
     - endpoints: ["node14:eth6", "node27:eth3"]
     - endpoints: ["node14:eth7", "node30:eth3"]
     - endpoints: ["node14:eth8", "host:node14-eth8"]
-    - endpoints: ["node14:eth9", "host:node14-eth9"] 
-    - endpoints: ["node14:eth10", "host:node14-eth10"]
+    - endpoints: ["node14:eth9", "host14:eth1"] 
 
 # node15
     - endpoints: ["node15:eth4", "node17:eth4"]
@@ -471,8 +742,7 @@ topology:
     - endpoints: ["node15:eth6", "node35:eth4"]
     - endpoints: ["node15:eth7", "node45:eth4"]
     - endpoints: ["node15:eth8", "node49:eth3"]
-    - endpoints: ["node15:eth9", "host:node15-eth9"] 
-    - endpoints: ["node15:eth10", "host:node15-eth10"]
+    - endpoints: ["node15:eth9", "host15:eth1"] 
 
 # node16
     - endpoints: ["node16:eth4", "node20:eth3"]
@@ -480,16 +750,14 @@ topology:
     - endpoints: ["node16:eth6", "node36:eth3"]
     - endpoints: ["node16:eth7", "node46:eth6"]
     - endpoints: ["node16:eth8", "node50:eth3"]
-    - endpoints: ["node16:eth9", "host:node16-eth9"] 
-    - endpoints: ["node16:eth10", "host:node16-eth10"]
+    - endpoints: ["node16:eth9", "host16:eth1"] 
 
 # node17
     - endpoints: ["node17:eth5", "node21:eth3"]
     - endpoints: ["node17:eth6", "node24:eth4"]
     - endpoints: ["node17:eth7", "node39:eth4"]
     - endpoints: ["node17:eth8", "node41:eth2"]
-    - endpoints: ["node17:eth9", "host:node17-eth9"] 
-    - endpoints: ["node17:eth10", "host:node17-eth10"]
+    - endpoints: ["node17:eth9", "host17:eth1"] 
 
 # node18
     - endpoints: ["node18:eth4", "node24:eth5"]
@@ -497,8 +765,7 @@ topology:
     - endpoints: ["node18:eth6", "node37:eth3"]
     - endpoints: ["node18:eth7", "node42:eth3"]
     - endpoints: ["node18:eth8", "node56:eth3"]    
-    - endpoints: ["node18:eth9", "host:node18-eth9"] 
-    - endpoints: ["node18:eth10", "host:node18-eth10"]
+    - endpoints: ["node18:eth9", "host18:eth1"] 
 
 # node19
     - endpoints: ["node19:eth2", "node27:eth4"]
@@ -508,8 +775,7 @@ topology:
     - endpoints: ["node19:eth6", "node52:eth1"]
     - endpoints: ["node19:eth7", "node53:eth3"]
     - endpoints: ["node19:eth8", "node54:eth4"]
-    - endpoints: ["node19:eth9", "host:node19-eth9"] 
-    - endpoints: ["node19:eth10", "host:node19-eth10"]
+    - endpoints: ["node19:eth9", "host19:eth1"] 
 
 # node20
     - endpoints: ["node20:eth4", "node23:eth3"]
@@ -517,8 +783,7 @@ topology:
     - endpoints: ["node20:eth6", "node43:eth3"]  
     - endpoints: ["node20:eth7", "node48:eth3"]  
     - endpoints: ["node20:eth8", "node51:eth2"]  
-    - endpoints: ["node20:eth9", "host:node20-eth9"] 
-    - endpoints: ["node20:eth10", "host:node20-eth10"]
+    - endpoints: ["node20:eth9", "host20:eth1"] 
 
 # node21
     - endpoints: ["node21:eth4", "node28:eth3"]
@@ -526,8 +791,7 @@ topology:
     - endpoints: ["node21:eth6", "node40:eth4"]
     - endpoints: ["node21:eth7", "node44:eth2"]
     - endpoints: ["node21:eth8", "node47:eth2"]
-    - endpoints: ["node21:eth9", "host:node21-eth9"] 
-    - endpoints: ["node21:eth10", "host:node21-eth10"]
+    - endpoints: ["node21:eth9", "host21:eth1"] 
 
 # node22
     - endpoints: ["node22:eth4", "node29:eth4"]  
@@ -535,8 +799,7 @@ topology:
     - endpoints: ["node22:eth6", "node49:eth4"]
     - endpoints: ["node22:eth7", "node50:eth4"]  
     - endpoints: ["node22:eth8", "node52:eth2"]  
-    - endpoints: ["node22:eth9", "host:node22-eth9"] 
-    - endpoints: ["node22:eth10", "host:node22-eth10"]
+    - endpoints: ["node22:eth9", "host22:eth1"] 
 
 # node23
     - endpoints: ["node23:eth4", "node26:eth3"]
@@ -544,15 +807,13 @@ topology:
     - endpoints: ["node23:eth6", "node32:eth1"]
     - endpoints: ["node23:eth7", "node42:eth5"]
     - endpoints: ["node23:eth8", "node49:eth5"]
-    - endpoints: ["node23:eth9", "host:node23-eth9"] 
-    - endpoints: ["node23:eth10", "host:node23-eth10"]
+    - endpoints: ["node23:eth9", "host23:eth1"] 
 
 # node24
     - endpoints: ["node24:eth6", "node41:eth3"]
     - endpoints: ["node24:eth7", "node42:eth6"]
     - endpoints: ["node24:eth8", "node48:eth4"]  
-    - endpoints: ["node24:eth9", "host:node24-eth9"] 
-    - endpoints: ["node24:eth10", "host:node24-eth10"]
+    - endpoints: ["node24:eth9", "host24:eth1"] 
 
 # node25 (quadric)
     - endpoints: ["node25:eth3", "node30:eth4"]
@@ -561,8 +822,7 @@ topology:
     - endpoints: ["node25:eth6", "node51:eth3"]
     - endpoints: ["node25:eth7", "node54:eth5"]
     - endpoints: ["node25:eth8", "host:node25-eth8"] 
-    - endpoints: ["node25:eth9", "host:node25-eth9"] 
-    - endpoints: ["node25:eth10", "host:node25-eth10"]
+    - endpoints: ["node25:eth9", "host25:eth1"] 
 
 # node26
     - endpoints: ["node26:eth4", "node30:eth5"]
@@ -570,28 +830,21 @@ topology:
     - endpoints: ["node26:eth6", "node35:eth5"]
     - endpoints: ["node26:eth7", "node44:eth3"]
     - endpoints: ["node26:eth8", "node53:eth4"]
-    - endpoints: ["node26:eth9", "host:node26-eth9"] 
-    - endpoints: ["node26:eth10", "host:node26-eth10"]
+    - endpoints: ["node26:eth9", "host26:eth1"] 
 
 # node27
     - endpoints: ["node27:eth5", "node32:eth2"]
     - endpoints: ["node27:eth6", "node35:eth6"]
     - endpoints: ["node27:eth7", "node39:eth5"]
     - endpoints: ["node27:eth8", "node46:eth8"]
-    - endpoints: ["node27:eth9", "host:node27-eth9"] 
-    - endpoints: ["node27:eth10", "host:node27-eth10"]
+    - endpoints: ["node27:eth9", "host27:eth1"] 
 
 # node28 (quadric)
     - endpoints: ["node28:eth5", "node52:eth3"]
     - endpoints: ["node28:eth6", "node55:eth6"]
     - endpoints: ["node28:eth7", "node56:eth4"]  
     - endpoints: ["node28:eth8", "host:node28-eth8"] 
-    - endpoints: ["node28:eth9", "host:node28-eth9"] 
-    - endpoints: ["node28:eth10", "host:node28-eth10"]
-
-
-
-
+    - endpoints: ["node28:eth9", "host28:eth1"] 
 
 
 # node29
@@ -599,23 +852,20 @@ topology:
     - endpoints: ["node29:eth6", "node34:eth6"]
     - endpoints: ["node29:eth7", "node36:eth4"]
     - endpoints: ["node29:eth8", "node47:eth3"]
-    - endpoints: ["node29:eth9", "host:node29-eth9"]
-    - endpoints: ["node29:eth10", "host:node29-eth10"]
+    - endpoints: ["node29:eth9", "host29:eth1"]
 
 # node30
     - endpoints: ["node30:eth6", "node36:eth5"]
     - endpoints: ["node30:eth7", "node41:eth4"]
     - endpoints: ["node30:eth8", "node53:eth5"]
-    - endpoints: ["node30:eth9", "host:node30-eth9"]
-    - endpoints: ["node30:eth10", "host:node30-eth10"]
+    - endpoints: ["node30:eth9", "host30:eth1"]
 
 # node31
     - endpoints: ["node31:eth5", "node32:eth3"]
     - endpoints: ["node31:eth6", "node48:eth5"]
     - endpoints: ["node31:eth7", "node53:eth6"]
     - endpoints: ["node31:eth8", "node56:eth5"]
-    - endpoints: ["node31:eth9", "host:node31-eth9"]
-    - endpoints: ["node31:eth10", "host:node31-eth10"]
+    - endpoints: ["node31:eth9", "host31:eth1"]
 
 # node32 (quadric)
     - endpoints: ["node32:eth4", "node37:eth5"]
@@ -623,139 +873,114 @@ topology:
     - endpoints: ["node32:eth6", "node41:eth5"]
     - endpoints: ["node32:eth7", "node45:eth5"]
     - endpoints: ["node32:eth8", "host:node32-eth8"]
-    - endpoints: ["node32:eth9", "host:node32-eth9"]
-    - endpoints: ["node32:eth10", "host:node32-eth10"]
+    - endpoints: ["node32:eth9", "host32:eth1"]
 
 # node33 (quadric)
     - endpoints: ["node33:eth5", "node34:eth7"]
     - endpoints: ["node33:eth6", "node45:eth6"]
     - endpoints: ["node33:eth7", "node52:eth4"]
     - endpoints: ["node33:eth8", "host:node33-eth8"]
-    - endpoints: ["node33:eth9", "host:node33-eth9"]
-    - endpoints: ["node33:eth10", "host:node33-eth10"]
+    - endpoints: ["node33:eth9", "host33:eth1"]
 
 # node34
     - endpoints: ["node34:eth8", "node38:eth6"]
-    - endpoints: ["node34:eth9", "host:node34-eth9"]
-    - endpoints: ["node34:eth10", "host:node34-eth10"]
+    - endpoints: ["node34:eth9", "host34:eth1"]
 
 # node35
     - endpoints: ["node35:eth7", "node43:eth4"]
     - endpoints: ["node35:eth8", "node44:eth4"]
-    - endpoints: ["node35:eth9", "host:node35-eth9"]
-    - endpoints: ["node35:eth10", "host:node35-eth10"]
+    - endpoints: ["node35:eth9", "host35:eth1"]
 
 # node36  
     - endpoints: ["node36:eth6", "node41:eth6"]
     - endpoints: ["node36:eth7", "node47:eth4"]
     - endpoints: ["node36:eth8", "node55:eth7"]
-    - endpoints: ["node36:eth9", "host:node36-eth9"]
-    - endpoints: ["node36:eth10", "host:node36-eth10"]
+    - endpoints: ["node36:eth9", "host36:eth1"]
 
 # node37
     - endpoints: ["node37:eth6", "node44:eth5"]
     - endpoints: ["node37:eth7", "node50:eth5"]
     - endpoints: ["node37:eth8", "node55:eth8"]
-    - endpoints: ["node37:eth9", "host:node37-eth9"]
-    - endpoints: ["node37:eth10", "host:node37-eth10"]
+    - endpoints: ["node37:eth9", "host37:eth1"]
 
 # node38
     - endpoints: ["node38:eth7", "node40:eth5"]
     - endpoints: ["node38:eth8", "node54:eth6"]
-    - endpoints: ["node38:eth9", "host:node38-eth9"]
-    - endpoints: ["node38:eth10", "host:node38-eth10"]
+    - endpoints: ["node38:eth9", "host38:eth1"]
 
 # node39
     - endpoints: ["node39:eth6", "node50:eth6"]
     - endpoints: ["node39:eth7", "node51:eth4"]
     - endpoints: ["node39:eth8", "node56:eth6"]
-    - endpoints: ["node39:eth9", "host:node39-eth9"]
-    - endpoints: ["node39:eth10", "host:node39-eth10"]
+    - endpoints: ["node39:eth9", "host39:eth1"]
 
 # node40
     - endpoints: ["node40:eth6", "node43:eth5"]
     - endpoints: ["node40:eth7", "node49:eth7"]
     - endpoints: ["node40:eth8", "node53:eth7"]
-    - endpoints: ["node40:eth9", "host:node40-eth9"]
-    - endpoints: ["node40:eth10", "host:node40-eth10"]
+    - endpoints: ["node40:eth9", "host40:eth1"]
 
 # node41
     - endpoints: ["node41:eth7", "node43:eth6"]
     - endpoints: ["node41:eth8", "node52:eth5"]
-    - endpoints: ["node41:eth9", "host:node41-eth9"]
-    - endpoints: ["node41:eth10", "host:node41-eth10"]
+    - endpoints: ["node41:eth9", "host41:eth1"]
 
 # node42
     - endpoints: ["node42:eth7", "node47:eth5"]
     - endpoints: ["node42:eth8", "node49:eth8"]
-    - endpoints: ["node42:eth9", "host:node42-eth9"]
-    - endpoints: ["node42:eth10", "host:node42-eth10"]
+    - endpoints: ["node42:eth9", "host42:eth1"]
 
 # node43
     - endpoints: ["node43:eth7", "node51:eth5"]
     - endpoints: ["node43:eth8", "node52:eth6"]
-    - endpoints: ["node43:eth9", "host:node43-eth9"]
-    - endpoints: ["node43:eth10", "host:node43-eth10"]
+    - endpoints: ["node43:eth9", "host43:eth1"]
 
 # node44
     - endpoints: ["node44:eth6", "node47:eth6"]
     - endpoints: ["node44:eth7", "node48:eth7"]
     - endpoints: ["node44:eth8", "node50:eth7"]
-    - endpoints: ["node44:eth9", "host:node44-eth9"]
-    - endpoints: ["node44:eth10", "host:node44-eth10"]
+    - endpoints: ["node44:eth9", "host44:eth1"]
 
 # node45
     - endpoints: ["node45:eth7", "node47:eth7"]
     - endpoints: ["node45:eth8", "node51:eth6"]
-    - endpoints: ["node45:eth9", "host:node45-eth9"]
-    - endpoints: ["node45:eth10", "host:node45-eth10"]
+    - endpoints: ["node45:eth9", "host45:eth1"]
 
 # node46
-    - endpoints: ["node46:eth9", "host:node46-eth9"]
-    - endpoints: ["node46:eth10", "host:node46-eth10"]
+    - endpoints: ["node46:eth9", "host46:eth1"]
 
 # node47
     - endpoints: ["node47:eth8", "node51:eth7"]
-    - endpoints: ["node47:eth9", "host:node47-eth9"]
-    - endpoints: ["node47:eth10", "host:node47-eth10"]
+    - endpoints: ["node47:eth9", "host47:eth1"]
 
 # node48 (quadric)
     - endpoints: ["node48:eth8", "node54:eth7"]
-    - endpoints: ["node48:eth9", "host:node48-eth9"]
-    - endpoints: ["node48:eth10", "host:node48-eth10"]
+    - endpoints: ["node48:eth9", "host48:eth1"]
 
 # node49
-    - endpoints: ["node49:eth9", "host:node49-eth9"]
-    - endpoints: ["node49:eth10", "host:node49-eth10"]
+    - endpoints: ["node49:eth9", "host49:eth1"]
 
 # node50
     - endpoints: ["node50:eth8", "node52:eth7"]
-    - endpoints: ["node50:eth9", "host:node50-eth9"]
-    - endpoints: ["node50:eth10", "host:node50-eth10"]
+    - endpoints: ["node50:eth9", "host50:eth1"]
 
 # node51
     - endpoints: ["node51:eth8", "node56:eth7"]
-    - endpoints: ["node51:eth9", "host:node51-eth9"]
-    - endpoints: ["node51:eth10", "host:node51-eth10"]
+    - endpoints: ["node51:eth9", "host51:eth1"]
 
 # node52
     - endpoints: ["node52:eth8", "node54:eth8"]
-    - endpoints: ["node52:eth9", "host:node52-eth9"]
-    - endpoints: ["node52:eth10", "host:node52-eth10"]
+    - endpoints: ["node52:eth9", "host52:eth1"]
 
 # node53
     - endpoints: ["node53:eth8", "node56:eth8"]
-    - endpoints: ["node53:eth9", "host:node53-eth9"]
-    - endpoints: ["node53:eth10", "host:node53-eth10"]
+    - endpoints: ["node53:eth9", "host53:eth1"]
 
 # node54
-    - endpoints: ["node54:eth9", "host:node54-eth9"]
-    - endpoints: ["node54:eth10", "host:node54-eth10"]
+    - endpoints: ["node54:eth9", "host54:eth1"]
 
 # node55
-    - endpoints: ["node55:eth9", "host:node55-eth9"]
-    - endpoints: ["node55:eth10", "host:node55-eth10"]
+    - endpoints: ["node55:eth9", "host55:eth1"]
 
 # node56
-    - endpoints: ["node56:eth9", "host:node56-eth9"]
-    - endpoints: ["node56:eth10", "host:node56-eth10"]
+    - endpoints: ["node56:eth9", "host56:eth1"]
