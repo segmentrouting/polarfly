@@ -1,0 +1,21 @@
+[localhost]
+localhost ansible_connection=local
+
+[sonic]
+node00 ansible_host=198.18.4.2
+node01 ansible_host=198.18.4.3
+node02 ansible_host=198.18.4.4
+node03 ansible_host=198.18.4.5
+node04 ansible_host=198.18.4.6
+node05 ansible_host=198.18.4.7
+node06 ansible_host=198.18.4.8
+node07 ansible_host=198.18.4.9
+node08 ansible_host=198.18.4.10
+node09 ansible_host=198.18.4.11
+node10 ansible_host=198.18.4.12
+node11 ansible_host=198.18.4.13
+node12 ansible_host=198.18.4.14
+node13 ansible_host=198.18.4.15
+node14 ansible_host=198.18.4.16
+
+ansible_ssh_common_args="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"

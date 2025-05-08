@@ -84,7 +84,7 @@ clab tools vxlan create --remote 198.18.1.104 --id 2370 --link node24-eth8 # "no
 clab tools vxlan create --remote 198.18.1.100 --id 1370 --link node25-eth1 # "node05:eth3"]
 clab tools vxlan create --remote 198.18.1.100 --id 1460 --link node25-eth2 # "node06:eth5"]
 clab tools vxlan create --remote 198.18.1.103 --id 2380 --link node25-eth3 # "node30:eth4"]
-clab tools vxlan create --remote 198.18.1.103 --id 2390 --link node25-eth4 # "node43:eth4"]
+clab tools vxlan create --remote 198.18.1.103 --id 2390 --link node25-eth4 # "node37:eth4"]
 clab tools vxlan create --remote 198.18.1.103 --id 2400 --link node25-eth5 # "node49:eth6"]
 clab tools vxlan create --remote 198.18.1.104 --id 2410 --link node25-eth6 # "node51:eth3"]
 clab tools vxlan create --remote 198.18.1.104 --id 2420 --link node25-eth7 # "node54:eth5"]
