@@ -33,10 +33,11 @@ Stdlib only (no galois/sympy needed for small primes).
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
 from itertools import product
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 
 def is_prime(n: int) -> bool:
@@ -115,30 +116,153 @@ def mgmt_ip(network_24_third_octet: int, host: int) -> str:
     return f"172.100.{network_24_third_octet}.{host}"
 
 
-def emit_yaml(points, edges, absolute, q: int, out_path: str) -> None:
+def build_wiring(points, edges, absolute, q: int) -> Dict:
+    """Compute the canonical (switch, port, peer, ip) wiring used by both
+    YAML and config emitters. Returns a dict of derived data structures.
+
+    Conventions:
+      - Switches numbered 1..n; sw{i+1:0Wd}
+      - Per-switch fabric ports allocated in edge-iteration order:
+          local port index 0,1,2,... -> Ethernet0, Ethernet4, Ethernet8, ...
+        Absolute-point switches use one fewer fabric port (no self-loop).
+      - Host port reserved at Ethernet{4*(q+1)}.
+      - Each fabric link e in [0..|E|-1] uses /127 from 2001:db8:1::/64:
+          subnet  = 2001:db8:1:0:E::/127  with E encoded in low bits
+          (we use 2 addresses per link, so subnet base = e * 2)
+        Endpoints: lower index gets ::0, higher index gets ::1.
+    """
     n = len(points)
+    abs_set = set(absolute)
     width = max(3, len(str(n)))
 
-    def sw(i: int) -> str:
+    def sw_name(i: int) -> str:
         return f"sw{i + 1:0{width}d}"
 
-    def host(i: int) -> str:
+    def host_name(i: int) -> str:
         return f"h{i + 1:0{width}d}"
 
-    # Per-switch fabric port counter. sonic-vs uses Ethernet0, Ethernet4, ...
-    next_fab_port = [0] * n
-    abs_set = set(absolute)
-
-    def alloc_fab(v: int) -> str:
-        idx = next_fab_port[v]
-        next_fab_port[v] += 1
-        # Hard cap: non-absolute -> q+1 fabric ports, absolute -> q
-        cap = q if v in abs_set else q + 1
-        assert idx < cap, f"port overflow on {sw(v)}"
-        return f"Ethernet{idx * 4}"
-
-    # Reserve a fixed host port well past any fabric port: 4*(q+1) = Ethernet{4q+4}
     host_port = f"Ethernet{4 * (q + 1)}"
+
+    # Per-switch list of fabric ports in allocation order.
+    # Each entry: dict(port_name, local_idx, peer_sw_idx, peer_port_name,
+    #                  edge_idx, p2p_subnet, my_addr, peer_addr)
+    fabric_ports: List[List[Dict]] = [[] for _ in range(n)]
+    next_port = [0] * n
+
+    for e_idx, (u, v) in enumerate(edges):
+        ulocal = next_port[u]
+        vlocal = next_port[v]
+        next_port[u] += 1
+        next_port[v] += 1
+        u_port = f"Ethernet{ulocal * 4}"
+        v_port = f"Ethernet{vlocal * 4}"
+
+        # /127 P2P from 2001:db8:1::/64 area, indexed by edge number.
+        # Use 2001:db8:1:<eg>::/127 where eg = e_idx (so .0 and .1 of that /127).
+        # Encode e_idx in 16-bit hex to keep address shape clean.
+        subnet_hex = f"{e_idx:x}"
+        u_addr = f"2001:db8:1:{subnet_hex}::"
+        v_addr = f"2001:db8:1:{subnet_hex}::1"
+        prefix = f"2001:db8:1:{subnet_hex}::/127"
+
+        fabric_ports[u].append(
+            dict(
+                port=u_port,
+                local_idx=ulocal,
+                peer_sw=v,
+                peer_port=v_port,
+                edge_idx=e_idx,
+                p2p_prefix=prefix,
+                my_addr=u_addr,
+                peer_addr=v_addr,
+            )
+        )
+        fabric_ports[v].append(
+            dict(
+                port=v_port,
+                local_idx=vlocal,
+                peer_sw=u,
+                peer_port=u_port,
+                edge_idx=e_idx,
+                p2p_prefix=prefix,
+                my_addr=v_addr,
+                peer_addr=u_addr,
+            )
+        )
+
+    # Per-switch derived addressing
+    switches: List[Dict] = []
+    for i in range(n):
+        sw_idx_1 = i + 1  # 1-based
+        # Locator: fc00:0:1<NNN>::/48 where NNN is 3 hex digits of switch id.
+        # sw001 -> fc00:0:1001::/48, sw057 -> fc00:0:1039::/48 (57 = 0x39).
+        loc_id = f"{0x1000 + sw_idx_1:04x}"  # e.g. 1001, 1002, ..., 1039
+        locator_prefix = f"fc00:0:{loc_id}::/48"
+        loopback_v6 = f"fc00:0:{loc_id}::1"
+        loopback_v6_prefix = f"fc00:0:{loc_id}::/48"
+        loopback_v4 = f"1.1.{(sw_idx_1 >> 8) & 0xff}.{sw_idx_1 & 0xff}"
+
+        # uDT6 SID for tenant VRF: fc00:<sw>:e000::/48 -- but per the user's
+        # constraint ALL function SIDs live under fc00:0::/32. Allocate
+        # uDT6 from per-switch locator so they don't collide:
+        #   uDT6 = fc00:0:<loc_id>:e000::/64
+        # That's a function within the switch's locator block, valid uSID.
+        udt6_sid = f"fc00:0:{loc_id}:e000::/64"
+
+        # Tenant VRF + host link addressing
+        # Host /64: 2001:db8:a<NNN>::/64 ; switch ::1, host ::2
+        host_id = f"a{sw_idx_1:03x}"
+        host_subnet = f"2001:db8:{host_id}::/64"
+        host_sw_addr = f"2001:db8:{host_id}::1"
+        host_host_addr = f"2001:db8:{host_id}::2"
+
+        # ASN: 65000 + sw_idx_1
+        asn = 65000 + sw_idx_1
+
+        # MAC: 02:42:ac:14:XX:YY (XX=high,YY=low byte of sw_idx_1*4 to add spread)
+        mac_lo = (sw_idx_1 * 4) & 0xff
+        mac_hi = (sw_idx_1 * 4 >> 8) & 0xff
+        mac = f"02:42:ac:14:{mac_hi:02x}:{mac_lo:02x}"
+
+        switches.append(
+            dict(
+                idx=i,
+                idx1=sw_idx_1,
+                name=sw_name(i),
+                host_name=host_name(i),
+                host_port=host_port,
+                fabric=fabric_ports[i],
+                is_absolute=(i in abs_set),
+                loc_id=loc_id,
+                locator_prefix=locator_prefix,
+                loopback_v6=loopback_v6,
+                loopback_v6_prefix=loopback_v6_prefix,
+                loopback_v4=loopback_v4,
+                udt6_sid=udt6_sid,
+                host_subnet=host_subnet,
+                host_sw_addr=host_sw_addr,
+                host_host_addr=host_host_addr,
+                asn=asn,
+                mac=mac,
+            )
+        )
+
+    return dict(
+        n=n,
+        q=q,
+        width=width,
+        host_port=host_port,
+        switches=switches,
+        edges=edges,
+        absolute=absolute,
+    )
+
+
+def emit_yaml(points, edges, absolute, q: int, out_path: str, wiring: Dict,
+              with_binds: bool = False, bind_dir_rel: str = "") -> None:
+    n = wiring["n"]
+    switches = wiring["switches"]
+    host_port = wiring["host_port"]
 
     lines: List[str] = []
     lines.append(f"# Polarfly q={q} containerlab topology")
@@ -147,6 +271,8 @@ def emit_yaml(points, edges, absolute, q: int, out_path: str) -> None:
     lines.append(f"# Fabric links:    {len(edges)}")
     lines.append(f"# Host links:      {n}")
     lines.append(f"# Absolute points: {len(absolute)}  ({sorted(absolute)})")
+    if with_binds:
+        lines.append(f"# Bind dir (rel): {bind_dir_rel}/<swNNN>/{{config_db.json,frr.conf}}")
     lines.append("")
     lines.append("name: sonic-polarfly")
     lines.append('prefix: ""')
@@ -163,27 +289,42 @@ def emit_yaml(points, edges, absolute, q: int, out_path: str) -> None:
     lines.append("      image: iejalapeno/alpine-srv6:1.0")
     lines.append("")
     lines.append("  nodes:")
-    # Switches: 172.100.0.11 .. (skip .0/.1/.2/.10 for gw/reservations)
-    for i in range(n):
-        ip = f"172.100.0.{11 + i}"
-        # /23 spans 172.100.0.0 - 172.100.1.255; .11 + 182 = .193 (still in .0/24)
-        lines.append(f"    {sw(i)}: {{ kind: sonic-vs, mgmt-ipv4: {ip} }}")
+    for s in switches:
+        ip = f"172.100.0.{11 + s['idx']}"
+        if with_binds:
+            lines.append(f"    {s['name']}:")
+            lines.append(f"      kind: sonic-vs")
+            lines.append(f"      mgmt-ipv4: {ip}")
+            lines.append(f"      binds:")
+            lines.append(
+                f"        - {bind_dir_rel}/{s['name']}/config_db.json:/etc/sonic/config_db.json"
+            )
+            lines.append(
+                f"        - {bind_dir_rel}/{s['name']}/frr.conf:/etc/sonic/frr/frr.conf"
+            )
+        else:
+            lines.append(f"    {s['name']}: {{ kind: sonic-vs, mgmt-ipv4: {ip} }}")
     lines.append("")
-    # Hosts: 172.100.1.11 ..
-    for i in range(n):
-        ip = f"172.100.1.{11 + i}"
-        lines.append(f"    {host(i)}: {{ kind: linux, mgmt-ipv4: {ip} }}")
+    for s in switches:
+        ip = f"172.100.1.{11 + s['idx']}"
+        lines.append(f"    {s['host_name']}: {{ kind: linux, mgmt-ipv4: {ip} }}")
     lines.append("")
     lines.append("  links:")
     lines.append("    # ---- fabric links (polarity adjacencies) ----")
-    for u, v in edges:
-        pu = alloc_fab(u)
-        pv = alloc_fab(v)
-        lines.append(f'    - endpoints: ["{sw(u)}:{pu}", "{sw(v)}:{pv}"]')
-    lines.append("    # ---- host links (one alpine-srv6 per switch) ----")
-    for i in range(n):
+    # Emit edges in original order; pull port from wiring (lower index endpoint
+    # is the "u" side of each edge by construction).
+    for e_idx, (u, v) in enumerate(edges):
+        # Find the port assigned at u and v for this edge
+        u_port = next(p["port"] for p in switches[u]["fabric"] if p["edge_idx"] == e_idx)
+        v_port = next(p["port"] for p in switches[v]["fabric"] if p["edge_idx"] == e_idx)
         lines.append(
-            f'    - endpoints: ["{sw(i)}:{host_port}", "{host(i)}:eth1"]'
+            f'    - endpoints: ["{switches[u]["name"]}:{u_port}", '
+            f'"{switches[v]["name"]}:{v_port}"]'
+        )
+    lines.append("    # ---- host links (one alpine-srv6 per switch) ----")
+    for s in switches:
+        lines.append(
+            f'    - endpoints: ["{s["name"]}:{host_port}", "{s["host_name"]}:eth1"]'
         )
     lines.append("")
 
@@ -205,17 +346,274 @@ def emit_adjlist(points, edges, q: int, out_path: str) -> None:
             fh.write(f"E {u + 1:0{width}d} {v + 1:0{width}d}\n")
 
 
+# -----------------------------------------------------------------------------
+# Per-switch SONiC config_db.json + FRR frr.conf emission
+# -----------------------------------------------------------------------------
+
+# Force10-S6000 lane map (32 ports x 4 lanes), copied from srv6-oci reference.
+# Index in this list == port index 0..31; entry = (lanes_csv, alias_suffix).
+S6000_LANES: List[Tuple[str, str]] = [
+    ("25,26,27,28", "0/0"),
+    ("29,30,31,32", "0/4"),
+    ("33,34,35,36", "0/8"),
+    ("37,38,39,40", "0/12"),
+    ("45,46,47,48", "0/16"),
+    ("41,42,43,44", "0/20"),
+    ("1,2,3,4", "0/24"),
+    ("5,6,7,8", "0/28"),
+    ("13,14,15,16", "0/32"),
+    ("9,10,11,12", "0/36"),
+    ("17,18,19,20", "0/40"),
+    ("21,22,23,24", "0/44"),
+    ("53,54,55,56", "0/48"),
+    ("49,50,51,52", "0/52"),
+    ("57,58,59,60", "0/56"),
+    ("61,62,63,64", "0/60"),
+    ("69,70,71,72", "0/64"),
+    ("65,66,67,68", "0/68"),
+    ("73,74,75,76", "0/72"),
+    ("77,78,79,80", "0/76"),
+    ("109,110,111,112", "0/80"),
+    ("105,106,107,108", "0/84"),
+    ("113,114,115,116", "0/88"),
+    ("117,118,119,120", "0/92"),
+    ("125,126,127,128", "0/96"),
+    ("121,122,123,124", "0/100"),
+    ("81,82,83,84", "0/104"),
+    ("85,86,87,88", "0/108"),
+    ("93,94,95,96", "0/112"),
+    ("89,90,91,92", "0/116"),
+    ("101,102,103,104", "0/120"),
+    ("97,98,99,100", "0/124"),
+]
+
+
+def _port_table(used_ports: List[str]) -> Dict[str, Dict[str, str]]:
+    """Build a PORT table for the given list of Ethernet<N> port names.
+    Maps each Ethernet<N*4> to lane group N from the S6000 layout."""
+    out: Dict[str, Dict[str, str]] = {}
+    for p in used_ports:
+        # p is "EthernetX" with X = 4 * port_index
+        idx = int(p[len("Ethernet"):]) // 4
+        lanes, alias_suffix = S6000_LANES[idx]
+        out[p] = {
+            "lanes": lanes,
+            "alias": f"fortyGigE{alias_suffix}",
+            "index": str(idx),
+            "speed": "40000",
+            "admin_status": "up",
+            "mtu": "9100",
+        }
+    return out
+
+
+def build_config_db(s: Dict) -> Dict:
+    """Build the config_db.json dict for switch s."""
+    fabric = s["fabric"]
+    host_port = s["host_port"]
+
+    # All ports we want SONiC to instantiate: every fabric port + the host port.
+    used_ports = [p["port"] for p in fabric] + [host_port]
+
+    # INTERFACE table: P2P /127 on each fabric port; /64 on host port (in VRF).
+    interfaces: Dict[str, Dict] = {}
+    for fp in fabric:
+        interfaces[fp["port"]] = {}
+        interfaces[f"{fp['port']}|{fp['my_addr']}/127"] = {}
+    interfaces[host_port] = {"vrf_name": "Vrf-tenant"}
+    interfaces[f"{host_port}|{s['host_sw_addr']}/64"] = {}
+
+    cfg = {
+        "DEVICE_METADATA": {
+            "localhost": {
+                "mac": s["mac"],
+                "switch_type": "switch",
+                "buffer_model": "traditional",
+                "hwsku": "Force10-S6000",
+                "hostname": s["name"],
+                "bgp_asn": str(s["asn"]),
+                "docker_routing_config_mode": "split",
+            }
+        },
+        "VRF": {
+            "Vrf-tenant": {},
+        },
+        "LOOPBACK_INTERFACE": {
+            "Loopback0": {},
+            f"Loopback0|{s['loopback_v4']}/32": {},
+            f"Loopback0|{s['loopback_v6']}/128": {},
+        },
+        "INTERFACE": interfaces,
+        "PORT": _port_table(used_ports),
+    }
+    return cfg
+
+
+def build_frr_conf(s: Dict, switches: List[Dict]) -> str:
+    """Build the frr.conf text for switch s."""
+    fabric = s["fabric"]
+    lines: List[str] = []
+    p = lines.append
+
+    p(f"hostname {s['name']}")
+    p("no service integrated-vtysh-config")
+    p("!")
+    p("route-map BGP-IPV6 permit 20")
+    p(" set ipv6 next-hop prefer-global")
+    p("exit")
+    p("!")
+    p("route-map RM_SET_SRC permit 10")
+    p(f" set src {s['loopback_v4']}")
+    p("exit")
+    p("!")
+    p("route-map RM_SET_SRC6 permit 10")
+    p(f" set src {s['loopback_v6']}")
+    p("exit")
+    p("!")
+    p("password zebra")
+    p("enable password zebra")
+    p("!")
+    p("vrf Vrf-tenant")
+    p(" ip nht resolve-via-default")
+    p(" ipv6 nht resolve-via-default")
+    p("exit-vrf")
+    p("!")
+    p("vrf vrfdefault")
+    p(" ip nht resolve-via-default")
+    p(" ipv6 nht resolve-via-default")
+    p("exit-vrf")
+    p("!")
+    p(f"router bgp {s['asn']}")
+    p(f" bgp router-id {s['loopback_v4']}")
+    p(" bgp log-neighbor-changes")
+    p(" no bgp ebgp-requires-policy")
+    p(" no bgp default ipv4-unicast")
+    p(" bgp bestpath as-path multipath-relax")
+    p(" no bgp network import-check")
+    # eBGP neighbors over each fabric P2P link
+    for fp in fabric:
+        peer = switches[fp["peer_sw"]]
+        p(f" neighbor {fp['peer_addr']} remote-as {peer['asn']}")
+        p(f" neighbor {fp['peer_addr']} capability extended-nexthop")
+    p(" !")
+    p(" address-family ipv6 unicast")
+    p(f"  network {s['locator_prefix']}")
+    p(f"  network {s['loopback_v6']}/128")
+    for fp in fabric:
+        p(f"  neighbor {fp['peer_addr']} activate")
+        p(f"  neighbor {fp['peer_addr']} route-map BGP-IPV6 in")
+    p("  maximum-paths 64")
+    p(" exit-address-family")
+    p("exit")
+    p("!")
+    p("ip protocol bgp route-map RM_SET_SRC")
+    p("!")
+    p("ipv6 protocol bgp route-map RM_SET_SRC6")
+    p("!")
+    p("ip nht resolve-via-default")
+    p("!")
+    p("ipv6 nht resolve-via-default")
+    p("!")
+    # Segment Routing block
+    p("segment-routing")
+    p(" srv6")
+    p("  static-sids")
+    # uN
+    p(f"   sid {s['locator_prefix']} locator MAIN behavior uN")
+    # uDT6 -> Vrf-tenant
+    p(f"   sid {s['udt6_sid']} locator MAIN behavior uDT6 vrf Vrf-tenant")
+    # uA per fabric port (Ethernet0->fc00:0:f000::/48, +4 -> f001, ...)
+    for fp in fabric:
+        # local_idx 0 -> f000, 1 -> f001, ...
+        ua_sid = f"fc00:0:f{fp['local_idx']:03x}::/48"
+        p(
+            f"   sid {ua_sid} locator MAIN behavior uA "
+            f"interface {fp['port']} nexthop {fp['peer_addr']}"
+        )
+    p("  exit")
+    p("  !")
+    p(" exit")
+    p(" !")
+    p(" srv6")
+    p("  encapsulation")
+    p(f"   source-address {s['loopback_v6']}")
+    p("  exit")
+    p("  locators")
+    p("   locator MAIN")
+    p(f"    prefix {s['locator_prefix']} block-len 32 node-len 16")
+    p("    behavior usid")
+    p("    format usid-f3216")
+    p("   exit")
+    p("   !")
+    p("  exit")
+    p("  !")
+    p("  formats")
+    p("   format usid-f3216")
+    p("    local-id-block explicit start 57344 end 65535")
+    p("   exit")
+    p("   !")
+    p("  exit")
+    p("  !")
+    p(" exit")
+    p(" !")
+    p("exit")
+    p("!")
+    p("end")
+    p("")  # trailing newline
+    return "\n".join(lines)
+
+
+def emit_configs(wiring: Dict, out_dir: str) -> int:
+    """Write per-switch config_db.json and frr.conf into out_dir/<sw_name>/.
+    Returns number of switches written."""
+    switches = wiring["switches"]
+    os.makedirs(out_dir, exist_ok=True)
+    for s in switches:
+        sw_dir = os.path.join(out_dir, s["name"])
+        os.makedirs(sw_dir, exist_ok=True)
+        cfg = build_config_db(s)
+        with open(os.path.join(sw_dir, "config_db.json"), "w") as fh:
+            json.dump(cfg, fh, indent=4)
+            fh.write("\n")
+        frr = build_frr_conf(s, switches)
+        with open(os.path.join(sw_dir, "frr.conf"), "w") as fh:
+            fh.write(frr)
+    return len(switches)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[1])
     ap.add_argument("--q", type=int, default=13, help="prime order (default: 13)")
     here = os.path.dirname(os.path.abspath(__file__))
     default_out = os.path.normpath(os.path.join(here, "..", "sonic-polarfly.clab.yaml"))
     default_adj = os.path.normpath(os.path.join(here, "..", "polarfly-q{q}.adj.txt"))
+    default_cfg = os.path.normpath(os.path.join(here, "..", "q{q}"))
     ap.add_argument("--out", default=default_out, help="output containerlab YAML path")
     ap.add_argument(
         "--adj",
         default=default_adj,
         help="adjacency sidecar path ('{q}' is substituted)",
+    )
+    ap.add_argument(
+        "--emit-configs",
+        action="store_true",
+        help="also emit per-switch config_db.json and frr.conf",
+    )
+    ap.add_argument(
+        "--config-dir",
+        default=default_cfg,
+        help="output dir for per-switch configs ('{q}' is substituted)",
+    )
+    ap.add_argument(
+        "--with-binds",
+        action="store_true",
+        help="emit binds: in YAML mounting q<q>/<sw>/{config_db.json,frr.conf}",
+    )
+    ap.add_argument(
+        "--bind-dir-rel",
+        default="q{q}",
+        help="relative path (from clab YAML location) to per-switch config dir "
+             "('{q}' is substituted; default: q{q})",
     )
     args = ap.parse_args()
 
@@ -232,9 +630,20 @@ def main() -> int:
     edges, absolute = polarity_edges(points, args.q)
     verify(points, edges, absolute, args.q)
 
+    wiring = build_wiring(points, edges, absolute, args.q)
+
     adj_path = args.adj.replace("{q}", str(args.q))
-    emit_yaml(points, edges, absolute, args.q, args.out)
+    bind_dir_rel = args.bind_dir_rel.replace("{q}", str(args.q))
+    emit_yaml(
+        points, edges, absolute, args.q, args.out, wiring,
+        with_binds=args.with_binds, bind_dir_rel=bind_dir_rel,
+    )
     emit_adjlist(points, edges, args.q, adj_path)
+
+    cfg_count = 0
+    cfg_dir = args.config_dir.replace("{q}", str(args.q))
+    if args.emit_configs:
+        cfg_count = emit_configs(wiring, cfg_dir)
 
     print(f"q                = {args.q}")
     print(f"switches         = {len(points)}")
@@ -245,6 +654,10 @@ def main() -> int:
     print(f"total links      = {len(edges) + len(points)}")
     print(f"yaml             = {args.out}")
     print(f"adj sidecar      = {adj_path}")
+    if args.emit_configs:
+        print(f"configs written  = {cfg_count} switches in {cfg_dir}/")
+    if args.with_binds:
+        print(f"binds            = enabled, mounting {bind_dir_rel}/<sw>/...")
     return 0
 
 
