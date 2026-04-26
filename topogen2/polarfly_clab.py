@@ -595,10 +595,29 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[1])
     ap.add_argument("--q", type=int, default=13, help="prime order (default: 13)")
     here = os.path.dirname(os.path.abspath(__file__))
-    default_out = os.path.normpath(os.path.join(here, "..", "sonic-polarfly.clab.yaml"))
-    default_adj = os.path.normpath(os.path.join(here, "..", "polarfly-q{q}.adj.txt"))
-    default_cfg = os.path.normpath(os.path.join(here, "..", "q{q}"))
-    ap.add_argument("--out", default=default_out, help="output containerlab YAML path")
+    # New layout: polarfly/q<q>/{yaml, adj, sonic-config/<sw>/...}
+    default_topo_dir = os.path.normpath(os.path.join(here, "..", "q{q}"))
+    default_out = os.path.join(default_topo_dir, "sonic-polarfly-q{q}-nobinds.clab.yaml")
+    default_out_binds = os.path.join(
+        default_topo_dir, "sonic-polarfly-q{q}.clab.yaml"
+    )
+    default_adj = os.path.join(default_topo_dir, "polarfly-q{q}.adj.txt")
+    default_cfg = os.path.join(default_topo_dir, "sonic-config")
+    ap.add_argument(
+        "--topo-dir",
+        default=default_topo_dir,
+        help="top-level dir for this q's topology (default: ../q{q}, '{q}' substituted)",
+    )
+    ap.add_argument(
+        "--out",
+        default=default_out,
+        help="primary (no-binds) containerlab YAML path; '{q}' substituted",
+    )
+    ap.add_argument(
+        "--out-binds",
+        default=default_out_binds,
+        help="binds variant YAML path; '{q}' substituted",
+    )
     ap.add_argument(
         "--adj",
         default=default_adj,
@@ -607,7 +626,14 @@ def main() -> int:
     ap.add_argument(
         "--emit-configs",
         action="store_true",
-        help="also emit per-switch config_db.json and frr.conf",
+        default=True,
+        help="emit per-switch config_db.json and frr.conf (default: on)",
+    )
+    ap.add_argument(
+        "--no-emit-configs",
+        dest="emit_configs",
+        action="store_false",
+        help="skip per-switch config emission",
     )
     ap.add_argument(
         "--config-dir",
@@ -615,15 +641,22 @@ def main() -> int:
         help="output dir for per-switch configs ('{q}' is substituted)",
     )
     ap.add_argument(
-        "--with-binds",
+        "--emit-binds-yaml",
         action="store_true",
-        help="emit binds: in YAML mounting q<q>/<sw>/{config_db.json,frr.conf}",
+        default=True,
+        help="also emit a binds-variant YAML alongside the no-binds one (default: on)",
+    )
+    ap.add_argument(
+        "--no-emit-binds-yaml",
+        dest="emit_binds_yaml",
+        action="store_false",
+        help="skip the binds-variant YAML",
     )
     ap.add_argument(
         "--bind-dir-rel",
-        default="q{q}",
+        default="sonic-config",
         help="relative path (from clab YAML location) to per-switch config dir "
-             "('{q}' is substituted; default: q{q})",
+             "(default: sonic-config). '{q}' is substituted.",
     )
     args = ap.parse_args()
 
@@ -642,16 +675,30 @@ def main() -> int:
 
     wiring = build_wiring(points, edges, absolute, args.q)
 
+    topo_dir = args.topo_dir.replace("{q}", str(args.q))
+    out_path = args.out.replace("{q}", str(args.q))
+    out_binds_path = args.out_binds.replace("{q}", str(args.q))
     adj_path = args.adj.replace("{q}", str(args.q))
     bind_dir_rel = args.bind_dir_rel.replace("{q}", str(args.q))
+    cfg_dir = args.config_dir.replace("{q}", str(args.q))
+
+    os.makedirs(topo_dir, exist_ok=True)
+    os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
+
+    # Always emit the no-binds YAML (the canonical one for script-driven deploys)
     emit_yaml(
-        points, edges, absolute, args.q, args.out, wiring,
-        with_binds=args.with_binds, bind_dir_rel=bind_dir_rel,
+        points, edges, absolute, args.q, out_path, wiring,
+        with_binds=False, bind_dir_rel=bind_dir_rel,
     )
+    # Optionally emit the binds variant
+    if args.emit_binds_yaml:
+        emit_yaml(
+            points, edges, absolute, args.q, out_binds_path, wiring,
+            with_binds=True, bind_dir_rel=bind_dir_rel,
+        )
     emit_adjlist(points, edges, args.q, adj_path)
 
     cfg_count = 0
-    cfg_dir = args.config_dir.replace("{q}", str(args.q))
     if args.emit_configs:
         cfg_count = emit_configs(wiring, cfg_dir)
 
@@ -662,12 +709,13 @@ def main() -> int:
     print(f"fabric links     = {len(edges)}")
     print(f"host links       = {len(points)}")
     print(f"total links      = {len(edges) + len(points)}")
-    print(f"yaml             = {args.out}")
+    print(f"topo dir         = {topo_dir}")
+    print(f"yaml (no-binds)  = {out_path}")
+    if args.emit_binds_yaml:
+        print(f"yaml (binds)     = {out_binds_path}")
     print(f"adj sidecar      = {adj_path}")
     if args.emit_configs:
         print(f"configs written  = {cfg_count} switches in {cfg_dir}/")
-    if args.with_binds:
-        print(f"binds            = enabled, mounting {bind_dir_rel}/<sw>/...")
     return 0
 
 
