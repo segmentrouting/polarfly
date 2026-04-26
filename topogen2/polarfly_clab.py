@@ -311,20 +311,30 @@ def emit_yaml(points, edges, absolute, q: int, out_path: str, wiring: Dict,
     lines.append("")
     lines.append("  links:")
     lines.append("    # ---- fabric links (polarity adjacencies) ----")
+    lines.append("    # NOTE: link endpoints use eth<N> containerlab naming, where N = SONiC")
+    lines.append("    # 'index' field + 1 (eth1=Ethernet0, eth2=Ethernet4, ..., eth(q+2)=host port).")
+    lines.append("    # SONiC's syncd virtual-SAI creates the Ethernet<N> hostif itself and binds")
+    lines.append("    # it to the corresponding ethN veth via port_config.ini's index field.")
+    lines.append("    # Attaching as Ethernet<N> directly causes SAI_HOSTIF create failures.")
     # Emit edges in original order; pull port from wiring (lower index endpoint
     # is the "u" side of each edge by construction).
     for e_idx, (u, v) in enumerate(edges):
-        # Find the port assigned at u and v for this edge
-        u_port = next(p["port"] for p in switches[u]["fabric"] if p["edge_idx"] == e_idx)
-        v_port = next(p["port"] for p in switches[v]["fabric"] if p["edge_idx"] == e_idx)
+        u_fp = next(p for p in switches[u]["fabric"] if p["edge_idx"] == e_idx)
+        v_fp = next(p for p in switches[v]["fabric"] if p["edge_idx"] == e_idx)
+        # local_idx 0 -> eth1, 1 -> eth2, ...
+        u_eth = f"eth{u_fp['local_idx'] + 1}"
+        v_eth = f"eth{v_fp['local_idx'] + 1}"
         lines.append(
-            f'    - endpoints: ["{switches[u]["name"]}:{u_port}", '
-            f'"{switches[v]["name"]}:{v_port}"]'
+            f'    - endpoints: ["{switches[u]["name"]}:{u_eth}", '
+            f'"{switches[v]["name"]}:{v_eth}"]'
         )
     lines.append("    # ---- host links (one alpine-srv6 per switch) ----")
+    # Host port has SONiC index = (q+1) (just past the last fabric port),
+    # so containerlab interface number = (q+1) + 1 = q+2.
+    host_eth = f"eth{q + 2}"
     for s in switches:
         lines.append(
-            f'    - endpoints: ["{s["name"]}:{host_port}", "{s["host_name"]}:eth1"]'
+            f'    - endpoints: ["{s["name"]}:{host_eth}", "{s["host_name"]}:eth1"]'
         )
     lines.append("")
 

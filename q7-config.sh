@@ -63,7 +63,20 @@ deploy_node() {
         echo "    WARN: no config_db.json found for $NODE_ID"
     fi
 
-    # Reload SONiC config DB and restart all SONiC services
+    # IMPORTANT: bring the kernel netdevs up FIRST. containerlab attaches the
+    # Ethernet veth pairs after sonic-vs has already booted, so portmgrd/intfmgrd
+    # never noticed them and they sit admin-down with no IPv6. We need them up
+    # at the kernel level before sonic-cfggen --write-to-db, otherwise intfmgrd
+    # silently skips the IP assignment for not-yet-existent interfaces.
+    docker exec "$CONTAINER" bash -c '
+        for nd in $(ls /sys/class/net | grep -E "^Ethernet[0-9]+$"); do
+            ip link set "$nd" mtu 9100 up 2>/dev/null
+        done
+    ' 2>/dev/null || true
+    echo "    Ethernet netdevs brought up at kernel level"
+
+    # Now reload SONiC config DB and restart all SONiC services so intfmgrd
+    # runs against ports that already exist as kernel netdevs.
     docker exec "$CONTAINER" bash -c \
         "sonic-cfggen -j /etc/sonic/config_db.json --write-to-db" \
         2>/dev/null || true
@@ -80,10 +93,24 @@ deploy_node() {
     docker exec "$CONTAINER" sysctl -w net.ipv6.conf.all.forwarding=1 2>/dev/null || true
     echo "    vrfdefault, sr0, and sysctl configured"
 
-    # Admin-up every PORT defined in config_db.json (SONiC default state may be down)
-    docker exec "$CONTAINER" bash -c \
-        'for p in $(sonic-cfggen -d --var-json PORT | python3 -c "import sys,json; print(\" \".join(json.load(sys.stdin).keys()))"); do config interface startup $p 2>/dev/null; done' \
-        2>/dev/null || true
+    # Re-assert kernel admin-up after supervisorctl restart (services may have
+    # taken interfaces down during restart). Also enable IPv6 per-iface forwarding
+    # and disable autoconf so static addresses stick.
+    docker exec "$CONTAINER" bash -c '
+        for nd in $(ls /sys/class/net | grep -E "^Ethernet[0-9]+$"); do
+            ip link set "$nd" up 2>/dev/null
+            sysctl -w net.ipv6.conf.$nd.forwarding=1 2>/dev/null
+            sysctl -w net.ipv6.conf.$nd.accept_ra=0 2>/dev/null
+        done
+    ' 2>/dev/null || true
+    echo "    Ethernet netdevs re-asserted up after service restart"
+
+    # If sonic-cfggen didn't apply INTERFACE IPs (e.g. intfmgrd race), do it
+    # via redis-cli directly. This pokes APPL_DB which intfmgrd will reconcile.
+    # (No-op if it already worked.)
+    docker exec "$CONTAINER" bash -c '
+        sonic-cfggen -j /etc/sonic/config_db.json --write-to-db 2>/dev/null
+    ' 2>/dev/null || true
 
     # Wait for FRR vtysh to come up
     for _ in $(seq 1 30); do
