@@ -17,21 +17,26 @@ Two scales are tracked in-tree:
 
 ```
 polarfly/
-├── topogen2/polarfly_clab.py        # the generator (stdlib only)
+├── topogen2/
+│   ├── polarfly_clab.py             # main containerlab/SONiC generator
+│   └── polarfly_fabric_json.py      # SDN-controller fabric JSON exporter
 ├── q7/
 │   ├── sonic-polarfly-q7.clab.yaml          # binds variant (uses sonic-config/)
 │   ├── sonic-polarfly-q7-nobinds.clab.yaml  # plain variant (configs pushed at runtime)
 │   ├── polarfly-q7.adj.txt                  # adjacency sidecar
 │   ├── q7-config.sh                         # parallel deploy/config script
+│   ├── q7-fabric.json                       # SDN-controller topology JSON
 │   └── sonic-config/sw001..sw057/{config_db.json, frr.conf}
 ├── q13/                                     # same shape, 183 switches
-└── topogen/, radix-8/, sonic-radix8/, xarchive/, diagrams/, README.md, *.png, config.sh
-                                             # legacy — DO NOT modify
+├── AGENTS.md
+├── clos-fabric.json                         # reference data model for *-fabric.json
+└── q7-polarfly.png                          # current diagram
 ```
 
-The `topogen/`, `radix-8/`, `sonic-radix8/`, `xarchive/`, `diagrams/`,
-`polarfly.png`, `radix-8-polarfly.png`, root `README.md`, and root `config.sh`
-are legacy assets. Treat them as read-only history.
+All previous legacy directories (`topogen/`, `radix-8/`, `sonic-radix8/`,
+`xarchive/`, `diagrams/`, old root `README.md`, `polarfly.png`,
+`radix-8-polarfly.png`, root `config.sh`) have been deleted. Only the new
+per-q layout and `topogen2/` remain.
 
 ## The generator
 
@@ -49,6 +54,44 @@ write everything under `../q<q>/` relative to the script.
 
 When changing the generator, regenerate **both** `q7/` and `q13/` and spot-check
 counts (see "Verifying" below).
+
+## The SDN-controller fabric JSON exporter
+
+`topogen2/polarfly_fabric_json.py` produces a controller-ingestible topology
+document in the same shape as `clos-fabric.json` (the reference at the repo
+root). It imports `polarfly_clab.py`, reuses `build_wiring()`, and emits:
+
+- **nodes**: one per switch, with `srv6_node_sid` (uN, locator base address),
+  labels include `tier`, `topology`, `absolute`, `asn`.
+- **endpoints**: one host per switch, `subtype: "host"`.
+- **interfaces**: one per fabric port (so each undirected link → 2 interfaces),
+  each carrying its `srv6_ua_sids` (End.X). uA SID encoding here is
+  **per-node locator**: `fc00:0:1<NNN>:f<port_idx>::` (NOT the global
+  `fc00:0:f<idx>::/48` block used in the deployed FRR config). The per-node
+  form is what controllers expect — see "Note on SID encoding divergence" below.
+- **edges**: directed `igp_adjacency` edges (2 per fabric link) with
+  `igp_metric=1`, `max_bw_bps=400e9`, `unidir_delay_us=1`; plus directed
+  `attachment` edges from each host to its switch.
+
+Output: `q<N>/q<N>-fabric.json`. For q=7: 57 nodes, 448 interfaces (224×2),
+57 endpoints, 505 edges (448 igp + 57 attachments). Absolute switches have
+exactly q=7 fabric interfaces, non-absolute have q+1=8.
+
+```sh
+python3 topogen2/polarfly_fabric_json.py            # q=7
+python3 topogen2/polarfly_fabric_json.py --q 13     # q=13
+```
+
+### Note on SID encoding divergence
+
+The deployed FRR config uses a **global uA block** (`fc00:0:f000::/48`,
+`fc00:0:f001::/48`, …) reused on every switch — same SID values, locally
+scoped, no global collision because they're advertised per-locator-source.
+The controller fabric JSON instead uses a **per-node locator** uA encoding
+(`fc00:0:1<NNN>:f<idx>::`) because that's what the clos-fabric.json data
+model expects and what an SDN controller decomposes by locator. Both are
+valid uSID forms; they describe the same End.X behavior on the same
+interfaces. Don't try to "unify" them — the divergence is intentional.
 
 ## Per-switch design (locked in — don't drift)
 
@@ -163,8 +206,53 @@ The binds variant (`sonic-polarfly-q<N>.clab.yaml`) also works, but the script
 `docker cp`s configs at runtime regardless, so binds aren't required.
 
 Each `docker-sonic-vs` consumes <100 MB; q=13 (366 containers) is comfortable
-on a 96 GB host. For q=13, eventually consider pre-checking
-`fs.inotify.*` and `net.ipv[46].neigh.default.gc_thresh*` (not yet wired in).
+on a 96 GB host. For q=13, also tune the host kernel — see "Host tuning for
+q=13" below.
+
+## Host tuning for q=13
+
+q=13 brings up 366 containers with ~2914 veth endpoints (1457 links × 2)
+roughly simultaneously. The default Linux limits will throttle or fail the
+deploy. These are starting points (not yet wired into a preflight script —
+adjust empirically):
+
+```
+# inotify (containerlab + docker watch many files)
+fs.inotify.max_user_instances = 8192
+fs.inotify.max_user_watches   = 1048576
+fs.inotify.max_queued_events  = 65536
+
+# ARP/ND tables — default gc_thresh3 is 1024; the fabric needs ~3K+ entries.
+net.ipv4.neigh.default.gc_thresh1 = 4096
+net.ipv4.neigh.default.gc_thresh2 = 8192
+net.ipv4.neigh.default.gc_thresh3 = 16384
+net.ipv6.neigh.default.gc_thresh1 = 4096
+net.ipv6.neigh.default.gc_thresh2 = 8192
+net.ipv6.neigh.default.gc_thresh3 = 16384
+
+# netlink + socket buffers (large burst of link/addr/route events at deploy)
+net.core.rmem_max          = 16777216
+net.core.wmem_max          = 16777216
+net.core.netdev_max_backlog = 32768
+
+# fd / pid / threads (sonic-vs + FRR + syncd are process-heavy)
+fs.file-max          = 2097152
+kernel.pid_max       = 4194304
+kernel.threads-max   = 4194304
+vm.max_map_count     = 262144
+```
+
+Also (not sysctls):
+
+- `ulimit -n` for the user running containerlab → 1048576
+- Docker daemon `LimitNOFILE` (systemd unit) → 1048576
+- Docker daemon `default-ulimits` in `/etc/docker/daemon.json` if needed
+
+Apply with `sudo sysctl -w <key>=<val>` for a session, or via `/etc/sysctl.d/`
+for persistence.
+
+A `q13/preflight.sh` that audits and optionally applies these is a reasonable
+future addition; not yet implemented.
 
 ## Verifying after a regen
 
@@ -197,9 +285,12 @@ locator `fc00:0:1001::/48`. For sw183 expect `65183`, `fc00:0:10b7::1`,
 ## When extending
 
 - Maintain the per-switch design table verbatim. Any drift in SID/ASN/loopback
-  formulas requires regenerating **both** q7 and q13.
+  formulas requires regenerating **both** q7 and q13 (clab YAML + configs **and**
+  the controller fabric JSON).
 - Keep `q<N>-config.sh` files identical across q-dirs (they auto-detect q).
-- For new scales (e.g., q=11, q=17), just `python3 topogen2/polarfly_clab.py --q <N>`;
-  the generator handles everything. Copy a `q<N>-config.sh` from an existing q-dir.
+- For new scales (e.g., q=11, q=17):
+  1. `python3 topogen2/polarfly_clab.py --q <N>` (clab + configs)
+  2. `python3 topogen2/polarfly_fabric_json.py --q <N>` (controller JSON)
+  3. Copy a `q<M>-config.sh` from an existing q-dir into the new q-dir.
 - BGP convergence on q=7 yields 98–100 received prefixes per peer (Polarfly
   diameter-2 propagation). Expect proportionally more on q=13.
