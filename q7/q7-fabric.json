@@ -10,7 +10,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65001"
+        "asn": "65001",
+        "vType": "2",
+        "cluster": "sw023"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1001::",
@@ -31,7 +33,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65002"
+        "asn": "65002",
+        "vType": "2",
+        "cluster": "sw011"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1002::",
@@ -52,7 +56,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65003"
+        "asn": "65003",
+        "vType": "2",
+        "cluster": "sw022"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1003::",
@@ -73,7 +79,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65004"
+        "asn": "65004",
+        "vType": "1",
+        "cluster": "sw004"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1004::",
@@ -94,7 +102,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65005"
+        "asn": "65005",
+        "vType": "1",
+        "cluster": "sw005"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1005::",
@@ -115,7 +125,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65006"
+        "asn": "65006",
+        "vType": "1",
+        "cluster": "sw006"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1006::",
@@ -136,7 +148,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65007"
+        "asn": "65007",
+        "vType": "1",
+        "cluster": "sw007"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1007::",
@@ -157,7 +171,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65008"
+        "asn": "65008",
+        "vType": "2",
+        "cluster": "sw017"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1008::",
@@ -178,7 +194,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65009"
+        "asn": "65009",
+        "vType": "2",
+        "cluster": "sw004"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1009::",
@@ -199,7 +217,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65010"
+        "asn": "65010",
+        "vType": "2",
+        "cluster": "sw022"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:100a::",
@@ -220,7 +240,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65011"
+        "asn": "65011",
+        "vType": "1",
+        "cluster": "sw011"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:100b::",
@@ -241,7 +263,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65012"
+        "asn": "65012",
+        "vType": "1",
+        "cluster": "sw012"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:100c::",
@@ -262,7 +286,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65013"
+        "asn": "65013",
+        "vType": "1",
+        "cluster": "sw013"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:100d::",
@@ -283,7 +309,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65014"
+        "asn": "65014",
+        "vType": "1",
+        "cluster": "sw014"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:100e::",
@@ -304,7 +332,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65015"
+        "asn": "65015",
+        "vType": "2",
+        "cluster": "sw017"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:100f::",
@@ -325,7 +355,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65016"
+        "asn": "65016",
+        "vType": "2",
+        "cluster": "sw052"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1010::",
@@ -346,7 +378,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65017"
+        "asn": "65017",
+        "vType": "1",
+        "cluster": "sw017"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1011::",
@@ -367,7 +401,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65018"
+        "asn": "65018",
+        "vType": "1",
+        "cluster": "sw018"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1012::",
@@ -388,7 +424,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65019"
+        "asn": "65019",
+        "vType": "2",
+        "cluster": "sw004"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1013::",
@@ -409,7 +447,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65020"
+        "asn": "65020",
+        "vType": "2",
+        "cluster": "sw007"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1014::",
@@ -430,7 +470,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65021"
+        "asn": "65021",
+        "vType": "1",
+        "cluster": "sw021"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1015::",
@@ -451,7 +493,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65022"
+        "asn": "65022",
+        "vType": "1",
+        "cluster": "sw022"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1016::",
@@ -472,7 +516,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65023"
+        "asn": "65023",
+        "vType": "1",
+        "cluster": "sw023"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1017::",
@@ -493,7 +539,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65024"
+        "asn": "65024",
+        "vType": "1",
+        "cluster": "sw024"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1018::",
@@ -514,7 +562,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65025"
+        "asn": "65025",
+        "vType": "2",
+        "cluster": "sw012"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1019::",
@@ -535,7 +585,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "true",
-        "asn": "65026"
+        "asn": "65026",
+        "vType": "0",
+        "cluster": ""
       },
       "srv6_node_sid": {
         "sid": "fc00:0:101a::",
@@ -556,7 +608,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "true",
-        "asn": "65027"
+        "asn": "65027",
+        "vType": "0",
+        "cluster": ""
       },
       "srv6_node_sid": {
         "sid": "fc00:0:101b::",
@@ -577,7 +631,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65028"
+        "asn": "65028",
+        "vType": "2",
+        "cluster": "sw013"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:101c::",
@@ -598,7 +654,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65029"
+        "asn": "65029",
+        "vType": "1",
+        "cluster": "sw029"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:101d::",
@@ -619,7 +677,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65030"
+        "asn": "65030",
+        "vType": "1",
+        "cluster": "sw030"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:101e::",
@@ -640,7 +700,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65031"
+        "asn": "65031",
+        "vType": "2",
+        "cluster": "sw006"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:101f::",
@@ -661,7 +723,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "true",
-        "asn": "65032"
+        "asn": "65032",
+        "vType": "0",
+        "cluster": ""
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1020::",
@@ -682,7 +746,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65033"
+        "asn": "65033",
+        "vType": "1",
+        "cluster": "sw033"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1021::",
@@ -703,7 +769,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65034"
+        "asn": "65034",
+        "vType": "1",
+        "cluster": "sw034"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1022::",
@@ -724,7 +792,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "true",
-        "asn": "65035"
+        "asn": "65035",
+        "vType": "0",
+        "cluster": ""
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1023::",
@@ -745,7 +815,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65036"
+        "asn": "65036",
+        "vType": "2",
+        "cluster": "sw005"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1024::",
@@ -766,7 +838,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65037"
+        "asn": "65037",
+        "vType": "1",
+        "cluster": "sw037"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1025::",
@@ -787,7 +861,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65038"
+        "asn": "65038",
+        "vType": "2",
+        "cluster": "sw005"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1026::",
@@ -808,7 +884,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "true",
-        "asn": "65039"
+        "asn": "65039",
+        "vType": "0",
+        "cluster": ""
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1027::",
@@ -829,7 +907,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65040"
+        "asn": "65040",
+        "vType": "1",
+        "cluster": "sw040"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1028::",
@@ -850,7 +930,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65041"
+        "asn": "65041",
+        "vType": "1",
+        "cluster": "sw041"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1029::",
@@ -871,7 +953,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "true",
-        "asn": "65042"
+        "asn": "65042",
+        "vType": "0",
+        "cluster": ""
       },
       "srv6_node_sid": {
         "sid": "fc00:0:102a::",
@@ -892,7 +976,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65043"
+        "asn": "65043",
+        "vType": "2",
+        "cluster": "sw006"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:102b::",
@@ -913,7 +999,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65044"
+        "asn": "65044",
+        "vType": "1",
+        "cluster": "sw044"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:102c::",
@@ -934,7 +1022,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65045"
+        "asn": "65045",
+        "vType": "1",
+        "cluster": "sw045"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:102d::",
@@ -955,7 +1045,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65046"
+        "asn": "65046",
+        "vType": "2",
+        "cluster": "sw012"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:102e::",
@@ -976,7 +1068,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "true",
-        "asn": "65047"
+        "asn": "65047",
+        "vType": "0",
+        "cluster": ""
       },
       "srv6_node_sid": {
         "sid": "fc00:0:102f::",
@@ -997,7 +1091,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "true",
-        "asn": "65048"
+        "asn": "65048",
+        "vType": "0",
+        "cluster": ""
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1030::",
@@ -1018,7 +1114,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65049"
+        "asn": "65049",
+        "vType": "2",
+        "cluster": "sw013"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1031::",
@@ -1039,7 +1137,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65050"
+        "asn": "65050",
+        "vType": "1",
+        "cluster": "sw050"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1032::",
@@ -1060,7 +1160,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65051"
+        "asn": "65051",
+        "vType": "2",
+        "cluster": "sw017"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1033::",
@@ -1081,7 +1183,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65052"
+        "asn": "65052",
+        "vType": "1",
+        "cluster": "sw052"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1034::",
@@ -1102,7 +1206,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65053"
+        "asn": "65053",
+        "vType": "1",
+        "cluster": "sw053"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1035::",
@@ -1123,7 +1229,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65054"
+        "asn": "65054",
+        "vType": "2",
+        "cluster": "sw007"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1036::",
@@ -1144,7 +1252,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65055"
+        "asn": "65055",
+        "vType": "2",
+        "cluster": "sw004"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1037::",
@@ -1165,7 +1275,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65056"
+        "asn": "65056",
+        "vType": "1",
+        "cluster": "sw056"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1038::",
@@ -1186,7 +1298,9 @@
         "tier": "fabric",
         "topology": "polarfly-q7",
         "absolute": "false",
-        "asn": "65057"
+        "asn": "65057",
+        "vType": "1",
+        "cluster": "sw057"
       },
       "srv6_node_sid": {
         "sid": "fc00:0:1039::",

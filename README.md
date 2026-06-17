@@ -54,3 +54,8 @@ sudo sysctl -p
 cd q7
 clab deploy -t sonic-polarfly-q7.clab.yaml
 ```
+
+9. apply sonic configurations
+```
+./q7-config.sh
+```

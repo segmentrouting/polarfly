@@ -67,6 +67,38 @@ def build_fabric_json(q: int) -> dict:
     switches = w["switches"]
     n = w["n"]
 
+    # ---- vertex classification (for visualizer/SYD layout) ----
+    # W  (vType=0): absolute / quadric points (a^2+b^2+c^2 == 0 mod q).
+    # V1 (vType=1): off-quadric vertices adjacent to >=1 quadric (petal hubs).
+    # V2 (vType=2): off-quadric vertices with no quadric neighbor (pure fins).
+    # Cluster: each V1 anchors a cluster named by its switch (e.g. "sw014").
+    #          Each V2 is assigned to the lowest-indexed V1 neighbor (stable
+    #          across regenerations). W vertices have no cluster ("").
+    abs_set = set(absolute)
+    adj = [set() for _ in range(n)]
+    for u, v in edges:
+        adj[u].add(v)
+        adj[v].add(u)
+
+    v_type = [0] * n  # 0=W, 1=V1, 2=V2
+    for i in range(n):
+        if i in abs_set:
+            v_type[i] = 0
+        elif any(j in abs_set for j in adj[i]):
+            v_type[i] = 1
+        else:
+            v_type[i] = 2
+
+    cluster = [""] * n
+    for i in range(n):
+        if v_type[i] == 1:
+            cluster[i] = switches[i]["name"]
+    for i in range(n):
+        if v_type[i] == 2:
+            v1_neighbors = sorted(j for j in adj[i] if v_type[j] == 1)
+            if v1_neighbors:
+                cluster[i] = switches[v1_neighbors[0]]["name"]
+
     nodes = []
     interfaces = []
     endpoints = []
@@ -74,6 +106,7 @@ def build_fabric_json(q: int) -> dict:
 
     # ---- nodes (switches) ----
     for s in switches:
+        i = s["idx"]
         nodes.append({
             "id": s["name"],
             "name": s["name"],
@@ -83,6 +116,8 @@ def build_fabric_json(q: int) -> dict:
                 "topology": f"polarfly-q{q}",
                 "absolute": "true" if s["is_absolute"] else "false",
                 "asn": str(s["asn"]),
+                "vType": str(v_type[i]),
+                "cluster": cluster[i],
             },
             "srv6_node_sid": {
                 "sid": node_sid(s["loc_id"]),

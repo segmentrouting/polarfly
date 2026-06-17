@@ -62,7 +62,8 @@ document in the same shape as `clos-fabric.json` (the reference at the repo
 root). It imports `polarfly_clab.py`, reuses `build_wiring()`, and emits:
 
 - **nodes**: one per switch, with `srv6_node_sid` (uN, locator base address),
-  labels include `tier`, `topology`, `absolute`, `asn`.
+  labels include `tier`, `topology`, `absolute`, `asn`, plus Polarfly-specific
+  layout hints `vType` and `cluster` (see "Vertex classification labels" below).
 - **endpoints**: one host per switch, `subtype: "host"`.
 - **interfaces**: one per fabric port (so each undirected link → 2 interfaces),
   each carrying its `srv6_ua_sids` (End.X). uA SID encoding here is
@@ -92,6 +93,44 @@ The controller fabric JSON instead uses a **per-node locator** uA encoding
 model expects and what an SDN controller decomposes by locator. Both are
 valid uSID forms; they describe the same End.X behavior on the same
 interfaces. Don't try to "unify" them — the divergence is intentional.
+
+### Vertex classification labels (for SYD layout)
+
+Every node in the controller JSON carries Polarfly-specific layout hints in
+its `labels` map. These let consumers (notably SYD's polarfly view mode) lay
+out the fabric in its iconic "petal" / triangle-fan form without rediscovering
+the structure from adjacency:
+
+| Label | Values | Meaning |
+|---|---|---|
+| `vType` | `"0"` (W) | Quadric / absolute point: `a²+b²+c² ≡ 0 (mod q)`. There are exactly q+1 of these (8 at q=7, 14 at q=13). They form the topology's backbone. |
+| `vType` | `"1"` (V1) | Off-quadric vertex with at least one quadric (W) neighbor. Each V1 anchors a petal-cluster as its hub. |
+| `vType` | `"2"` (V2) | Off-quadric vertex with NO quadric neighbor. Pure fin/leaf vertex; lives on a V1 hub's petal. |
+| `cluster` | `""` | W nodes belong to no cluster. |
+| `cluster` | `"swNNN"` (self) | V1 nodes anchor their own cluster, named after themselves. |
+| `cluster` | `"swNNN"` (V1 hub) | V2 nodes are assigned to the **lowest-indexed** V1 neighbor (deterministic, stable across regenerations). |
+
+Invariants (asserted at generation time):
+
+- `count(W) == q + 1`
+- `count(W) + count(V1) + count(V2) == q² + q + 1`
+- Every V1 has `cluster == name`.
+- Every V2 has `cluster ∈ {names of V1 nodes}`.
+- Number of distinct cluster values == V1 count.
+
+Layout pseudocode for a polarfly view mode:
+
+```
+1. Place W nodes (vType=="0") on the backbone   (q+1 of them).
+2. Place V1 hubs (vType=="1") around the backbone, one per cluster.
+3. For each V1 hub h, gather its V2 fins where vType=="2" and cluster==h.name,
+   and lay them out as petals around h.
+```
+
+The reference visualizer (`polarfly.html`, ~13.6K lines of single-file React)
+recomputes this classification from scratch; SYD should read it from the JSON
+labels instead. Cluster size distribution at q=7: `{1: 17, 2: 3, 3: 6, 4: 2}`
+(many V1s have no fins; some have up to 4). At q=13: `{1: 66, 2: 10, 3: 2, 4: 2, 5: 4, 7: 7}`.
 
 ## Per-switch design (locked in — don't drift)
 
