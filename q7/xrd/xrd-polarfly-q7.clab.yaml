@@ -17,7 +17,7 @@ topology:
     cisco_xrd:
       image: ios-xr/xrd-control-plane:25.4.1
     linux:
-      image: iejalapeno/alpine-srv6:1.0
+      image: iejalapeno/alpine-srv6-scapy:1.0
 
   nodes:
     xrd001:

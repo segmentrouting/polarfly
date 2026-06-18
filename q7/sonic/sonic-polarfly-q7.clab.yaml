@@ -17,7 +17,7 @@ topology:
     sonic-vs:
       image: docker-sonic-vs:latest
     linux:
-      image: iejalapeno/alpine-srv6:1.0
+      image: iejalapeno/alpine-srv6-scapy:1.0
 
   nodes:
     sw001: { kind: sonic-vs, mgmt-ipv4: 172.100.0.11 }
