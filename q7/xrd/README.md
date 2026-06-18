@@ -1,6 +1,6 @@
-### Polarfly q=7 topology
+### XRd Polarfly q=7 topology
 
-Post polarfly topology data
-```
-curl -s -X POST http://localhost:30080/topology   -H 'Content-Type: application/json'   -d @q7/xrd/q7-fabric.json | python3 -m json.tool
+Run custom deploy command to reduce heavy load on docker daemon
+```bash
+clab deploy -t xrd-polarfly-q7.clab.yaml --max-workers 2 --timeout 5m
 ```

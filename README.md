@@ -48,14 +48,21 @@ vm.max_map_count     = 262144
 ```
 sudo sysctl -p
 ```
-
-8. cd into the topology directory and deploy
+### Deploy docker-sonic-vs topology
+1. cd into the topology directory and deploy
 ```
-cd q7
+cd q7/sonic/
 clab deploy -t sonic-polarfly-q7.clab.yaml
 ```
 
-9. apply sonic configurations
+2. apply sonic configurations
 ```
 ./q7-config.sh
+```
+
+### Deploy XRd topology
+1. cd into the topology directory and deploy
+```
+cd q7/xrd/
+clab deploy -t xrd-polarfly-q7.clab.yaml
 ```
