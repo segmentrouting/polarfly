@@ -312,6 +312,7 @@ def emit_yaml(points, edges, absolute, q: int, out_path: str, wiring: Dict,
         lines.append(f"      mgmt-ipv4: {ip}")
         lines.append(f"      exec:")
         lines.append(f'        - "ip -6 addr add {s["host_host_addr"]}/64 dev eth1 nodad"')
+        lines.append(f'        - "ip route add fc00::/32 via {s["host_sw_addr"]} dev eth1"')
     lines.append("")
     lines.append("  links:")
     lines.append("    # ---- fabric links (polarity adjacencies) ----")
@@ -536,6 +537,8 @@ def build_frr_conf(s: Dict, switches: List[Dict]) -> str:
     p(f"   sid {s['locator_prefix']} locator MAIN behavior uN")
     # uDT6 -> Vrf-tenant
     p(f"   sid {s['udt6_sid']} locator MAIN behavior uDT6 vrf Vrf-tenant")
+    # Global uDT6 SID (same on every switch, locally scoped)
+    p("   sid fc00:0:e000::/48 locator MAIN behavior uDT6 vrf Vrf-tenant")
     # uA per fabric port (Ethernet0->fc00:0:f000::/48, +4 -> f001, ...)
     for fp in fabric:
         # local_idx 0 -> f000, 1 -> f001, ...

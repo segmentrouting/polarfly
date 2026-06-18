@@ -113,6 +113,7 @@ def emit_xrd_yaml(wiring: Dict, q: int, out_path: str) -> None:
         a(f"      mgmt-ipv4: {ip}")
         a(f"      exec:")
         a(f'        - "ip -6 addr add {s["host_host_addr"]}/64 dev eth1 nodad"')
+        a(f'        - "ip route add fc00::/32 via {s["host_sw_addr"]} dev eth1"')
     a("")
 
     a("  links:")
