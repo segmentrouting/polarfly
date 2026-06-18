@@ -307,7 +307,11 @@ def emit_yaml(points, edges, absolute, q: int, out_path: str, wiring: Dict,
     lines.append("")
     for s in switches:
         ip = f"172.100.1.{11 + s['idx']}"
-        lines.append(f"    {s['host_name']}: {{ kind: linux, mgmt-ipv4: {ip} }}")
+        lines.append(f"    {s['host_name']}:")
+        lines.append(f"      kind: linux")
+        lines.append(f"      mgmt-ipv4: {ip}")
+        lines.append(f"      exec:")
+        lines.append(f'        - "ip -6 addr add {s["host_host_addr"]}/64 dev eth1 nodad"')
     lines.append("")
     lines.append("  links:")
     lines.append("    # ---- fabric links (polarity adjacencies) ----")

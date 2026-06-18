@@ -108,7 +108,11 @@ def emit_xrd_yaml(wiring: Dict, q: int, out_path: str) -> None:
     for s in switches:
         name = _host_name(s["idx"], width)
         ip = f"172.20.1.{11 + s['idx']}"
-        a(f"    {name}: {{ kind: linux, mgmt-ipv4: {ip} }}")
+        a(f"    {name}:")
+        a(f"      kind: linux")
+        a(f"      mgmt-ipv4: {ip}")
+        a(f"      exec:")
+        a(f'        - "ip -6 addr add {s["host_host_addr"]}/64 dev eth1 nodad"')
     a("")
 
     a("  links:")

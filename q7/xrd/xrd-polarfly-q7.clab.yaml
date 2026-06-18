@@ -249,63 +249,291 @@ topology:
       mgmt-ipv4: 172.20.0.67
       startup-config: xrd-config/xrd057.cfg
 
-    h001: { kind: linux, mgmt-ipv4: 172.20.1.11 }
-    h002: { kind: linux, mgmt-ipv4: 172.20.1.12 }
-    h003: { kind: linux, mgmt-ipv4: 172.20.1.13 }
-    h004: { kind: linux, mgmt-ipv4: 172.20.1.14 }
-    h005: { kind: linux, mgmt-ipv4: 172.20.1.15 }
-    h006: { kind: linux, mgmt-ipv4: 172.20.1.16 }
-    h007: { kind: linux, mgmt-ipv4: 172.20.1.17 }
-    h008: { kind: linux, mgmt-ipv4: 172.20.1.18 }
-    h009: { kind: linux, mgmt-ipv4: 172.20.1.19 }
-    h010: { kind: linux, mgmt-ipv4: 172.20.1.20 }
-    h011: { kind: linux, mgmt-ipv4: 172.20.1.21 }
-    h012: { kind: linux, mgmt-ipv4: 172.20.1.22 }
-    h013: { kind: linux, mgmt-ipv4: 172.20.1.23 }
-    h014: { kind: linux, mgmt-ipv4: 172.20.1.24 }
-    h015: { kind: linux, mgmt-ipv4: 172.20.1.25 }
-    h016: { kind: linux, mgmt-ipv4: 172.20.1.26 }
-    h017: { kind: linux, mgmt-ipv4: 172.20.1.27 }
-    h018: { kind: linux, mgmt-ipv4: 172.20.1.28 }
-    h019: { kind: linux, mgmt-ipv4: 172.20.1.29 }
-    h020: { kind: linux, mgmt-ipv4: 172.20.1.30 }
-    h021: { kind: linux, mgmt-ipv4: 172.20.1.31 }
-    h022: { kind: linux, mgmt-ipv4: 172.20.1.32 }
-    h023: { kind: linux, mgmt-ipv4: 172.20.1.33 }
-    h024: { kind: linux, mgmt-ipv4: 172.20.1.34 }
-    h025: { kind: linux, mgmt-ipv4: 172.20.1.35 }
-    h026: { kind: linux, mgmt-ipv4: 172.20.1.36 }
-    h027: { kind: linux, mgmt-ipv4: 172.20.1.37 }
-    h028: { kind: linux, mgmt-ipv4: 172.20.1.38 }
-    h029: { kind: linux, mgmt-ipv4: 172.20.1.39 }
-    h030: { kind: linux, mgmt-ipv4: 172.20.1.40 }
-    h031: { kind: linux, mgmt-ipv4: 172.20.1.41 }
-    h032: { kind: linux, mgmt-ipv4: 172.20.1.42 }
-    h033: { kind: linux, mgmt-ipv4: 172.20.1.43 }
-    h034: { kind: linux, mgmt-ipv4: 172.20.1.44 }
-    h035: { kind: linux, mgmt-ipv4: 172.20.1.45 }
-    h036: { kind: linux, mgmt-ipv4: 172.20.1.46 }
-    h037: { kind: linux, mgmt-ipv4: 172.20.1.47 }
-    h038: { kind: linux, mgmt-ipv4: 172.20.1.48 }
-    h039: { kind: linux, mgmt-ipv4: 172.20.1.49 }
-    h040: { kind: linux, mgmt-ipv4: 172.20.1.50 }
-    h041: { kind: linux, mgmt-ipv4: 172.20.1.51 }
-    h042: { kind: linux, mgmt-ipv4: 172.20.1.52 }
-    h043: { kind: linux, mgmt-ipv4: 172.20.1.53 }
-    h044: { kind: linux, mgmt-ipv4: 172.20.1.54 }
-    h045: { kind: linux, mgmt-ipv4: 172.20.1.55 }
-    h046: { kind: linux, mgmt-ipv4: 172.20.1.56 }
-    h047: { kind: linux, mgmt-ipv4: 172.20.1.57 }
-    h048: { kind: linux, mgmt-ipv4: 172.20.1.58 }
-    h049: { kind: linux, mgmt-ipv4: 172.20.1.59 }
-    h050: { kind: linux, mgmt-ipv4: 172.20.1.60 }
-    h051: { kind: linux, mgmt-ipv4: 172.20.1.61 }
-    h052: { kind: linux, mgmt-ipv4: 172.20.1.62 }
-    h053: { kind: linux, mgmt-ipv4: 172.20.1.63 }
-    h054: { kind: linux, mgmt-ipv4: 172.20.1.64 }
-    h055: { kind: linux, mgmt-ipv4: 172.20.1.65 }
-    h056: { kind: linux, mgmt-ipv4: 172.20.1.66 }
-    h057: { kind: linux, mgmt-ipv4: 172.20.1.67 }
+    h001:
+      kind: linux
+      mgmt-ipv4: 172.20.1.11
+      exec:
+        - "ip -6 addr add 2001:db8:a001::2/64 dev eth1 nodad"
+    h002:
+      kind: linux
+      mgmt-ipv4: 172.20.1.12
+      exec:
+        - "ip -6 addr add 2001:db8:a002::2/64 dev eth1 nodad"
+    h003:
+      kind: linux
+      mgmt-ipv4: 172.20.1.13
+      exec:
+        - "ip -6 addr add 2001:db8:a003::2/64 dev eth1 nodad"
+    h004:
+      kind: linux
+      mgmt-ipv4: 172.20.1.14
+      exec:
+        - "ip -6 addr add 2001:db8:a004::2/64 dev eth1 nodad"
+    h005:
+      kind: linux
+      mgmt-ipv4: 172.20.1.15
+      exec:
+        - "ip -6 addr add 2001:db8:a005::2/64 dev eth1 nodad"
+    h006:
+      kind: linux
+      mgmt-ipv4: 172.20.1.16
+      exec:
+        - "ip -6 addr add 2001:db8:a006::2/64 dev eth1 nodad"
+    h007:
+      kind: linux
+      mgmt-ipv4: 172.20.1.17
+      exec:
+        - "ip -6 addr add 2001:db8:a007::2/64 dev eth1 nodad"
+    h008:
+      kind: linux
+      mgmt-ipv4: 172.20.1.18
+      exec:
+        - "ip -6 addr add 2001:db8:a008::2/64 dev eth1 nodad"
+    h009:
+      kind: linux
+      mgmt-ipv4: 172.20.1.19
+      exec:
+        - "ip -6 addr add 2001:db8:a009::2/64 dev eth1 nodad"
+    h010:
+      kind: linux
+      mgmt-ipv4: 172.20.1.20
+      exec:
+        - "ip -6 addr add 2001:db8:a00a::2/64 dev eth1 nodad"
+    h011:
+      kind: linux
+      mgmt-ipv4: 172.20.1.21
+      exec:
+        - "ip -6 addr add 2001:db8:a00b::2/64 dev eth1 nodad"
+    h012:
+      kind: linux
+      mgmt-ipv4: 172.20.1.22
+      exec:
+        - "ip -6 addr add 2001:db8:a00c::2/64 dev eth1 nodad"
+    h013:
+      kind: linux
+      mgmt-ipv4: 172.20.1.23
+      exec:
+        - "ip -6 addr add 2001:db8:a00d::2/64 dev eth1 nodad"
+    h014:
+      kind: linux
+      mgmt-ipv4: 172.20.1.24
+      exec:
+        - "ip -6 addr add 2001:db8:a00e::2/64 dev eth1 nodad"
+    h015:
+      kind: linux
+      mgmt-ipv4: 172.20.1.25
+      exec:
+        - "ip -6 addr add 2001:db8:a00f::2/64 dev eth1 nodad"
+    h016:
+      kind: linux
+      mgmt-ipv4: 172.20.1.26
+      exec:
+        - "ip -6 addr add 2001:db8:a010::2/64 dev eth1 nodad"
+    h017:
+      kind: linux
+      mgmt-ipv4: 172.20.1.27
+      exec:
+        - "ip -6 addr add 2001:db8:a011::2/64 dev eth1 nodad"
+    h018:
+      kind: linux
+      mgmt-ipv4: 172.20.1.28
+      exec:
+        - "ip -6 addr add 2001:db8:a012::2/64 dev eth1 nodad"
+    h019:
+      kind: linux
+      mgmt-ipv4: 172.20.1.29
+      exec:
+        - "ip -6 addr add 2001:db8:a013::2/64 dev eth1 nodad"
+    h020:
+      kind: linux
+      mgmt-ipv4: 172.20.1.30
+      exec:
+        - "ip -6 addr add 2001:db8:a014::2/64 dev eth1 nodad"
+    h021:
+      kind: linux
+      mgmt-ipv4: 172.20.1.31
+      exec:
+        - "ip -6 addr add 2001:db8:a015::2/64 dev eth1 nodad"
+    h022:
+      kind: linux
+      mgmt-ipv4: 172.20.1.32
+      exec:
+        - "ip -6 addr add 2001:db8:a016::2/64 dev eth1 nodad"
+    h023:
+      kind: linux
+      mgmt-ipv4: 172.20.1.33
+      exec:
+        - "ip -6 addr add 2001:db8:a017::2/64 dev eth1 nodad"
+    h024:
+      kind: linux
+      mgmt-ipv4: 172.20.1.34
+      exec:
+        - "ip -6 addr add 2001:db8:a018::2/64 dev eth1 nodad"
+    h025:
+      kind: linux
+      mgmt-ipv4: 172.20.1.35
+      exec:
+        - "ip -6 addr add 2001:db8:a019::2/64 dev eth1 nodad"
+    h026:
+      kind: linux
+      mgmt-ipv4: 172.20.1.36
+      exec:
+        - "ip -6 addr add 2001:db8:a01a::2/64 dev eth1 nodad"
+    h027:
+      kind: linux
+      mgmt-ipv4: 172.20.1.37
+      exec:
+        - "ip -6 addr add 2001:db8:a01b::2/64 dev eth1 nodad"
+    h028:
+      kind: linux
+      mgmt-ipv4: 172.20.1.38
+      exec:
+        - "ip -6 addr add 2001:db8:a01c::2/64 dev eth1 nodad"
+    h029:
+      kind: linux
+      mgmt-ipv4: 172.20.1.39
+      exec:
+        - "ip -6 addr add 2001:db8:a01d::2/64 dev eth1 nodad"
+    h030:
+      kind: linux
+      mgmt-ipv4: 172.20.1.40
+      exec:
+        - "ip -6 addr add 2001:db8:a01e::2/64 dev eth1 nodad"
+    h031:
+      kind: linux
+      mgmt-ipv4: 172.20.1.41
+      exec:
+        - "ip -6 addr add 2001:db8:a01f::2/64 dev eth1 nodad"
+    h032:
+      kind: linux
+      mgmt-ipv4: 172.20.1.42
+      exec:
+        - "ip -6 addr add 2001:db8:a020::2/64 dev eth1 nodad"
+    h033:
+      kind: linux
+      mgmt-ipv4: 172.20.1.43
+      exec:
+        - "ip -6 addr add 2001:db8:a021::2/64 dev eth1 nodad"
+    h034:
+      kind: linux
+      mgmt-ipv4: 172.20.1.44
+      exec:
+        - "ip -6 addr add 2001:db8:a022::2/64 dev eth1 nodad"
+    h035:
+      kind: linux
+      mgmt-ipv4: 172.20.1.45
+      exec:
+        - "ip -6 addr add 2001:db8:a023::2/64 dev eth1 nodad"
+    h036:
+      kind: linux
+      mgmt-ipv4: 172.20.1.46
+      exec:
+        - "ip -6 addr add 2001:db8:a024::2/64 dev eth1 nodad"
+    h037:
+      kind: linux
+      mgmt-ipv4: 172.20.1.47
+      exec:
+        - "ip -6 addr add 2001:db8:a025::2/64 dev eth1 nodad"
+    h038:
+      kind: linux
+      mgmt-ipv4: 172.20.1.48
+      exec:
+        - "ip -6 addr add 2001:db8:a026::2/64 dev eth1 nodad"
+    h039:
+      kind: linux
+      mgmt-ipv4: 172.20.1.49
+      exec:
+        - "ip -6 addr add 2001:db8:a027::2/64 dev eth1 nodad"
+    h040:
+      kind: linux
+      mgmt-ipv4: 172.20.1.50
+      exec:
+        - "ip -6 addr add 2001:db8:a028::2/64 dev eth1 nodad"
+    h041:
+      kind: linux
+      mgmt-ipv4: 172.20.1.51
+      exec:
+        - "ip -6 addr add 2001:db8:a029::2/64 dev eth1 nodad"
+    h042:
+      kind: linux
+      mgmt-ipv4: 172.20.1.52
+      exec:
+        - "ip -6 addr add 2001:db8:a02a::2/64 dev eth1 nodad"
+    h043:
+      kind: linux
+      mgmt-ipv4: 172.20.1.53
+      exec:
+        - "ip -6 addr add 2001:db8:a02b::2/64 dev eth1 nodad"
+    h044:
+      kind: linux
+      mgmt-ipv4: 172.20.1.54
+      exec:
+        - "ip -6 addr add 2001:db8:a02c::2/64 dev eth1 nodad"
+    h045:
+      kind: linux
+      mgmt-ipv4: 172.20.1.55
+      exec:
+        - "ip -6 addr add 2001:db8:a02d::2/64 dev eth1 nodad"
+    h046:
+      kind: linux
+      mgmt-ipv4: 172.20.1.56
+      exec:
+        - "ip -6 addr add 2001:db8:a02e::2/64 dev eth1 nodad"
+    h047:
+      kind: linux
+      mgmt-ipv4: 172.20.1.57
+      exec:
+        - "ip -6 addr add 2001:db8:a02f::2/64 dev eth1 nodad"
+    h048:
+      kind: linux
+      mgmt-ipv4: 172.20.1.58
+      exec:
+        - "ip -6 addr add 2001:db8:a030::2/64 dev eth1 nodad"
+    h049:
+      kind: linux
+      mgmt-ipv4: 172.20.1.59
+      exec:
+        - "ip -6 addr add 2001:db8:a031::2/64 dev eth1 nodad"
+    h050:
+      kind: linux
+      mgmt-ipv4: 172.20.1.60
+      exec:
+        - "ip -6 addr add 2001:db8:a032::2/64 dev eth1 nodad"
+    h051:
+      kind: linux
+      mgmt-ipv4: 172.20.1.61
+      exec:
+        - "ip -6 addr add 2001:db8:a033::2/64 dev eth1 nodad"
+    h052:
+      kind: linux
+      mgmt-ipv4: 172.20.1.62
+      exec:
+        - "ip -6 addr add 2001:db8:a034::2/64 dev eth1 nodad"
+    h053:
+      kind: linux
+      mgmt-ipv4: 172.20.1.63
+      exec:
+        - "ip -6 addr add 2001:db8:a035::2/64 dev eth1 nodad"
+    h054:
+      kind: linux
+      mgmt-ipv4: 172.20.1.64
+      exec:
+        - "ip -6 addr add 2001:db8:a036::2/64 dev eth1 nodad"
+    h055:
+      kind: linux
+      mgmt-ipv4: 172.20.1.65
+      exec:
+        - "ip -6 addr add 2001:db8:a037::2/64 dev eth1 nodad"
+    h056:
+      kind: linux
+      mgmt-ipv4: 172.20.1.66
+      exec:
+        - "ip -6 addr add 2001:db8:a038::2/64 dev eth1 nodad"
+    h057:
+      kind: linux
+      mgmt-ipv4: 172.20.1.67
+      exec:
+        - "ip -6 addr add 2001:db8:a039::2/64 dev eth1 nodad"
 
   links:
     # ---- fabric links (polarity adjacencies) ----
