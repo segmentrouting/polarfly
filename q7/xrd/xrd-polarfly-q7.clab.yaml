@@ -16,6 +16,8 @@ topology:
   kinds:
     cisco_xrd:
       image: ios-xr/xrd-control-plane:25.4.1
+      cap-add:
+      - ALL
     linux:
       image: iejalapeno/alpine-srv6-scapy:1.0
 
