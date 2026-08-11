@@ -188,6 +188,7 @@ Fabric capacity consumed per delivered bit is proportional to hop count. The WMP
 
 RNG has no topological ceiling, but three practical pressures emerge in this regime. First, the control plane: Spraypoint is a distributed protocol over a flat domain with no hierarchy; dissemination and convergence behavior at 16K+ nodes is unproven, and the published production fabrics are presumably well below it. Second, ECMP hardware: spraying across the full neighbor set implies ECMP groups approaching the lane count, and ASIC ECMP member tables are a finite, contested resource — 512-wide groups per destination class is real pressure even with group sharing. SRv6-WMP-PolarFly sidesteps this entirely: explicit paths consume encap-node policy memory, not transit ASIC tables. Third, expansion recabling complexity scales with d: at d = 512, every rack land touches 256 existing links spread across the building. None of these is fatal — they are engineering, and Amazon has the bodies — but all worsen with radix, while additive pre-planned algebraic expansion improves relatively.
 *`Bruce`*: "convergence behavior at 16K+ nodes is unproven" - another reason to maybe consider q=61 or ~4k switches as the reasonable ceiling of today. Or 3xq=83 (~7000 switches)?
+
 ---
 
 ## 6. Failure Models: Statistical Headroom vs. Repair Logic
