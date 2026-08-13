@@ -14,7 +14,7 @@ h001
 ```bash
 ip -6 route add 2001:db8:a013::/64 \
   encap seg6 mode encap.red \
-  segs fc00:0:f007:f004:e000:: dev eth1
+  segs fc00:0:f007:f006:e000:: dev eth1
 ```
 
 h019
