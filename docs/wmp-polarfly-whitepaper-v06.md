@@ -1,7 +1,10 @@
-# Structured Optimality vs. Engineered Randomness: Weighted Multipath (WMP) Routing on PolarFly Topologies as an Alternative to Random-Graph Datacenter Fabrics
+# Structured Optimality vs. Engineered Randomness: 
+## Weighted Multipath (WMP) Routing on PolarFly Topologies as an Alternative to Random-Graph Datacenter Fabrics
 
 **Author:** Bruce McDougall, Cisco Systems
+
 **Status:** DRAFT v0.6 — for internal review
+
 **Date:** August 2026
 
 ---
