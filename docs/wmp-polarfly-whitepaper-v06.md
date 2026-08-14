@@ -248,9 +248,9 @@ MRC 4-plane Clos fabric comparison:
 | **4-plane Clos (baseline)** | 3,072 | 131K | 400G | 1,048K | ECMP per plane | 4-way |
 | **WMP-PolarFly: 2× physical 8×q=31** | 1,986 (−35%) | 127K | 400G | 508K (−52%) | 8 SPs + ~248 NSPs per fabric | 2-way |
 
-MRC 8-plane Clos fabric comparison:
 
 | Configuration | Switches | GPUs | BW/GPU | Fabric optics | Paths per pair | Physical redundancy |
+|---|---|---|---|---|---|---|
 | **8-plane Clos (baseline)** | 6,144 | 131K | 800G | 2,097K | ECMP per plane | 8-way |
 | **WMP-PolarFly: 4× physical 8×q=31** | 3,972 (−35%) | 127K | 800G | 1,016K (−52%) | 8 SPs + ~248 NSPs per fabric | 4-way |
 | **WMP-PolarFly: single 4×q=61** | 3,783 (−38%) | 125K | 800G | 938K (−55%) | 4 SPs + ~244 NSPs | Logical (4-plane SRv6) |
