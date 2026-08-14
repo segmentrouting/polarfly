@@ -104,7 +104,7 @@ A note on encap-node memory: the NIC does not need to hold pre-computed segment 
 The weight function takes as inputs: q; the path-length ratio (2 vs. 3 hops); the pair type (Section 3.4); and — critically for incremental deployment — the **live-vertex set**. In a partially built fabric, the SP relay between a live pair may not yet be installed; the encap node detects this from the installed-coordinate set and re-derives weights over the realized subgraph, again with no protocol convergence. Conditional weighting over the realized subgraph is, to our knowledge, novel.
 
 > **[FIGURE 2: WMP weight as a function of q; SP vs. per-NSP load curves]**
-> ![figure-2](./images/figure-2.png)
+<img src="./images/figure-2.png" alt="figure-2" width="500">
 
 ### 3.4 What RNG retains
 
