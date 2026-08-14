@@ -29,9 +29,9 @@ We develop this argument through PolarFly, the diameter-2 topology of Lakhotia e
 
 A practical note: while RNG is production-proven at Amazon, it is not a publicly available solution. Spraypoint has not been open-sourced; the RNG paper describes the protocol's design but Amazon has not released code or a NOS implementation. ShuffleBoxes are custom passive optical devices with no known commercial source. A non-Amazon operator wishing to deploy RNG today would need to implement Spraypoint from the paper's description on their own NOS, fabricate or commission ShuffleBoxes, and validate the combined system — a substantial engineering investment. By contrast, WMP-PolarFly builds on open-source components (FRR, SONiC) and standard SRv6 as specified in RFC 8986 [7] and RFC 9256 [8].
 
-> **[FIGURE 1: side-by-side — generalized fat tree, RNG quasi-random graph, PolarFly ER_q structure for small q]**
+> **FIGURE 1: side-by-side — generalized fat tree, RNG quasi-random graph, PolarFly ER_q structure for small q**
 ![figure-1](./images/figure-1.png)
-
+                                                   *PolarFly image credit Lakhotia, et al.*
 ---
 
 ## 2. Two Flat Topologies, Two Philosophies
@@ -170,8 +170,6 @@ At **p ≥ 4** with partial membership, the intersection guarantee breaks: two s
 
 Multi-plane slicing also admits mixed-purpose configurations — for example, 3 internal fabric planes plus 1 DCI/egress plane at a different q — though the cross-plane routing implications of such designs are deferred to future work.
 
-> **[FIGURE 3 placeholder: multi-plane membership diagram showing p=3 and p=4 configurations; pair-type path multiplicity table]**
-
 ---
 
 ## 5. Scale at Modern Radix
@@ -239,6 +237,26 @@ Recall why WMP was specified at flow level (Section 3.3 context): general-cloud 
 ### 7.4 Positioning against MRC's deployed topologies and against RNG
 
 MRC is topology-agnostic and its production deployments to date run on two-tier rail-style Clos fabrics. The proposal here is therefore not MRC-versus-PolarFly but MRC-*on*-PolarFly as the structured direct-topology alternative to MRC-on-Clos: diameter 2 instead of 4-hop worst-case through a spine, ~99% Moore efficiency instead of Clos port overheads, and a path set the transport can enumerate algebraically. The breakout philosophy is shared — MRC deployments already split NICs into multiple lower-rate links for path redundancy, which is precisely the lane-level adjacency model PolarFly's degree budget wants. On the other hand RNG's authors generally concede it is not a great match to collective-driven traffic. A quantitative bake-off — MRC-on-PolarFly vs. MRC-on-Clos at matched port count, on allreduce/all-to-all completion-time distributions — is the natural next experiment and an open invitation in this paper.
+
+The following table compares MRC-on-Clos deployments (as reported by hyperscaler operators) with equivalent WMP-PolarFly configurations on 51.2T (512×100G) switches:
+
+| Configuration | Switches | GPUs | BW/GPU | Paths per pair | Physical redundancy |
+|---|---|---|---|---|---|
+| **4-plane Clos (baseline)** | 3,072 | 131K | 400G | ECMP per plane | 4-way |
+| **WMP-PolarFly: 2× physical 8×q=31** | 1,986 (−35%) | 127K | 400G | 8 SPs + ~248 NSPs per fabric | 2-way |
+| **8-plane Clos (baseline)** | 6,144 | 131K | 800G | ECMP per plane | 8-way |
+| **WMP-PolarFly: 4× physical 4×q=31** | 3,972 (−35%) | 191K | 800G | 4 SPs + ~124 NSPs per fabric | 4-way |
+| **WMP-PolarFly: single 4×q=61** | 3,783 (−38%) | 125K | 800G | 4 SPs + ~244 NSPs | Logical (4-plane SRv6) |
+
+The switch-count savings derive from PolarFly's flat topology: a 2-tier Clos dedicates roughly one-third of its switches to a spine layer that serves no endpoints, while every WMP-PolarFly switch provides both fabric and server attachment. MRC's per-path EV probing and NSCC congestion feedback operate identically across both topology families — the transport is topology-agnostic, and the path-set provisioning differences are handled at connection setup.
+
+| Configuration | Switches | GPUs | BW/GPU | Fabric optics | Paths per pair | Physical redundancy |
+|---|---|---|---|---|---|---|
+| **4-plane Clos (baseline)** | 3,072 | 131K | 400G | 1,048K | ECMP per plane | 4-way |
+| **WMP-PolarFly: 2× physical 8×q=31** | 1,986 (−35%) | 127K | 400G | 508K (−52%) | 8 SPs + ~248 NSPs per fabric | 2-way |
+| **8-plane Clos (baseline)** | 6,144 | 131K | 800G | 2,097K | ECMP per plane | 8-way |
+| **WMP-PolarFly: 4× physical 4×q=31** | 3,972 (−35%) | 191K | 800G | 508K (−76%) | 4 SPs + ~124 NSPs per fabric | 4-way |
+| **WMP-PolarFly: single 4×q=61** | 3,783 (−38%) | 125K | 800G | 938K (−55%) | 4 SPs + ~244 NSPs | Logical (4-plane SRv6) |
 
 ### 7.5 All-to-All collectives and bisection bandwidth
 
