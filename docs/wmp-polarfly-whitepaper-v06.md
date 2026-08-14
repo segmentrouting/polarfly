@@ -241,11 +241,14 @@ MRC is topology-agnostic and its production deployments to date run on two-tier 
 
 The following table compares MRC-on-Clos deployments (as reported by hyperscaler operators) with equivalent WMP-PolarFly configurations on 51.2T (512×100G) switches:
 
+MRC 4-plane Clos fabric comparison:
+
 | Configuration | Switches | GPUs | BW/GPU | Fabric optics | Paths per pair | Physical redundancy |
 |---|---|---|---|---|---|---|
 | **4-plane Clos (baseline)** | 3,072 | 131K | 400G | 1,048K | ECMP per plane | 4-way |
 | **WMP-PolarFly: 2× physical 8×q=31** | 1,986 (−35%) | 127K | 400G | 508K (−52%) | 8 SPs + ~248 NSPs per fabric | 2-way |
 
+MRC 8-plane Clos fabric comparison:
 
 | Configuration | Switches | GPUs | BW/GPU | Fabric optics | Paths per pair | Physical redundancy |
 | **8-plane Clos (baseline)** | 6,144 | 131K | 800G | 2,097K | ECMP per plane | 8-way |
