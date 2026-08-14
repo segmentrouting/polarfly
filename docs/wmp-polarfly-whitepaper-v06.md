@@ -241,23 +241,16 @@ MRC is topology-agnostic and its production deployments to date run on two-tier 
 
 The following table compares MRC-on-Clos deployments (as reported by hyperscaler operators) with equivalent WMP-PolarFly configurations on 51.2T (512×100G) switches:
 
-| Configuration | Switches | GPUs | BW/GPU | Paths per pair | Physical redundancy |
-|---|---|---|---|---|---|
-| **4-plane Clos (baseline)** | 3,072 | 131K | 400G | ECMP per plane | 4-way |
-| **WMP-PolarFly: 2× physical 8×q=31** | 1,986 (−35%) | 127K | 400G | 8 SPs + ~248 NSPs per fabric | 2-way |
-| **8-plane Clos (baseline)** | 6,144 | 131K | 800G | ECMP per plane | 8-way |
-| **WMP-PolarFly: 4× physical 4×q=31** | 3,972 (−35%) | 191K | 800G | 4 SPs + ~124 NSPs per fabric | 4-way |
-| **WMP-PolarFly: single 4×q=61** | 3,783 (−38%) | 125K | 800G | 4 SPs + ~244 NSPs | Logical (4-plane SRv6) |
-
-The switch-count savings derive from PolarFly's flat topology: a 2-tier Clos dedicates roughly one-third of its switches to a spine layer that serves no endpoints, while every WMP-PolarFly switch provides both fabric and server attachment. MRC's per-path EV probing and NSCC congestion feedback operate identically across both topology families — the transport is topology-agnostic, and the path-set provisioning differences are handled at connection setup.
-
 | Configuration | Switches | GPUs | BW/GPU | Fabric optics | Paths per pair | Physical redundancy |
 |---|---|---|---|---|---|---|
 | **4-plane Clos (baseline)** | 3,072 | 131K | 400G | 1,048K | ECMP per plane | 4-way |
 | **WMP-PolarFly: 2× physical 8×q=31** | 1,986 (−35%) | 127K | 400G | 508K (−52%) | 8 SPs + ~248 NSPs per fabric | 2-way |
+|---|---|---|---|---|---|---|
 | **8-plane Clos (baseline)** | 6,144 | 131K | 800G | 2,097K | ECMP per plane | 8-way |
 | **WMP-PolarFly: 4× physical 8×q=31** | 3,972 (−35%) | 127K | 800G | 1,016K (−52%) | 8 SPs + ~248 NSPs per fabric | 4-way |
 | **WMP-PolarFly: single 4×q=61** | 3,783 (−38%) | 125K | 800G | 938K (−55%) | 4 SPs + ~244 NSPs | Logical (4-plane SRv6) |
+
+The switch-count savings derive from PolarFly's flat topology: a 2-tier Clos dedicates roughly one-third of its switches to a spine layer that serves no endpoints, while every WMP-PolarFly switch provides both fabric and server attachment. MRC's per-path EV probing and NSCC congestion feedback operate identically across both topology families — the transport is topology-agnostic, and the path-set provisioning differences are handled at connection setup.
 
 ### 7.5 All-to-All collectives and bisection bandwidth
 
