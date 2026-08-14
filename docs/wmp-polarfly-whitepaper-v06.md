@@ -29,9 +29,9 @@ We develop this argument through PolarFly, the diameter-2 topology of Lakhotia e
 
 A practical note: while RNG is production-proven at Amazon, it is not a publicly available solution. Spraypoint has not been open-sourced; the RNG paper describes the protocol's design but Amazon has not released code or a NOS implementation. ShuffleBoxes are custom passive optical devices with no known commercial source. A non-Amazon operator wishing to deploy RNG today would need to implement Spraypoint from the paper's description on their own NOS, fabricate or commission ShuffleBoxes, and validate the combined system — a substantial engineering investment. By contrast, WMP-PolarFly builds on open-source components (FRR, SONiC) and standard SRv6 as specified in RFC 8986 [7] and RFC 9256 [8].
 
-> **FIGURE 1: side-by-side — generalized fat tree, RNG quasi-random graph, PolarFly ER_q structure for small q**
+**FIGURE 1: side-by-side — generalized fat tree, RNG quasi-random graph, PolarFly ER_q structure for small q**
 ![figure-1](./images/figure-1.png)
-                                                   *PolarFly image credit Lakhotia, et al.*
+<p align="right">PolarFly image credit Lakhotia, et al.</p>
 ---
 
 ## 2. Two Flat Topologies, Two Philosophies
@@ -103,7 +103,7 @@ A note on encap-node memory: the NIC does not need to hold pre-computed segment 
 
 The weight function takes as inputs: q; the path-length ratio (2 vs. 3 hops); the pair type (Section 3.4); and — critically for incremental deployment — the **live-vertex set**. In a partially built fabric, the SP relay between a live pair may not yet be installed; the encap node detects this from the installed-coordinate set and re-derives weights over the realized subgraph, again with no protocol convergence. Conditional weighting over the realized subgraph is, to our knowledge, novel.
 
-> **[FIGURE 2: WMP weight as a function of q; SP vs. per-NSP load curves]**
+**[FIGURE 2: WMP weight as a function of q; SP vs. per-NSP load curves]**
 <img src="./images/figure-2.png" alt="figure-2" width="500">
 
 ### 3.4 What RNG retains
