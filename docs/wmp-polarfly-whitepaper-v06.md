@@ -104,7 +104,7 @@ A note on encap-node memory: the NIC does not need to hold pre-computed segment 
 
 The weight function takes as inputs: q; the path-length ratio (2 vs. 3 hops); the pair type (Section 3.4); and — critically for incremental deployment — the **live-vertex set**. In a partially built fabric, the SP relay between a live pair may not yet be installed; the encap node detects this from the installed-coordinate set and re-derives weights over the realized subgraph, again with no protocol convergence. Conditional weighting over the realized subgraph is, to our knowledge, novel.
 
-**[FIGURE 2: WMP weight as a function of q; SP vs. per-NSP load curves]**
+**FIGURE 2: WMP weight as a function of q; SP vs. per-NSP load curves**
 <img src="./images/figure-2.png" alt="figure-2" width="500">
 
 ### 3.4 What RNG retains
@@ -248,10 +248,6 @@ PolarFly's near-Moore structure gives it close to optimal bisection bandwidth fo
 Separately, PolarFly's hop-count advantage compounds under All-to-All: a diameter-2 fabric with L ≈ 2.6 effective hops consumes roughly half the link-traversals per delivered bit compared to Spraypoint's 4–5 hop paths, meaning PolarFly delivers more aggregate throughput from the same total link budget. This is the per-bit economics argument of Section 5.2 applied to the worst-case traffic matrix.
 
 The practical concern is not aggregate throughput but **incast at individual switches**: in All-to-All, each router receives traffic from all N−1 peers simultaneously. On PolarFly, roughly q+1 of these arrive via direct (1-hop) links, while the remaining ~q² arrive via 2-hop paths through q+1 relay neighbors. Each relay therefore concentrates traffic from ~q senders, creating per-relay load of ~q flows. In the recommended 4×q=61 configuration, this means ~61 concurrent inbound flows per relay per slice — manageable, and spread across 4 independent slices. MRC's per-path congestion control (NSCC) provides the backpressure mechanism, and the WMP weights can be adjusted to spread load across the NSP set when relay congestion is detected. This adaptive rebalancing under All-to-All load is a natural target for simulation validation in the q = 7 lab environment.
-
----
-
-Good — the content is solid, it just needs structural flow. Here's my rewrite:
 
 ---
 
