@@ -273,7 +273,7 @@ At 1:1 (non-blocking) oversubscription — allocating 256 ports to servers and 2
 | **RNG** | 993 (−61%) | ~254K | 1:1 | 254K (−76%) | ~256 edge-disjoint (spray) | 4–5 |
 | **WMP-PolarFly 8-slice q=31** | 993 (−61%) | ~254K | 1:1 | 254K (−76%) | 8 SPs + ~248 NSPs | 2–3 |
 
-At identical hardware investment, WMP-PolarFly delivers deterministic diameter-2 paths with 8 edge-disjoint SPs and ~248 NSPs per pair; RNG delivers longer sprayed paths through a stateless fabric. The fat tree requires 2.6× the switches and 4× the optics for comparable server count. This convergence at 1:1 isolates the irreducible difference between the two flat topologies: not cost, not scale, not optics — but whether path intelligence lives at the encap node or is delegated to topology randomness.
+At identical hardware investment, WMP-PolarFly delivers deterministic diameter-2 paths with 8 edge-disjoint SPs and ~248 NSPs per pair; RNG delivers longer sprayed paths through a stateless fabric. The fat tree requires 2.6× the switches and 4× the optics for comparable server count. This convergence at 1:1 isolates the key difference between the two flat topologies: it's not cost, scale, or optics — but whether path intelligence lives at the encap node or is delegated to topology randomness.
 
 ### 8.2 AI backend: WMP-PolarFly vs. MRC-on-Clos
 
@@ -303,14 +303,14 @@ The savings derive from PolarFly's flat topology: a 2-tier Clos dedicates roughl
 | Scale per port | — | Unbounded n | ~16K ToRs / ~4M ports at 2×q=127 | Gap closed at ≥51.2T radix |
 | Diameter / latency | WMP-PolarFly | Probabilistic (≈4–5 hops) | Deterministic 2 (L ≈ 2.6) | Gap grows with optics cost |
 | Per-bit cost & power | WMP-PolarFly | 9–45% under fat tree | Near Moore-bound floor | Compounds with bandwidth |
-| SP diversity | WMP-PolarFly | High (spray), non-minimal | 1 SP per slice; 4 slices ⇒ 4 SPs | MRC addresses residual |
+| Path diversity | - | High (spray), non-minimal | 1 SP and ~q NSPs per slice | non-MRC comparison |
 | Transit ASIC state | WMP-PolarFly | LPM + wide ECMP groups | LPM only; paths in encap memory | Avoids ECMP table pressure |
-| Control plane | WMP-PolarFly | Distributed protocol (Spraypoint) | IS-IS/BGP for liveness; paths algebraic | No path-computation protocol |
-| Heterogeneity | RNG | Per-node degree mixing | Uniform per slice | Limited practical advantage |
-| Incremental growth | RNG | Unquantized; break-and-splice | Additive to q ceiling; pre-planned | PolarFly cleaner per step |
+| Control plane | WMP-PolarFly | Distributed protocol (Spraypoint) | IS-IS/BGP for liveness; paths algebraic | Spraypoint is not public |
+| Heterogeneity | RNG | Per-node degree mixing | Uniform per slice | Limited practical advantage for RNG |
+| Incremental growth | - | Unquantized; easy break-and-splice | Additive to q ceiling; pre-planned | PolarFly cleaner per step |
 | Failure model | — | Continuous, statistical | Discrete → continuous with 4 slices | Parity at 4 slices |
-| Operational philosophy | RNG | Stateless fabric everywhere | Intelligence at encap | The irreducible difference |
-| Availability | WMP-PolarFly | Amazon-internal; not open-sourced | Open standards (SRv6), open NOS | Deployable today |
+| Operational philosophy | RNG | Stateless fabric everywhere | Intelligence at encap | RNG is arguably simpler |
+| Availability | WMP-PolarFly | Amazon-internal; not open-sourced | Open standards (SRv6), open NOS | WMP-PolarFly is Deployable today |
 
 ### 8.4 Conclusions
 
