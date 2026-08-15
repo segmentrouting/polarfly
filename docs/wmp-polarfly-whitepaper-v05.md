@@ -3,7 +3,7 @@
 
 **Author:** Bruce McDougall, Cisco Systems
 
-**Status:** DRAFT v0.7 — for internal review
+**Status:** DRAFT v0.6 — for internal review
 
 **Date:** August 2026
 
@@ -13,7 +13,7 @@
 
 Two flat datacenter topologies now offer credible alternatives to the classic CLOS fat tree: Amazon's RNG [1], a quasi-random expander fabric deployed in production with the Spraypoint routing protocol and ShuffleBox passive optical cabling; and PolarFly [2], a deterministic diameter-2 topology built on Erdős–Rényi polarity graphs that asymptotically reaches the Moore bound. The two designs embody opposite philosophies: RNG spends topology (longer paths, statistical guarantees) to keep per-hop routing stateless; PolarFly achieves near-optimal scale and path length but is conventionally held back by lack of shortest-path diversity and cabling complexity.
 
-This paper argues that SRv6 source routing resolves the objections to structured low-diameter fabrics and proposes **WMP-PolarFly**: a weighted multipath routing design in which SRv6 segment lists and their traffic weights are derived algebraically from the polarity graph's projective-plane coordinates. We extend the design with multi-slice partitioning of high-radix switches for path redundancy and operational flexibility. At current 51.2T radix, a quad-slice configuration (4×q=61) serves ~1M endpoints at diameter 2 with four edge-disjoint shortest paths per pair; a dual-slice configuration (2×q=127) reaches ~4M endpoints at 99% Moore-bound efficiency. We further show that the MRC transport [3] — already deployed with SRv6 on frontier AI training clusters — maps naturally onto PolarFly's algebraically enumerable path sets, enabling per-packet spraying with path-aware congestion control. We examine both topologies across deployment types and argue that the choice between them is primarily driven by operating model and culture.
+This paper argues that SRv6 source routing resolves the objections to structured low-diameter fabrics and proposes **WMP-PolarFly**: a weighted multipath routing design in which SRv6 segment lists and their traffic weights are derived algebraically from the polarity graph's projective-plane coordinates. We extend the design with multi-plane slicing of high-radix switches for path redundancy and operational flexibility. At current 51.2T radix, a quad-plane configuration (4×q=61) serves ~1M endpoints at diameter 2 with four edge-disjoint shortest paths per pair; a dual-plane configuration (2×q=127) reaches ~4M endpoints at 99% Moore-bound efficiency. We further show that the MRC transport [7] — already deployed with SRv6 on frontier AI training clusters — maps naturally onto PolarFly's algebraically enumerable path sets, enabling per-packet spraying with path-aware congestion control. We examine both topologies across deployment types and argue that the choice between them is primarily driven by operating model and culture.
 
 ---
 
@@ -25,7 +25,7 @@ That changed with Amazon's RNG (Resilient Network Graphs), now the default fabri
 
 RNG's authors frame randomness as the only practical route to a flat fabric, dismissing structured constructions (Slim Fly [5], Xpander [6]) on the grounds that k-shortest-path routing is required to achieve multi-path, but cannot be realized on commodity switch memory. **K-shortest-path routing** maintains multiple pre-computed forwarding paths (typically 4–16) between each pair of endpoints. Unlike standard ECMP, which distributes traffic across multiple paths of *equal* cost, k-shortest-path uses paths that may vary in length and metric — trading simplicity for richer load-balancing options at the cost of proportionally more forwarding table entries. This paper contests the RNG framing. The dismissal assumes hop-by-hop path state — MPLS tunnels, VRF multiplication, or conventional source-based forwarding — and does not consider compressed source routing. SRv6 uSID moves path state out of transit ASICs entirely: the encapsulation node holds the policy; transit nodes perform a single longest-prefix match on the uSID carrier. The forwarding-state objection, once removed, reveals that a Moore-bound-optimal structured graph holds per-bit efficiency and latency advantages that no random topology can match — and that these advantages compound with every silicon generation.
 
-We develop this argument through PolarFly, the diameter-2 topology of Lakhotia et al., and a routing design we call **WMP-PolarFly (Weighted Multi-Path PolarFly)**. Section 2 reviews both topologies and explores the path diversity challenge all structured topologies face. Section 3 presents the routing design, including algebraic path derivation and principled weight selection. Section 4 introduces multi-slice partitioning for high-radix switches. Section 5 examines scale at 51.2T/102.4T radix. Section 6 compares failure models. Section 7 — the backend case — integrates MRC packet spraying. Section 8 offers a side-by-side analysis and identifies the deployment types where each design wins.
+We develop this argument through PolarFly, the diameter-2 topology of Lakhotia et al., and a routing design we call **WMP-PolarFly (Weighted Multi-Path PolarFly)**. Section 2 reviews both topologies and explores the path diversity challenge all structured topologies face. Section 3 presents the routing design, including algebraic path derivation and principled weight selection. Section 4 introduces multi-plane slicing for high-radix switches. Section 5 examines scale at 51.2T/102.4T radix. Section 6 compares failure models. Section 7 — the backend case — integrates MRC packet spraying. Section 8 offers a side-by-side analysis and identifies the deployment types where each design wins.
 
 A practical note: while RNG is production-proven at Amazon, it is not a publicly available solution. Spraypoint has not been open-sourced; the RNG paper describes the protocol's design but Amazon has not released code or a NOS implementation. ShuffleBoxes are custom passive optical devices with no known commercial source. A non-Amazon operator wishing to deploy RNG today would need to implement Spraypoint from the paper's description on their own NOS, fabricate or commission ShuffleBoxes, and validate the combined system — a substantial engineering investment. By contrast, WMP-PolarFly builds on open-source components (FRR, SONiC) and standard SRv6 as specified in RFC 8986 [7] and RFC 9256 [8].
 
@@ -47,7 +47,7 @@ Cabling uses ShuffleBoxes — passive optical devices that internally permute fi
 
 ### 2.2 PolarFly: structured optimality
 
-PolarFly is the first diameter-2 topology to asymptotically reach the Moore bound, exceeding 96% of theoretical peak at practical radixes — i.e., it packs nearly the maximum possible number of nodes for its degree and diameter. Every router pair is at most two hops apart allowing for flat topologies of very wide diameter. PolarFly also offers roughly 50% more feasible degrees than Slim Fly [5], the prior state of the art, and supports modular incremental growth through its cluster structure.
+PolarFly is the first diameter-2 topology to asymptotically reach the Moore bound, exceeding 96% of theoretical peak at practical radixes — i.e., it packs nearly the maximum possible number of nodes for its degree and diameter. Every router pair is at most two hops apart allowing for flat topologies of very wide diameter. PolarFly also offers roughly 50% more feasible degrees than Slim Fly, the prior state of the art, and supports modular incremental growth through its cluster structure.
 
 PolarFly connects N = q² + q + 1 routers (with q being an **odd** prime number or prime power) with fabric degree q + 1, as the Erdős–Rényi polarity graph ER_q derived from the projective plane PG(2, q). For example, with q = 7 on a 16-port switch, 8 ports go to fabric (degree q+1 = 8) and 8 to servers, yielding a fabric of N = 7² + 7 + 1 = 57 switches — 57 nodes from just 8 fabric uplinks each. (See Appendix A for further detail.)
 
@@ -109,7 +109,7 @@ The weight function takes as inputs: q; the path-length ratio (2 vs. 3 hops); th
 
 ### 3.4 What RNG retains
 
-**Heterogeneous router degrees.** RNG supports switches with different port counts in a single fabric. If a new-generation switch has 64 ports and the existing fleet has 32, the new switch simply takes more neighbors — the random graph's statistical properties degrade gracefully rather than breaking. In principle, operators can also vary the server-to-fabric port ratio per switch. In practice, the RNG paper does not quantify how path diversity and Spraypoint's load-balancing guarantees degrade as the degree distribution becomes uneven — a heavily lopsided mix (some switches at degree 16, others at degree 64) would weaken expansion properties for the low-degree nodes even though the graph remains connected and routable. WMP-PolarFly is not as flexible: it requires uniform fabric degree (all nodes in a given slice share the same q value, which determines their fabric port count) within each slice. The multi-slice approach described in Section 4 provides a coarser but operationally cleaner heterogeneity model via generational separation.
+**Heterogeneous router degrees.** RNG supports switches with different port counts in a single fabric. If a new-generation switch has 64 ports and the existing fleet has 32, the new switch simply takes more neighbors — the random graph's statistical properties degrade gracefully rather than breaking. In principle, operators can also vary the server-to-fabric port ratio per switch. In practice, the RNG paper does not quantify how path diversity and Spraypoint's load-balancing guarantees degrade as the degree distribution becomes uneven — a heavily lopsided mix (some switches at degree 16, others at degree 64) would weaken expansion properties for the low-degree nodes even though the graph remains connected and routable. WMP-PolarFly is not as flexible: it requires uniform fabric degree (all nodes in a given plane share the same q value, which determines their fabric port count) within each plane. The multi-plane slicing described in Section 4 provides a coarser but operationally cleaner heterogeneity model via generational plane separation.
 
 **Unquantized sizing and continuous growth.** RNG can be built at any node count *n* — a fabric could be 2,673 nodes, it could be 8,001, whatever the building needs. PolarFly is quantized to q² + q + 1 for the available odd prime powers, and growth beyond the chosen q is a forklift. However, at modern radix this constraint is mild, as the following table shows:
 
@@ -127,49 +127,49 @@ Partial deployment within a chosen q is additive (Section 4), but the maximum WM
 
 ---
 
-## 4. Multi-Slice Configurations
+## 4. Multi-Plane Slicing
 
-When a switch has more physical ports than a single PolarFly topology requires, the surplus ports can serve additional **slices** — logical partitions of the port budget that each form an independent PolarFly graph over the same set of switches. This trades some per-slice scale for path redundancy, increased bisection bandwidth, and operational flexibility.
+When a switch has more physical ports than a single PolarFly plane requires, the surplus ports can serve additional planes — trading some per-plane scale for path redundancy, increased bisection bandwidth, and operational flexibility.
 
 For reference, the following table shows PolarFly fabric sizes at selected values of q:
 
 | q | Type | N = q²+q+1 (switches) | Fabric degree (q+1) | Notes |
 |---|---|---|---|---|
 | 7 | prime | 57 | 8 | Lab validation target |
-| 31 | prime | 993 | 32 | Multi-slice on 64-port or 512-port |
-| 61 | prime | 3,783 | 62 | Quad-slice on 512-port (51.2T) |
-| 127 | prime | 16,257 | 128 | Dual-slice on 512-port (51.2T); Quad-slice on 1024-port (102.4T) |
-| 251 | prime | 63,253 | 252 | Dual-slice on 1024-port (102.4T) |
+| 31 | prime | 993 | 32 | Multi-plane on 64-port or 512-port |
+| 61 | prime | 3,783 | 62 | Quad-plane on 512-port (51.2T) |
+| 127 | prime | 16,257 | 128 | Dual-plane on 512-port (51.2T); Quad-plane on 1024-port (102.4T) |
+| 251 | prime | 63,253 | 252 | Dual-plane on 1024-port (102.4T) |
 
-### 4.1 Dual-slice and quad-slice configurations
+### 4.1 Dual-plane and quad-plane configurations
 
 On a 51.2T switch with 512×100G ports, the operator chooses how to partition between fabric and server attachment. Two configurations merit detailed comparison:
 
-**Initial production configuration: Quad-slice 512×100G radix (4×q=61).** Each switch allocates 4×62 = 248 ports to fabric (62 per slice) and 264 ports to server attachment. This yields 3,783 switches with ~1M server attachment points — sufficient for the largest datacenter buildings in production today — and leveraging four independent PolarFly slices. Every source-destination pair enjoys **4 edge-disjoint SPs** (one per slice) plus 4×~61 NSPs ≈ **248 total forwarding paths**. The four-slice redundancy delivers exceptional failure resilience (any single slice failure is a weight rebalance among three surviving same-length SPs, not a hop-count transition), and the per-relay incast under All-to-All is manageable at ~61 flows per relay per slice (and similarly beneficial for cloud fan-in/incast patterns where many clients converge on a single service endpoint).
+**Initial production configuration: Quad-plane 512×100G radix (4×q=61).** Each switch allocates 4×62 = 248 ports to fabric (62 per plane) and 264 ports to server attachment. This yields 3,783 switches with ~1M server attachment points — sufficient for the largest datacenter buildings in production today — and leveraging four independent PolarFly planes. Every source-destination pair enjoys **4 edge-disjoint SPs** (one per plane) plus 4×~61 NSPs ≈ **248 total forwarding paths**. The four-plane redundancy delivers exceptional failure resilience (any single plane failure is a weight rebalance among three surviving same-length SPs, not a hop-count transition), and the per-relay incast under All-to-All is manageable at ~61 flows per relay per plane (and similarly beneficial for cloud fan-in/incast patterns where many clients converge on a single service endpoint).
 
-**Scale-ceiling configuration: Dual-slice 512×100G (2×q=127).** Each switch allocates 2×128 = 256 ports to fabric (128 per slice) and 256 to server attachment. This yields 16,257 switches with ~4M server attachment points — well beyond any single building in production — across two slices with **2 SPs + ~254 NSPs per pair**. The 99% Moore-bound efficiency at this radix makes it the most port-efficient flat topology achievable at diameter 2.
+**Scale-ceiling configuration: Dual-plane 512×100G (2×q=127).** Each switch allocates 2×128 = 256 ports to fabric (128 per plane) and 256 to server attachment. This yields 16,257 switches with ~4M server attachment points — well beyond any single building in production — across two planes with **2 SPs + ~254 NSPs per pair**. The 99% Moore-bound efficiency at this radix makes it the most port-efficient flat topology achievable at diameter 2.
 
-Both configurations share the same physical switches; the choice is a design-time decision about where to spend the port budget. The 4×q=61 configuration trades scale for more SPs and significantly better failure properties, making it the natural recommendation for production deployments. The 2×q=127 configuration demonstrates that PolarFly can match any building-scale requirement — the scale objection against structured topologies no longer applies at modern radix. For AI backend fabrics (Section 7), where cluster sizes are typically 1–4K switches, even 2×q=31 (993 switches, dual-slice on modest radix) may suffice — or on a 51.2T switch, 8×q=31 (8×32 = 256 fabric ports, 256 server ports, yielding 993 switches with ~254K server attachment points and 8 SPs + ~31 NSPs per pair), with exceptional path diversity.
+Both configurations share the same physical switches; the choice is a design-time decision about where to spend the port budget. The 4×q=61 configuration trades scale for more SPs and significantly better failure properties, making it the natural recommendation for production deployments. The 2×q=127 configuration demonstrates that PolarFly can match any building-scale requirement — the scale objection against structured topologies no longer applies at modern radix. For AI backend fabrics (Section 7), where cluster sizes are typically 1–4K switches, even 2×q=31 (993 switches, dual-plane on modest radix) may suffice — or on a 51.2T switch, 8×q=31 (8×32 = 256 fabric ports, 256 server ports, yielding 993 switches with ~254K server attachment points and 8 SPs + ~31 NSPs per pair), with exceptional path diversity.
 
-**A note on slice isolation.** In multi-slice configurations on shared physical switches, the slices are logical partitions of the same hardware — two adjacent switches in a 4×q=61 fabric have four parallel 100G links between them, one per slice. Slice isolation is enforced by the SRv6 data plane: each slice's paths use distinct uA (adjacency) SIDs bound to specific physical interfaces, so a segment list for slice-2 resolves at each transit hop to the slice-2 egress link specifically. Without per-slice uA SIDs, nothing prevents cross-slice leakage. Operators who prefer strict failure-domain isolation should enforce per-slice uA binding; operators who prefer maximum path diversity may choose to relax isolation and let the encap node spray across all four links as a wider path set. Both modes are valid and the choice is operational, not topological.
+**A note on plane isolation.** In multi-plane configurations on shared physical switches, the "planes" are logical partitions of the same hardware — two adjacent switches in a 4×q=61 fabric have four parallel 100G links between them, one per plane. Plane isolation is enforced by the SRv6 data plane: each plane's paths use distinct uA (adjacency) SIDs bound to specific physical interfaces, so a segment list for plane-2 resolves at each transit hop to the plane-2 egress link specifically. Without per-plane uA SIDs, nothing prevents cross-plane leakage. Operators who prefer strict failure-domain isolation should enforce per-plane uA binding; operators who prefer maximum path diversity may choose to relax isolation and let the encap node spray across all four links as a wider path set. Both modes are valid and the choice is operational, not topological.
 
-What multi-slice partitioning buys, regardless of configuration:
+What multi-plane slicing buys, regardless of configuration:
 
-**Minimal-path redundancy.** Every pair holds one SP per slice. With 4 slices, a single-slice failure leaves 3 surviving SPs at identical hop count — no RTT shift, just a weight rebalance. This substantially closes the gap against RNG's continuous failure model (Section 6).
+**Minimal-path redundancy.** Every pair holds one SP per plane. With 4 planes, a single-plane failure leaves 3 surviving SPs at identical hop count — no RTT shift, just a weight rebalance. This substantially closes the gap against RNG's continuous failure model (Section 6).
 
-**Additive expansion.** Because the complete edge set of each slice is known in advance, growth never breaks an existing link: a landing router patches into q + 1 pre-planned positions per slice. With pre-provisioned passive patch frames carrying the polarity-graph permutation — the structured analogue of the ShuffleBox, though it must encode the *specific* edge set rather than a blind permutation — PolarFly expansion is arguably cleaner than RNG's break-and-splice appendix. The residual costs: q is a day-1 ceiling (the next odd prime power is a forklift), and the partial graph's path multiplicity is nonuniform, which the live-vertex-aware weight function of Section 3.3 absorbs.
+**Additive expansion.** Because the complete edge set of each plane is known in advance, growth never breaks an existing link: a landing router patches into q + 1 pre-planned positions per plane. With pre-provisioned passive patch frames carrying the polarity-graph permutation — the structured analogue of the ShuffleBox, though it must encode the *specific* edge set rather than a blind permutation — PolarFly expansion is arguably cleaner than RNG's break-and-splice appendix. The residual costs: q is a day-1 ceiling (the next odd prime power is a forklift), and the partial graph's path multiplicity is nonuniform, which the live-vertex-aware weight function of Section 3.3 absorbs.
 
-### 4.2 Beyond shared-switch slicing: physically separate PolarFly planes
+### 4.2 Beyond dual-plane: multi-plane membership and the intersection property
 
-Section 4.1 describes multi-slice configurations where every switch participates in all slices on the same physical hardware. This subsection considers a different model: **physically separate PolarFly planes** — distinct switch populations forming independent PolarFly fabrics, where each GPU or server connects to multiple planes via separate NIC ports (analogous to the multi-plane Clos architecture used in MRC deployments).
+Section 4.1 describes multi-plane configurations where every switch participates in all planes on the same physical hardware. This subsection considers a different model: **physically separate PolarFly fabrics** where each switch joins only a subset of available planes, and different planes may use different switch populations or hardware generations.
 
-Within this model, an operator can also apply slicing *within* each physical plane — for example, a 4-plane deployment where each plane is internally 8×q=31 gives 4-way physical redundancy with 8 SPs + ~248 NSPs per pair within each plane. This layering of physical planes and logical slices provides both hardware failure-domain isolation (via physical separation) and rich path diversity (via slicing). Section 7.4 compares specific configurations against the multi-plane Clos baseline.
+When slicing beyond 2 planes on the same vertex set, the number of planes a switch participates in determines the fabric's diameter guarantee. In the configurations of Section 4.1, every switch participates in *all* planes simultaneously (all 4 in 4×q=61, both in 2×q=127), which trivially preserves diameter 2 — every pair shares every plane. But as radix grows further, an operator might want more planes at lower per-plane degree, and it becomes impractical for every switch to join every plane. The question then is: if each switch belongs to only *some* planes, can we still guarantee diameter-2 reachability?
 
-When the number of physical planes grows, a question arises: must every switch appear in every plane? If each switch belongs to only *some* planes, diameter-2 reachability requires that any two switches share at least one plane in common — the same way any two people who each speak 2 out of 3 languages will always share a language they can converse in. If each switch belongs to 2 out of p = 3 planes, this property holds: any two 2-subsets of {A, B, C} necessarily overlap. Some pairs share two planes and enjoy dual SPs; others share exactly one plane and have a single SP. The pair type — which planes two switches share — is simply two more coordinates in the address, so the WMP weight derivation remains a direct formula.
+The answer depends on a simple combinatorial property: **any two switches must share at least one plane in common** — the same way any two people who each speak 2 out of 3 languages will always share a language they can converse in. If each switch belongs to 2 out of p = 3 planes, this property holds: any two 2-subsets of {A, B, C} necessarily overlap. Some pairs share two planes and enjoy dual SPs; others share exactly one plane and have a single SP. The pair type — which planes two switches share — is simply two more coordinates in the address, so the WMP weight derivation remains a direct formula. As a concrete example, 3×q=83 on a 512-port switch (3×84 = 252 fabric ports, 260 server ports, ~7,000 switches) with 2-of-3 membership would preserve diameter 2 globally while providing a middle ground between the 4×q=61 and 2×q=127 configurations.
 
-At **p ≥ 4** with partial membership, the intersection guarantee breaks: two switches belonging to planes {A,B} and {C,D} share no common plane and must transit a bridging switch, raising diameter to 4. At this point the partial-membership constructions become effectively hand-rolled star products, and the honest comparison is no longer against vanilla PolarFly but against **PolarStar** [9] (the diameter-3 star product of ER_q with Paley or inductive-quad graphs — the literature's answer to scaling past q² + q + 1) and BundleFly.
+At **p ≥ 4** with partial membership, the intersection guarantee breaks: two switches belonging to planes {A,B} and {C,D} share no common plane and must transit a bridging switch, raising diameter to 4. At this point the partial-membership constructions become effectively hand-rolled star products, and the honest comparison is no longer against vanilla PolarFly but against **PolarStar** [9] (the diameter-3 star product of ER_q with Paley or inductive-quad graphs — the literature's answer to scaling past q² + q + 1) and BundleFly. Our expectation, to be validated: PolarStar wins on scale-per-port; multi-plane slicing wins on plane-granular heterogeneity and operational modularity.
 
-Multi-slice and multi-plane configurations also admit mixed-purpose designs — for example, 3 internal fabric planes plus 1 DCI/egress plane at a different q — though the cross-plane routing implications of such designs are deferred to future work.
+Multi-plane slicing also admits mixed-purpose configurations — for example, 3 internal fabric planes plus 1 DCI/egress plane at a different q — though the cross-plane routing implications of such designs are deferred to future work.
 
 ---
 
@@ -199,7 +199,7 @@ RNG has no topological ceiling, but three practical pressures emerge at large sc
 
 RNG's resilience claim is best understood as a claim about *blast-radius shape*, and a precision matters: Spraypoint absolutely reacts to failure — it is a routing protocol in the OSPF/BGP mold and reconverges on topology change. What RNG eliminates is *protection machinery*: no FRR, no precomputed backups, no TI-LFA-style repair, because steady-state forwarding already encodes the redundancy. When a link dies, the adjacent router locally prunes the member from its ECMP groups and traffic redistributes in the data plane instantly; the failed link carried roughly 1/d of any affected pair's capacity, so the loss is a thin statistical shave across many pairs rather than a mode change for any one. There are no special routers; every failure is small and uniform. Protocol convergence cleans up in the background with nothing waiting on it.
 
-Single-slice PolarFly, by contrast, undergoes a discrete transition when a pair's unique SP dies: 2-hop traffic steps to the 3-hop NSP set, with an RTT shift congestion control will notice. The response is fast — the encap node re-derives weights algebraically, arguably faster than any IGP floods — but it is a *reaction*, with a detectable before/after. Multi-slice partitioning (Section 4.1) converts the transition from a length change into a weight rebalance among length-identical SPs on surviving slices, substantially closing the gap. In the recommended 4×q=61 configuration, losing one slice's SP still leaves 3 same-length SPs — no hop-count transition at all. In the backend deployment of Section 7, MRC moves failure handling into the transport entirely.
+Single-plane PolarFly, by contrast, undergoes a discrete transition when a pair's unique SP dies: 2-hop traffic steps to the 3-hop NSP set, with an RTT shift congestion control will notice. The response is fast — the encap node re-derives weights algebraically, arguably faster than any IGP floods — but it is a *reaction*, with a detectable before/after. Multi-plane slicing (Section 4.1) converts the transition from a length change into a weight rebalance among length-identical SPs on surviving planes, substantially closing the gap. In the recommended 4×q=61 configuration, losing one plane's SP still leaves 3 same-length SPs — no hop-count transition at all. In the backend deployment of Section 7, MRC moves failure handling into the transport entirely.
 
 The honest framing for operators: PolarFly offers deterministic best-case behavior with discrete failure modes; RNG offers probabilistic behavior with continuous failure modes. Preference depends on whether the workload fears tail latency or fears variance.
 
@@ -231,13 +231,32 @@ Recall why WMP was specified at flow level (Section 3.3 context): general-cloud 
 
 **Adaptive weighting.** NSCC's per-path congestion signals provide the feedback channel that pure demand-oblivious WMP lacks. The static algebraic weights become *priors*, modulated at the NIC by per-path congestion state — UGAL-like adaptivity realized at the transport rather than in switch hardware, on commodity Ethernet ASICs. The lineage is satisfying: PolarFly's original authors assumed HPC-class adaptive routing in switches; MRC relocates exactly that function to the place the backend operator controls.
 
-**Failure handling.** MRC's headline operational result — switch reboots during frontier training runs without job disruption — derives from per-path health tracking: the transport stops scheduling onto a dead path within one RTT-scale detection window. On PolarFly this composes with algebraic re-derivation: the NIC's transport masks the failure instantly; the encap layer re-synthesizes the path set from the updated live-vertex set in the background; no IGP convergence sits anywhere on the critical path. The discrete-transition concern of Section 6 is fully addressed in this deployment model — the surviving paths in the MRC set absorb the weight shift per packet, and multi-slice partitioning (where used) makes even the length distribution invariant.
+**Failure handling.** MRC's headline operational result — switch reboots during frontier training runs without job disruption — derives from per-path health tracking: the transport stops scheduling onto a dead path within one RTT-scale detection window. On PolarFly this composes with algebraic re-derivation: the NIC's transport masks the failure instantly; the encap layer re-synthesizes the path set from the updated live-vertex set in the background; no IGP convergence sits anywhere on the critical path. The discrete-transition concern of Section 6 is fully addressed in this deployment model — the surviving paths in the MRC set absorb the weight shift per packet, and multi-plane slicing (where used) makes even the length distribution invariant.
 
 > **[FIGURE 4 placeholder: MRC connection over PolarFly — one SP + q NSP segment lists, per-packet weighted spray, NSCC feedback loop]**
 
 ### 7.4 Positioning against MRC's deployed topologies and against RNG
 
-MRC is topology-agnostic and its production deployments to date run on multi-plane rail-style Clos fabrics. The proposal here is therefore not MRC-versus-PolarFly but MRC-*on*-PolarFly as the structured direct-topology alternative to MRC-on-Clos: diameter 2 instead of 4-hop worst-case through a spine, ~99% Moore efficiency instead of Clos port overheads, and a path set the transport can enumerate algebraically. The breakout philosophy is shared — MRC deployments already split NICs into multiple lower-rate links for path redundancy, which is precisely the lane-level adjacency model PolarFly's degree budget wants. On the other hand RNG's authors generally concede it is not a great match to collective-driven traffic. A quantitative bake-off — MRC-on-PolarFly vs. MRC-on-Clos at matched port count, on allreduce/all-to-all completion-time distributions — is the natural next experiment and an open invitation in this paper.
+MRC is topology-agnostic and its production deployments to date run on two-tier rail-style Clos fabrics. The proposal here is therefore not MRC-versus-PolarFly but MRC-*on*-PolarFly as the structured direct-topology alternative to MRC-on-Clos: diameter 2 instead of 4-hop worst-case through a spine, ~99% Moore efficiency instead of Clos port overheads, and a path set the transport can enumerate algebraically. The breakout philosophy is shared — MRC deployments already split NICs into multiple lower-rate links for path redundancy, which is precisely the lane-level adjacency model PolarFly's degree budget wants. On the other hand RNG's authors generally concede it is not a great match to collective-driven traffic. A quantitative bake-off — MRC-on-PolarFly vs. MRC-on-Clos at matched port count, on allreduce/all-to-all completion-time distributions — is the natural next experiment and an open invitation in this paper.
+
+The following table compares MRC-on-Clos deployments (as reported by hyperscaler operators) with equivalent WMP-PolarFly configurations on 51.2T (512×100G) switches:
+
+**MRC 4-plane Clos fabric comparison:**
+
+| Configuration | Switches | GPUs | BW/GPU | Fabric optics | Paths per pair | Physical redundancy |
+|---|---|---|---|---|---|---|
+| 4-plane Clos (baseline) | 3,072 | 131K | 400G | 1,048K | 256-way ECMP per plane | 4-way |
+| WMP-PolarFly: 2× physical 8×q=31 | 1,986 (−35%) | 127K | 400G | 508K (−52%) | 8 SPs + ~248 NSPs per fabric | 2 physical planes, 8 slices per plane |
+
+**MRC 8-plane Clos fabric comparison:**
+
+| Configuration | Switches | GPUs | BW/GPU | Fabric optics | Paths per pair | Physical redundancy |
+|---|---|---|---|---|---|---|
+| 8-plane Clos (baseline) | 6,144 | 131K | 800G | 2,097K | 256-way ECMP per plane | 8-way |
+| WMP-PolarFly: 4× physical 8×q=31 | 3,972 (−35%) | 127K | 800G | 1,016K (−52%) | 8 SPs + ~248 NSPs per fabric | 4-way |
+| WMP-PolarFly: single 4×q=61 | 3,783 (−38%) | 125K | 800G | 938K (−55%) | 4 SPs + ~244 NSPs | Single physical PolarFly, logical 4-plane |
+
+The switch-count savings derive from PolarFly's flat topology: a 2-tier Clos dedicates roughly one-third of its switches and half of its optics to a spine layer that serves no endpoints, while every WMP-PolarFly switch provides both fabric and server attachment. MRC's per-path EV probing and NSCC congestion feedback operate identically across both topology families — the transport is topology-agnostic, and the path-set provisioning differences are handled at connection setup.
 
 ### 7.5 All-to-All collectives and bisection bandwidth
 
@@ -247,91 +266,29 @@ PolarFly's near-Moore structure gives it close to optimal bisection bandwidth fo
 
 Separately, PolarFly's hop-count advantage compounds under All-to-All: a diameter-2 fabric with L ≈ 2.6 effective hops consumes roughly half the link-traversals per delivered bit compared to Spraypoint's 4–5 hop paths, meaning PolarFly delivers more aggregate throughput from the same total link budget. This is the per-bit economics argument of Section 5.2 applied to the worst-case traffic matrix.
 
-The practical concern is not aggregate throughput but **incast at individual switches**: in All-to-All, each router receives traffic from all N−1 peers simultaneously. On PolarFly, roughly q+1 of these arrive via direct (1-hop) links, while the remaining ~q² arrive via 2-hop paths through q+1 relay neighbors. Each relay therefore concentrates traffic from ~q senders, creating per-relay load of ~q flows. In the recommended 4×q=61 configuration, this means ~61 concurrent inbound flows per relay per slice — manageable, and spread across 4 independent slices. MRC's per-path congestion control (NSCC) provides the backpressure mechanism, and the WMP weights can be adjusted to spread load across the NSP set when relay congestion is detected. This adaptive rebalancing under All-to-All load is a natural target for simulation validation in the q = 7 lab environment.
+The practical concern is not aggregate throughput but **incast at individual switches**: in All-to-All, each router receives traffic from all N−1 peers simultaneously. On PolarFly, roughly q+1 of these arrive via direct (1-hop) links, while the remaining ~q² arrive via 2-hop paths through q+1 relay neighbors. Each relay therefore concentrates traffic from ~q senders, creating per-relay load of ~q flows. In the recommended 4×q=61 configuration, this means ~61 concurrent inbound flows per relay per plane — manageable, and spread across 4 independent planes. MRC's per-path congestion control (NSCC) provides the backpressure mechanism, and the WMP weights can be adjusted to spread load across the NSP set when relay congestion is detected. This adaptive rebalancing under All-to-All load is a natural target for simulation validation in the q = 7 lab environment.
 
 ---
 
-Good — the content is solid, it just needs structural flow. Here's my rewrite:
+## 8. Scorecard and Conclusions
 
----
-
-## 8. Comparative Analysis and Conclusions
-
-### 8.1 General-purpose cloud: WMP-PolarFly vs. RNG vs. fat tree
-
-The RNG paper benchmarks its cost savings against fat tree at a worst-case oversubscription ratio of 3:1 — the standard operating point for general-purpose datacenter fabrics. On a 512×100G switch, this allocates 384 ports to servers and 128 to fabric. At q=31, WMP-PolarFly's topology size (q²+q+1 = 993 switches) and fabric port budget (4 slices × 32 = 128 ports) match RNG's switch count and port allocation exactly, yielding an apples-to-apples comparison where the only difference is path quality.
-
-| Configuration | Switches | Servers | Oversub | Fabric optics | Paths per pair | Hops |
-|---|---|---|---|---|---|---|
-| **Fat tree** | 1,242 | ~381K | 3:1 | 255K | ECMP (leaf-spine) | 4 |
-| **RNG** | 993 (−20%) | ~381K | 3:1 | 127K (−50%) | ~128 edge-disjoint (spray) | 4–5 |
-| **WMP-PolarFly 4-slice q=31** | 993 (−20%) | ~381K | 3:1 | 127K (−50%) | 4 SPs + ~124 NSPs | 2–3 |
-| | | | | | | |
-| **Fat tree** | 4,779 | ~1.47M | 3:1 | 979K | ECMP (leaf-spine) | 4–6 |
-| **RNG** | 3,823 (−20%) | ~1.47M | 3:1 | 489K (−50%) | ~128 edge-disjoint (spray) | 4–5 |
-| **WMP-PolarFly 2-slice q=61** | 3,783 (−21%) | ~1.47M | 3.1:1 | 469K (−52%) | 2 SPs + ~122 NSPs | 2–3 |
-
-At matched oversubscription, both flat topologies use the same switch count and the same fabric optics — the differentiator is path quality. WMP-PolarFly delivers deterministic 2–3 hop paths with multiple edge-disjoint SPs and over 100 NSPs per pair, versus RNG's 4–5 hop sprayed paths. Both eliminate the spine layer and achieve identical savings over fat tree: roughly 20% fewer switches and 50% fewer fabric optics. The structured topology's hop-count advantage translates directly to lower per-bit power and latency, compounding with link speed (Section 5.2).
-
-An alternative framing holds switch count constant and compares what each topology delivers with the same hardware investment:
-
-| Configuration | Switches | Servers | Oversub | Effective BW/server | Hops |
-|---|---|---|---|---|---|
-| **RNG at 3:1** | 3,783 | ~1.45M | 3:1 | ~33G | 4–5 |
-| **WMP-PolarFly 4-slice q=61 at ~1:1** | 3,783 | ~999K | 1.06:1 | ~94G | 2–3 |
-
-This is the quality-versus-quantity trade: identical capex in switches, different operating points. For workloads that are bandwidth- or latency-sensitive — database clusters, real-time analytics, financial systems — the ~1:1 PolarFly configuration delivers substantially better per-endpoint performance from the same hardware investment.
-
-### 8.2 AI backend: WMP-PolarFly vs. MRC-on-Clos
-
-The following tables compare MRC-on-Clos deployments (as reported by hyperscaler operators) with equivalent WMP-PolarFly configurations. In the Clos baseline, "plane" refers to a physically separate 2-tier Clos fabric; in the PolarFly configurations, "plane" refers to a physically separate PolarFly fabric, while "slice" refers to a logical partition of the port budget within that fabric.
-
-**4-plane Clos comparison (4×100G per GPU):**
-
-| Configuration | Switches | GPUs | BW/GPU | Fabric optics | Paths per pair | Physical redundancy |
-|---|---|---|---|---|---|---|
-| 4-plane Clos (baseline) | 3,072 | 131K | 400G | 1,048K | 256-way ECMP per plane | 4 planes |
-| WMP-PolarFly: 2 planes × 8-slice q=31 | 1,986 (−35%) | 127K | 400G | 508K (−52%) | 8 SPs + ~248 NSPs per plane | 2 planes |
-
-**8-plane Clos comparison (8×100G per GPU):**
-
-| Configuration | Switches | GPUs | BW/GPU | Fabric optics | Paths per pair | Physical redundancy |
-|---|---|---|---|---|---|---|
-| 8-plane Clos (baseline) | 6,144 | 131K | 800G | 2,097K | 256-way ECMP per plane | 8 planes |
-| WMP-PolarFly: 4 planes × 8-slice q=31 | 3,972 (−35%) | 127K | 800G | 1,016K (−52%) | 8 SPs + ~248 NSPs per plane | 4 planes |
-| WMP-PolarFly: single 4-slice q=61 | 3,783 (−38%) | 125K | 800G | 938K (−55%) | 4 SPs + ~244 NSPs | 1 fabric, 4 slices |
-
-The savings derive from PolarFly's flat topology: a 2-tier Clos dedicates roughly one-third of its switches and half of its optics to a spine layer that serves no endpoints, while every WMP-PolarFly switch provides both fabric and server attachment. MRC's per-path EV probing and NSCC congestion feedback operate identically across both topology families — the transport is topology-agnostic, and the path-set provisioning differences are handled at connection setup.
-
-### 8.3 Feature comparison
-
-| Dimension | Advantage | RNG | WMP-PolarFly | Notes |
+| Dimension | Advantage | RNG (quasi-random + Spraypoint) | WMP-PolarFly (incl. slicing) | Notes |
 |---|---|---|---|---|
-| Scale per port | — | Unbounded n | ~16K ToRs / ~4M ports at 2×q=127 | Gap closed at ≥51.2T radix |
-| Diameter / latency | WMP-PolarFly | Probabilistic (≈4–5 hops) | Deterministic 2 (L ≈ 2.6) | Gap grows with optics cost |
+| Scale per port | — | Unbounded n | ~16K ToRs / ~4M ports at 2×q=127 | Gap closed at ≥51.2T radix; neither side wins decisively |
+| Diameter / latency | WMP-PolarFly | Probabilistic, longer (≈4–5 hops) | Deterministic 2 (L ≈ 2.6 effective) | Gap grows with optics cost |
 | Per-bit cost & power | WMP-PolarFly | 9–45% under fat tree | Near Moore-bound floor | Compounds with bandwidth |
-| SP diversity | WMP-PolarFly | High (spray), non-minimal | 1 SP per slice; 4 slices ⇒ 4 SPs | MRC addresses residual |
+| SP diversity | WMP-PolarFly | High (spray), non-minimal | 1 SP per plane; 4 planes ⇒ 4 SPs | Slicing closes gap; MRC addresses residual |
 | Transit ASIC state | WMP-PolarFly | LPM + wide ECMP groups | LPM only; paths in encap memory | Avoids ECMP table pressure |
 | Control plane | WMP-PolarFly | Distributed protocol (Spraypoint) | IS-IS/BGP for liveness; paths algebraic | No path-computation protocol |
-| Heterogeneity | RNG | Per-node degree mixing | Uniform per slice | Limited practical advantage |
-| Incremental growth | RNG | Unquantized; break-and-splice | Additive to q ceiling; pre-planned | PolarFly cleaner per step |
-| Failure model | — | Continuous, statistical | Discrete → continuous with 4 slices | Parity at 4 slices |
-| Operational philosophy | RNG | Stateless fabric everywhere | Intelligence at encap | The irreducible difference |
-| Availability | WMP-PolarFly | Amazon-internal; not open-sourced | Open standards (SRv6), open NOS | Deployable today |
+| Heterogeneity | RNG | Per-node degree mixing, in place | Uniform per plane | Modern DC builds use uniform hardware, limiting practical advantage |
+| Incremental growth | RNG | Unquantized; break-and-splice | Additive to q ceiling; pre-planned | Different shapes; PolarFly cleaner per step |
+| Failure model | — | Continuous, statistical, no protection | Discrete → continuous with 4-plane slicing | Parity at 4 planes; RNG edges single-plane |
+| Operational philosophy | RNG | Stateless fabric, minimal-state everywhere | Intelligence concentrated at encap | The irreducible difference |
+| Availability | WMP-PolarFly | Amazon-internal; not open-sourced | Open standards (SRv6), open NOS (SONiC/FRR) | Deployable today vs. requires reimplementation |
 
-### 8.4 Conclusions
+The two topology families do not converge with scale; they sort by operating model. **Engineered randomness has its advantages in the elastic-fleet (Cloud) deployment**: daily rack lands, rolling hardware generations, adversarial multi-tenant traffic, and an operational culture that prizes a fabric incapable of holding misconfiguration. **Structured optimality has the advantage in deliberate-fabric (AI backend) deployments**: build-once footprints, operator-owned stacks, per-bit economics that compound, and workloads — above all AI training collectives — that reward deterministic latency and enumerable paths. Modern radix removes scale as a discriminator; SRv6 removes the forwarding-state objection; MRC removes the transport objection. What remains is a genuine philosophical choice about where complexity should live, and the thesis of this paper is that for the backend, the answer has clearly become the encap node — a conclusion that aligns with a broader industry trend toward host-based policy execution, visible across cloud-native networking, SmartNIC offload architectures, and now MRC. The boundary between these deployment types is less sharp than the literature implies: a fixed-footprint cloud datacenter — a sovereign build, a large enterprise private cloud, a neocloud region — shares many characteristics of the deliberate-fabric deployment, and WMP-PolarFly is a legitimate candidate there as well.
 
-The two topology families sort by operating model, not by scale. **Engineered randomness suits the elastic-fleet deployment**: daily rack lands, rolling hardware generations, adversarial multi-tenant traffic, and an operational culture that prizes a fabric incapable of holding misconfiguration. **Structured optimality suits the deliberate-fabric deployment**: build-once footprints, operator-owned stacks, per-bit economics that compound, and workloads — above all AI training collectives — that reward deterministic latency and enumerable paths.
-
-Modern radix removes scale as a discriminator. SRv6 removes the forwarding-state objection. MRC removes the transport objection. What remains is a philosophical choice about where complexity should live, and the thesis of this paper is that for the backend, the answer has clearly become the encap node — a conclusion that aligns with a broader industry trend toward host-based policy execution, visible across cloud-native networking, SmartNIC offload architectures, and now MRC.
-
-The boundary between deployment types is less sharp than the literature implies. A fixed-footprint cloud datacenter — a sovereign build, a large enterprise private cloud, a neocloud region — shares many characteristics of the deliberate-fabric deployment, and as Section 8.1 demonstrates, WMP-PolarFly matches RNG on switch count and optics while delivering half the hop count at identical oversubscription. The structured topology is a legitimate candidate wherever the operator owns the stack.
-
-RNG's dismissal of structured alternatives does not consider compressed source routing (SRv6 uSID) as an alternative to tunnel-based path state — even though SRv6 was well-established by the time of publication. The comparison that matters next is not flat-versus-tree but structured-flat-versus-random-flat — and on current silicon, with current transports, that comparison is live. Unlike RNG, WMP-PolarFly is built on open standards and open-source NOS implementations, and is deployable today.
-
----
-
-The main structural changes: split into four subsections with clear scope (cloud comparison, backend comparison, feature matrix, conclusions), shortened the feature table's column headers and notes for scannability, and broke the concluding prose into four focused paragraphs — operating model, objections removed, deployment boundary, and the closing availability kicker. Each paragraph does one thing.
+RNG's published case is argued against the fat tree, and its dismissal of structured alternatives does not consider compressed source routing (SRv6 uSID) as an alternative to tunnel-based path state — even though SRv6 was well-established by the time of publication. The comparison that matters next is not flat-versus-tree but structured-flat-versus-random-flat — and on current silicon, with current transports, that comparison is live. Unlike RNG, WMP-PolarFly is built on open standards and open-source NOS implementations, and is deployable today.
 
 ---
 
@@ -373,3 +330,5 @@ The orthogonal polarity that defines ER_q degenerates in fields of characteristi
 ### A.2 The feasible-degree lattice at high radix
 
 The feasible set of q values comprises odd primes and odd prime powers. Restricting to primes alone: 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, … — never more than about 6 apart at these magnitudes. Odd prime powers (49, 81, 121, 125, 169, 243, …) fill additional points. Despite excluding all powers of 2, the lattice remains dense enough that for any target radix above ~60, a feasible q lies within a few ports.
+
+
