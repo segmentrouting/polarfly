@@ -255,28 +255,25 @@ The practical concern is not aggregate throughput but **incast at individual swi
 
 ### 8.1 General-purpose cloud: WMP-PolarFly vs. RNG vs. fat tree
 
-The RNG paper benchmarks its cost savings against fat tree at a worst-case oversubscription ratio of 3:1 — the standard operating point for general-purpose datacenter fabrics. On a 512×100G switch, this allocates 384 ports to servers and 128 to fabric. At q=31, WMP-PolarFly's topology size (q²+q+1 = 993 switches) and fabric port budget (4 slices × 32 = 128 ports) match RNG's switch count and port allocation exactly, yielding an apples-to-apples comparison where the only difference is path quality.
+The RNG paper benchmarks its cost savings against fat tree at a worst-case oversubscription ratio of 3:1. On a 512×100G switch, this allocates 384 ports to servers and 128 to fabric. At this scale, a fat tree requires a 3-tier design (leaf + pod spine + super-spine), making the comparison substantially more favorable to flat topologies than a 2-tier estimate.
 
 | Configuration | Switches | Servers | Oversub | Fabric optics | Paths per pair | Hops |
 |---|---|---|---|---|---|---|
-| **Fat tree** | 1,242 | ~381K | 3:1 | 255K | ECMP (leaf-spine) | 4 |
-| **RNG** | 993 (−20%) | ~381K | 3:1 | 127K (−50%) | ~128 edge-disjoint (spray) | 4–5 |
-| **WMP-PolarFly 4-slice q=31** | 993 (−20%) | ~381K | 3:1 | 127K (−50%) | 4 SPs + ~124 NSPs | 2–3 |
-| | | | | | | |
-| **Fat tree** | 4,779 | ~1.47M | 3:1 | 979K | ECMP (leaf-spine) | 4–6 |
-| **RNG** | 3,823 (−20%) | ~1.47M | 3:1 | 489K (−50%) | ~128 edge-disjoint (spray) | 4–5 |
-| **WMP-PolarFly 2-slice q=61** | 3,783 (−21%) | ~1.47M | 3.1:1 | 469K (−52%) | 2 SPs + ~122 NSPs | 2–3 |
+| **3-tier fat tree** | 1,792 | ~393K | 3:1 | 524K | ECMP (3-tier) | 2–4 |
+| **RNG** | 993 (−45%) | ~381K | 3:1 | 127K (−76%) | ~128 edge-disjoint (spray) | 4–5 |
+| **WMP-PolarFly 4-slice q=31** | 993 (−45%) | ~381K | 3:1 | 127K (−76%) | 4 SPs + ~124 NSPs | 2–3 |
 
-At matched oversubscription, both flat topologies use the same switch count and the same fabric optics — the differentiator is path quality. WMP-PolarFly delivers deterministic 2–3 hop paths with multiple edge-disjoint SPs and over 100 NSPs per pair, versus RNG's 4–5 hop sprayed paths. Both eliminate the spine layer and achieve identical savings over fat tree: roughly 20% fewer switches and 50% fewer fabric optics. The structured topology's hop-count advantage translates directly to lower per-bit power and latency, compounding with link speed (Section 5.2).
+Both flat topologies eliminate the spine and super-spine tiers entirely, achieving 45% fewer switches and 76% fewer fabric optics versus the 3-tier fat tree. RNG and WMP-PolarFly match each other exactly on switch count and optics — the differentiator is path quality: deterministic 2–3 hop paths with 4 SPs and ~124 NSPs per pair versus 4–5 hop sprayed paths.
 
-An alternative framing holds switch count constant and compares what each topology delivers with the same hardware investment:
+At 1:1 (non-blocking) oversubscription — allocating 256 ports to servers and 256 to fabric — the comparison sharpens further. WMP-PolarFly at 8×q=31 and RNG converge to identical switch count, server count, and fabric optics. The two flat topologies are indistinguishable on hardware; the only differences are hop count and operating model.
 
-| Configuration | Switches | Servers | Oversub | Effective BW/server | Hops |
-|---|---|---|---|---|---|
-| **RNG at 3:1** | 3,783 | ~1.45M | 3:1 | ~33G | 4–5 |
-| **WMP-PolarFly 4-slice q=61 at ~1:1** | 3,783 | ~999K | 1.06:1 | ~94G | 2–3 |
+| Configuration | Switches | Servers | Oversub | Fabric optics | Paths per pair | Hops |
+|---|---|---|---|---|---|---|
+| **3-tier fat tree** | 2,560 | ~262K | 1:1 | 1,049K | ECMP (3-tier) | 2–4 |
+| **RNG** | 993 (−61%) | ~254K | 1:1 | 254K (−76%) | ~256 edge-disjoint (spray) | 4–5 |
+| **WMP-PolarFly 8-slice q=31** | 993 (−61%) | ~254K | 1:1 | 254K (−76%) | 8 SPs + ~248 NSPs | 2–3 |
 
-This is the quality-versus-quantity trade: identical capex in switches, different operating points. For workloads that are bandwidth- or latency-sensitive — database clusters, real-time analytics, financial systems — the ~1:1 PolarFly configuration delivers substantially better per-endpoint performance from the same hardware investment.
+At identical hardware investment, WMP-PolarFly delivers deterministic diameter-2 paths with 8 edge-disjoint SPs and ~248 NSPs per pair; RNG delivers longer sprayed paths through a stateless fabric. The fat tree requires 2.6× the switches and 4× the optics for comparable server count. This convergence at 1:1 isolates the irreducible difference between the two flat topologies: not cost, not scale, not optics — but whether path intelligence lives at the encap node or is delegated to topology randomness.
 
 ### 8.2 AI backend: WMP-PolarFly vs. MRC-on-Clos
 
@@ -295,7 +292,7 @@ The following tables compare MRC-on-Clos deployments (as reported by hyperscaler
 |---|---|---|---|---|---|---|
 | 8-plane Clos (baseline) | 6,144 | 131K | 800G | 2,097K | 256-way ECMP per plane | 8 planes |
 | WMP-PolarFly: 4 planes × 8-slice q=31 | 3,972 (−35%) | 127K | 800G | 1,016K (−52%) | 8 SPs + ~248 NSPs per plane | 4 planes |
-| WMP-PolarFly: single 4-slice q=61 | 3,783 (−38%) | 125K | 800G | 938K (−55%) | 4 SPs + ~244 NSPs | 1 fabric, 4 slices |
+| WMP-PolarFly: single plane 4-slice q=61 | 3,783 (−38%) | 125K | 800G | 938K (−55%) | 4 SPs + ~244 NSPs | 1 fabric, 4 slices |
 
 The savings derive from PolarFly's flat topology: a 2-tier Clos dedicates roughly one-third of its switches and half of its optics to a spine layer that serves no endpoints, while every WMP-PolarFly switch provides both fabric and server attachment. MRC's per-path EV probing and NSCC congestion feedback operate identically across both topology families — the transport is topology-agnostic, and the path-set provisioning differences are handled at connection setup.
 
