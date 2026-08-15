@@ -302,12 +302,12 @@ The savings derive from PolarFly's flat topology: a 2-tier Clos dedicates roughl
 |---|---|---|---|---|
 | Scale per port | — | Unbounded n | ~16K ToRs / ~4M ports at 2×q=127 | Gap closed at ≥51.2T radix |
 | Diameter / latency | WMP-PolarFly | Probabilistic (≈4–5 hops) | Deterministic 2 (L ≈ 2.6) | Gap grows with optics cost |
-| Per-bit cost & power | WMP-PolarFly | 9–45% under fat tree | Near Moore-bound floor | Compounds with bandwidth |
-| Path diversity | - | High (spray), non-minimal | 1 SP and ~q NSPs per slice | non-MRC comparison |
+| Per-bit cost & power | WMP-PolarFly | 9–45% under fat tree | Near Moore-bound floor | PolarFly advantage increases with bandwidth |
+| Path diversity | — | High (spray), non-minimal | 1 SP and ~q NSPs per slice | non-MRC comparison |
 | Transit ASIC state | WMP-PolarFly | LPM + wide ECMP groups | LPM only; paths in encap memory | Avoids ECMP table pressure |
 | Control plane | WMP-PolarFly | Distributed protocol (Spraypoint) | IS-IS/BGP for liveness; paths algebraic | Spraypoint is not public |
 | Heterogeneity | RNG | Per-node degree mixing | Uniform per slice | Limited practical advantage for RNG |
-| Incremental growth | - | Unquantized; easy break-and-splice | Additive to q ceiling; pre-planned | PolarFly cleaner per step |
+| Incremental growth | — | Unquantized; easy break-and-splice | Additive to q ceiling; pre-planned | RNG is easy, PolarFly cleaner per step |
 | Failure model | — | Continuous, statistical | Discrete → continuous with 4 slices | Parity at 4 slices |
 | Operational philosophy | RNG | Stateless fabric everywhere | Intelligence at encap | RNG is arguably simpler |
 | Availability | WMP-PolarFly | Amazon-internal; not open-sourced | Open standards (SRv6), open NOS | WMP-PolarFly is Deployable today |
@@ -321,10 +321,6 @@ Modern radix removes scale as a discriminator. SRv6 removes the forwarding-state
 The boundary between deployment types is less sharp than the literature implies. A fixed-footprint cloud datacenter — a sovereign build, a large enterprise private cloud, a neocloud region — shares many characteristics of the deliberate-fabric deployment, and as Section 8.1 demonstrates, WMP-PolarFly matches RNG on switch count and optics while delivering half the hop count at identical oversubscription. The structured topology is a legitimate candidate wherever the operator owns the stack.
 
 RNG's dismissal of structured alternatives does not consider compressed source routing (SRv6 uSID) as an alternative to tunnel-based path state — even though SRv6 was well-established by the time of publication. The comparison that matters next is not flat-versus-tree but structured-flat-versus-random-flat — and on current silicon, with current transports, that comparison is live. Unlike RNG, WMP-PolarFly is built on open standards and open-source NOS implementations, and is deployable today.
-
----
-
-The main structural changes: split into four subsections with clear scope (cloud comparison, backend comparison, feature matrix, conclusions), shortened the feature table's column headers and notes for scannability, and broke the concluding prose into four focused paragraphs — operating model, objections removed, deployment boundary, and the closing availability kicker. Each paragraph does one thing.
 
 ---
 
