@@ -21,7 +21,7 @@ This paper argues that SRv6 source routing resolves the objections to structured
 
 ## 1. Introduction
 
-The fat tree's stark trade between cost and oversubscription is well documented: hierarchical structure pins traffic between endpoint pairs to small link subsets that congest while the rest of the fabric idles. Capacity is stranded structurally, not incidentally. Flat topologies — direct ToR-to-ToR interconnects with no aggregation or spine layers — have promised an escape for over a decade, but until 2026 no hyperscaler had deployed one in production.
+The fat tree's ****Clos is more common**** stark trade between cost and oversubscription is well documented: hierarchical structure pins traffic between endpoint pairs to small link subsets that congest while the rest of the fabric idles. Capacity is stranded structurally, not incidentally. Flat topologies — direct ToR-to-ToR interconnects with no aggregation or spine layers — have promised an escape for over a decade, but until 2026 no hyperscaler had deployed one in production. ****(CM I will insert the math chart here)****
 
 That changed with Amazon's RNG (Resilient Network Graphs), now the default fabric for most new AWS datacenter builds. RNG validates the flat-topology thesis at production scale: 69% fewer routers, up to 33% higher throughput, 9–45% lower cost than equivalently oversubscribed fat trees. Its enabling contributions are a routing protocol (Spraypoint) that extracts near-degree edge-disjoint path counts from a quasi-random graph using only commodity ECMP, and a passive optical device (the ShuffleBox) that reduces random-graph cabling complexity to fat-tree levels.
 
@@ -51,15 +51,15 @@ Cabling uses ShuffleBoxes — passive optical devices that internally permute fi
 
 PolarFly is the first diameter-2 topology to asymptotically reach the Moore bound, exceeding 96% of theoretical peak at practical radixes — i.e., it packs nearly the maximum possible number of nodes for its degree and diameter. Every router pair is at most two hops apart allowing for flat topologies of very wide diameter. PolarFly also offers roughly 50% more feasible degrees than Slim Fly [5], the prior state of the art, and supports modular incremental growth through its cluster structure.
 
-PolarFly connects N = q² + q + 1 routers (with q being an **odd** prime number or prime power) with fabric degree q + 1, as the Erdős–Rényi polarity graph ER_q derived from the projective plane PG(2, q). For example, with q = 7 on a 16-port switch, 8 ports go to fabric (degree q+1 = 8) and 8 to servers, yielding a fabric of N = 7² + 7 + 1 = 57 switches — 57 nodes from just 8 fabric uplinks each. (See Appendix A for further detail.)
+PolarFly connects N = q² + q + 1 routers (with q being an prime number or prime power) with fabric degree q + 1, as the Erdős–Rényi polarity graph ER_q derived from the projective plane PG(2, q). For example, with q = 7 on a 16-port switch, 8 ports go to fabric (degree q+1 = 8) and 8 to servers, yielding a fabric of N = 7² + 7 + 1 = 57 switches — 57 nodes from just 8 fabric uplinks each. (See Appendix A for further detail.) Note, there are other constructions where the bw split is unequal or where q is << radix. In these cases, slicing or bundling can provide even better performance and flexibility. ****CM added****
 
 ### 2.3 The path diversity inversion
 
 PolarFly's topology has a distinctive structural property: **no two routers in the fabric share more than one common neighbor**. This is what gives it exceptional scale — edges are never "wasted" on redundant two-hop paths — but it creates a routing challenge: between most pairs of routers that are not directly connected, there is only **one** shortest (2-hop) path. In networking terms, imagine a fabric where every source-destination pair has exactly one spine to go through; there is no second shortest path to hash onto.
 
-This creates an irony: the very property that makes PolarFly the most efficient topology (maximum routers per port per hop count) simultaneously starves it of the path redundancy that load balancing / entropy depends on. Optimality and path diversity are structurally at odds, the closer a topology sits to the theoretical efficiency limit (the Moore bound), the fewer shortest paths it can offer per pair.
+This creates an irony: the very property that makes PolarFly the most efficient topology (maximum routers per port per hop count) simultaneously starves it of the path redundancy that load balancing / entropy depends on ****(This is only true for ECMP. Polarfly inherently has great path diversity)****. Optimality and path diversity are structurally at odds; the closer a topology sits to the theoretical efficiency limit (the Moore bound), the fewer shortest paths it can offer per pair.
 
-RNG begins from the same observation regarding structure-optimized topologies: shortest-path routing on any highly efficient topology will congest those singleton shortest paths. RNG's answer is to **abandon shortest-path routing entirely** and let the randomness of the graph supply diversity through longer, sprayed paths. PolarFly's conventional answer, inherited from the Slim Fly and Dragonfly HPC lineage, is non-minimal adaptive routing (UGAL-style), where switches sense congestion in real time and deflect traffic onto longer paths. But UGAL requires HPC-class adaptive-routing hardware; it is not available on commodity Ethernet ASICs running standard routing protocols.
+RNG begins from the same observation regarding structure-optimized topologies: shortest-path routing on any highly efficient topology will congest those singleton shortest paths. RNG's answer is to **abandon shortest-path routing entirely** and let the randomness of the graph supply diversity through longer, sprayed paths. PolarFly's conventional answer, inherited from the Slim Fly and Dragonfly HPC lineage, is non-minimal adaptive routing (UGAL-style), where switches sense congestion in real time and deflect traffic onto longer paths. But UGAL requires HPC-class adaptive-routing hardware; it is not available on commodity Ethernet ASICs running standard routing protocols ****(CM: We should be careful here – we can do UGAL in certain ways)****.
 
 SRv6 source routing is the third answer, and it changes the economics entirely.
 
@@ -67,14 +67,14 @@ SRv6 source routing is the third answer, and it changes the economics entirely.
 
 ## 3. WMP-PolarFly
 
-### 3.0 The WMP concept: Shortest Path + Next-Shortest-Paths
+### 3.0 The WMP concept: Shortest Path + Next-Shortest-Paths (Valiant or Engineered)
 
-The core of the WMP-PolarFly routing design is **Weighted Multi-Path (WMP)**: SRv6 source routing steers traffic across a source-destination pair's **shortest path (SP)** and a set of **next-shortest-paths (NSPs)** in an operator-configurable ratio.
+The core of the WMP-PolarFly routing design is **Weighted Multi-Path (WMP)**: SRv6 source routing steers traffic across a source-destination pair's **shortest path (SP)** and a set of **next-shortest-paths (NSPs)** in an operator-configurable ratio ****Where is the weighting done?****.
 
 For a given source-destination pair in a PolarFly fabric with parameter q:
 
 - The **SP** is the unique 2-hop path through the pair's single shared neighbor (the relay node).
-- The **NSPs** are the set of 3-hop paths through intermediate nodes that are *not* the relay — approximately q edge-disjoint alternatives whose exact count varies slightly for self-conjugate vertices.
+- The **NSPs** are the set of 3-hop paths through intermediate nodes that are *not* the relay — approximately q edge-disjoint alternatives whose exact count varies slightly for self-conjugate vertices ****(This needs explanation****).
 
 For q = 7 this gives **1 SP + 6 NSPs = 7 total forwarding paths**. Each path is encoded as an SRv6 segment list (a uSID carrier, easily fitting in the IPv6 destination address with no SRH required). The operator assigns WMP weights across the set — for example, 40% of traffic over the SP and 10% over each of the 6 NSPs. As q increases, the NSP count grows roughly with q, providing increasingly rich path entropy: q = 31 yields ~1 shortest-path + 31 next-shortest-paths, q = 127 yields ~1 + 127 paths, and so on.
 
