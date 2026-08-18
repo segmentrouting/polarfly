@@ -15,7 +15,7 @@ Two flat datacenter topologies now offer credible alternatives to the classic CL
 
 This paper argues that SRv6 source routing resolves the objections to structured low-diameter fabrics and proposes **WMP-PolarFly**: a weighted multipath routing design in which SRv6 segment lists and their traffic weights are derived algebraically from the polarity graph's projective-plane coordinates. We extend the design with multi-slice partitioning of high-radix switches for path redundancy and operational flexibility. At current 51.2T radix, a quad-slice configuration (4×q=61) serves ~1M endpoints at diameter 2 with four edge-disjoint shortest paths per pair; a dual-slice configuration (2×q=127) reaches ~4M endpoints at 99% Moore-bound efficiency. We further show that the MRC transport [3] — already deployed with SRv6 on frontier AI training clusters — maps naturally onto PolarFly's algebraically enumerable path sets, enabling per-packet spraying with path-aware congestion control. We examine both topologies across deployment types and argue that the choice between them is primarily driven by operating model and culture.
 
-\\ (Comment) I think this is a good construction but it is too academic for our purposes. I'll take a stab at a simplification and something more lay. Also remember that a simple WMP option is valiant LB, which we specify in the CPOL and IETF drafts. I'll share them today.
+***(Comment) I think this is a good construction but it is too academic for our purposes. I'll take a stab at a simplification and something more lay. Also remember that a simple WMP option is valiant LB, which we specify in the CPOL and IETF drafts. I'll share them today.***
 ---
 
 ## 1. Introduction
