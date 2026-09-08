@@ -717,11 +717,18 @@ def main() -> int:
              "reference) or sonic-vpp (VPP/AF_PACKET dataplane)",
     )
     here = os.path.dirname(os.path.abspath(__file__))
-    # New layout: polarfly/q<q>/{yaml, adj, sonic-config/<sw>/...}
-    # (sonic-vpp variant nests one level deeper, under q<q>/sonic-vpp/)
-    is_vpp_argv = "--variant" in sys.argv and "sonic-vpp" in sys.argv
+    # Layout: polarfly/q<q>/<variant-subdir>/{yaml, adj, sonic-config/<sw>/...}
+    # Every variant gets its own sibling subdirectory under q<q>/ (sonic/,
+    # sonic-vpp/, and the separately-maintained xrd/) so multiple dataplane
+    # variants can coexist for the same q. Determined from raw sys.argv
+    # (not the parsed --variant below) since these defaults are computed
+    # before argparse runs.
+    VARIANT_SUBDIR = {"sonic-vs": "sonic", "sonic-vpp": "sonic-vpp"}
+    _variant_argv = "sonic-vpp" if (
+        "--variant" in sys.argv and "sonic-vpp" in sys.argv
+    ) else "sonic-vs"
     default_topo_dir = os.path.normpath(
-        os.path.join(here, "..", "q{q}", "sonic-vpp" if is_vpp_argv else "")
+        os.path.join(here, "..", "q{q}", VARIANT_SUBDIR[_variant_argv])
     )
     default_out = os.path.join(default_topo_dir, "sonic-polarfly-q{q}-nobinds.clab.yaml")
     default_out_binds = os.path.join(

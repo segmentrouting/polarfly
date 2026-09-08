@@ -20,14 +20,20 @@ polarfly/
 ├── topogen2/
 │   ├── polarfly_clab.py             # main containerlab/SONiC generator
 │   └── polarfly_fabric_json.py      # SDN-controller fabric JSON exporter
-├── q7/
-│   ├── sonic-polarfly-q7.clab.yaml          # binds variant (uses sonic-config/)
-│   ├── sonic-polarfly-q7-nobinds.clab.yaml  # plain variant (configs pushed at runtime)
-│   ├── polarfly-q7.adj.txt                  # adjacency sidecar
-│   ├── q7-config.sh                         # parallel deploy/config script
-│   ├── q7-fabric.json                       # SDN-controller topology JSON
-│   └── sonic-config/sw001..sw057/{config_db.json, frr.conf}
-├── q13/                                     # same shape, 183 switches
+├── q7/                                       # multiple dataplane variants coexist here
+│   ├── sonic/                                # docker-sonic-vs (the proven baseline)
+│   │   ├── sonic-polarfly-q7.clab.yaml          # binds variant (uses sonic-config/)
+│   │   ├── sonic-polarfly-q7-nobinds.clab.yaml  # plain variant (configs pushed at runtime)
+│   │   ├── polarfly-q7.adj.txt                  # adjacency sidecar
+│   │   ├── q7-config.sh                         # parallel deploy/config script
+│   │   ├── q7-fabric.json                       # SDN-controller topology JSON
+│   │   └── sonic-config/sw001..sw057/{config_db.json, frr.conf}
+│   ├── sonic-vpp/                            # docker-sonic-vpp (see its own image-build.md)
+│   └── xrd/                                  # Cisco XRd variant
+├── q13/                                      # single-variant q's stay flat (no sibling
+│   ├── sonic-polarfly-q13.clab.yaml          # dataplane variants exist yet): same file
+│   ├── ...                                   # shape as q7/sonic/ above, just directly
+│   └── sonic-config/                         # under q13/ rather than q13/sonic/
 ├── AGENTS.md
 ├── clos-fabric.json                         # reference data model for *-fabric.json
 └── q7-polarfly.png                          # current diagram
@@ -302,7 +308,8 @@ Counts must match exactly:
 | 7 | 57 | 224 | 57 | 281 | 285 (4 header) |
 | 13 | 183 | 1274 | 183 | 1457 | 1461 (4 header) |
 
-Quick smoke test:
+Quick smoke test (paths shown for a single-variant q like q13 — for a
+multi-variant q like q7, prepend the variant subdir, e.g. `q7/sonic/...`):
 
 ```sh
 grep -cE '^\s{4}sw[0-9]{3}:' q<N>/sonic-polarfly-q<N>.clab.yaml   # node count
