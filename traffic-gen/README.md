@@ -55,13 +55,22 @@ python3 provision.py --q 7 --pair sw001 sw019 --dry-run   # preview first
 python3 provision.py --q 7 --pair sw001 sw019              # then for real
 ```
 
-For each `--pair` (repeatable), this assigns the destination host one
-extra IPv6 address per forward path (SP + each NSP) and installs the
-matching `ip -6 route ... encap seg6 mode encap.red segs ...` on the
-source host, plus a single SP-only return route on the destination for
-basic reachability (iperf3's control channel is TCP even for UDP tests, so
-some return path is needed — only the *forward* direction's split across
-SP/NSP is what's under test).
+For each `--pair` (repeatable), this installs a *single weighted IPv6
+multipath route* on the source host, targeting the destination host's
+one real, existing address — analogous to how multi-tenant frontend-DC
+traffic gets encapsulated toward a single remote VTEP-like address, not a
+different address per path. Each nexthop in that multipath route carries
+its own `seg6` encap (a different SP/NSP segment list) and its own
+integer weight derived from the WMP weights (e.g. `4:1:1:1:1:1:1` for the
+q=7 40%-SP/60%-split-across-6-NSP case), so the kernel's own per-flow hash
+picks a path per flow according to those weights. It also sets
+`net.ipv6.fib_multipath_hash_policy=1` on the source host — required, since
+the default (L3-only) hash policy would send every flow between the same
+two hosts down the same nexthop regardless of weight, because the
+addresses never change between paths in this design — plus a single
+SP-only return route on the destination for basic reachability (iperf3's
+control channel is TCP even for UDP tests, so some return path is needed —
+only the *forward* direction's split across SP/NSP is what's under test).
 
 Segment lists default to **uN** (node SID, BGP-routed) per intermediate
 hop rather than uA (interface-bound End.X) — safe here because every hop
@@ -80,30 +89,45 @@ python3 provision.py --q 7 --pair sw001 sw019 --uA
 Requires a pair already provisioned by step 2:
 
 ```sh
-python3 run_test.py --q 7 --pair sw001 sw019 --duration 10
+python3 run_test.py --q 7 --pair sw001 sw019 --streams 40 --duration 5
 ```
 
-Starts one `iperf3` server per path on the destination (each on its own
-port — plain `iperf3 -s` doesn't multiplex concurrent clients on one
-port), runs one client per path concurrently from the source with
-parallel-stream counts weighted to approximate the target split (e.g. 4
-streams on SP vs. 1 on each NSP for the whitepaper's 40/10 split), then
-prints achieved-vs-target percentages per path.
+`--streams` defaults to 40 -- empirically the largest `iperf3 -P` this
+lab's veth/seg6-encap path reliably sustains at once; higher values
+(tested up to 100) intermittently fail with iperf3's `unable to receive
+results` under this containerlab setup's per-container overhead, not a
+bug in the script's measurement logic (confirmed working correctly at
+`-P 20`: SP achieved its 40% target and NSPs split roughly evenly across
+the remaining 60% on a live sw001->sw019 run).
+
+Since every flow now targets the *same* destination address (the single
+multipath route from step 2), paths can't be told apart by destination
+the way an older per-path-address design would. Instead: starts one
+`iperf3` server on the destination, runs one `iperf3 -P <streams>` client
+from the source (many parallel streams, each getting its own ephemeral
+source port — exactly the entropy the kernel's L4 multipath hash needs),
+then for each stream uses `ip -6 route get ... sport <port> dport <port>`
+on the source to ask the kernel which nexthop that exact flow would
+resolve to (the same FIB lookup real forwarding uses), matches the
+returned segment list's first segment against each path's precomputed
+first segment to attribute that stream's bytes (from the client's
+`--json` output) to a path, and prints achieved-vs-target percentages.
 
 ### 4. `verify_packet.py` — confirm each path actually delivers
 
 Also requires a pair already provisioned by step 2. Separate from the
 throughput test above — this checks correctness (does each path's
-segment list actually deliver a packet end to end), not volume:
+segment list actually deliver a packet end to end), not volume. Since
+there's no per-path address to target directly, it tests paths one at a
+time by temporarily replacing the multipath route with a single-nexthop
+route for just that path, sending one UDP packet, and confirming via a
+`tcpdump` capture on the destination that it arrives with its expected
+payload — then restores the real weighted multipath route once all paths
+are checked:
 
 ```sh
 python3 verify_packet.py --q 7 --pair sw001 sw019
 ```
-
-Sends one UDP packet per path from the source (via the *kernel's* own
-`seg6` encap — the same route step 2 installed, not a hand-built SRv6
-header) and confirms via a `tcpdump` capture on the destination that each
-one arrives with its expected payload.
 
 ## Choosing pairs
 

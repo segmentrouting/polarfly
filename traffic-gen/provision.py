@@ -1,27 +1,43 @@
 #!/usr/bin/env python3
 """
-WMP-PolarFly host route/address provisioning.
+WMP-PolarFly host route provisioning.
 
-For a curated list of (source switch, destination switch) pairs, this:
-  1. Computes each pair's SP + NSP paths and segment lists (reusing
-     path_calculator.py's graph logic and topogen2's wiring/addressing).
-  2. Assigns the destination host one additional IPv6 address per forward
-     path (within its existing host /64 subnet).
-  3. Pushes, via `docker exec` against already-running containers:
-       - destination host: the extra `ip -6 addr add` commands
-       - source host: one `ip -6 route ... encap seg6 mode encap.red
-         segs ...` per forward path (SP + each NSP)
-       - destination host: a *single* return route via the SP path only,
-         targeting the source host's existing primary address -- this is
-         just for basic two-way reachability (iperf3's control channel is
-         TCP even for UDP throughput tests), not part of what's being
-         measured. Only the forward direction's split across SP+NSP is
-         under test.
+For a curated list of (source switch, destination switch) pairs, this
+installs a *single weighted IPv6 multipath route* per pair on the source
+host, targeting the destination host's one real, existing address --
+analogous to how multi-tenant frontend-DC traffic gets encapsulated toward
+a single remote VTEP-like address. Each nexthop in that multipath route
+carries its own `seg6` encap (a different SP/NSP segment list) and its own
+integer weight (derived from the WMP weights), so the kernel's own
+per-flow hash picks a path per flow, distributed according to those
+weights -- rather than us picking a path by addressing a different
+destination per path.
+
+For each `--pair`, this:
+  1. Sets `net.ipv6.fib_multipath_hash_policy=1` on the source host, so the
+     kernel's ECMP/multipath hash includes L4 ports (TCP/UDP source and
+     dest port), not just the L3 addresses. This is *required*: the
+     default policy (0, L3-only) means every flow between the same two
+     hosts always picks the same nexthop no matter how many flows you
+     open, since the source/dest addresses never change between paths in
+     this design. Confirmed empirically: with the default policy, 100
+     different source ports all resolved to the same nexthop; with L4
+     hashing enabled, the same 100 ports split ~84/16 against a 4:1 target
+     weight.
+  2. Installs one multipath route on the source host to the destination's
+     real address (`ip -6 route replace <dst>/128 nexthop via <sw-on-link-addr>
+     encap seg6 mode encap.red segs ... weight W ...`, one nexthop per
+     forward path). IPv6's multipath API requires an explicit `via`
+     gateway per nexthop (a bare `dev`-only nexthop is rejected) -- the
+     gateway is always the source switch's own address on the host link,
+     regardless of which SRv6 path a given nexthop's segments describe.
+  3. Installs a single SP-only *return* route (source's real address, one
+     nexthop, no multipath) on the destination host, for basic two-way
+     reachability only (iperf3's control channel is TCP even for UDP
+     tests) -- not part of what's under test.
 
 Mirrors q7/sonic/q7-config.sh's deploy-time push pattern: runs AFTER
-containerlab deploy against already-running containers, not baked into the
-static topogen2-generated clab.yaml, since which pairs get tested varies
-per experiment.
+containerlab deploy against already-running containers.
 
 Usage:
   python3 traffic-gen/provision.py --q 7 --pair sw001 sw019 --pair sw002 sw033
@@ -50,10 +66,10 @@ from path_calculator import (  # noqa: E402
     build_adjacency,
     common_neighbor,
     segment_list,
+    wmp_weights,
 )
 
 HOST_IFACE = "eth1"  # matches topogen2/polarfly_clab.py's host exec commands
-PATH_ADDR_BASE = 0x10  # forward per-path addrs start at ::10 within the /64
 
 
 def sh(cmd: List[str], dry_run: bool) -> None:
@@ -82,6 +98,16 @@ def forward_paths(adj, u: int, v: int) -> Tuple[List[int], List[List[int]]]:
     return [w], nsps
 
 
+def integer_weights(num_nsp: int) -> List[int]:
+    """WMP fractions -> small positive integers for `nexthop ... weight N`,
+    in [sp, nsp0, nsp1, ...] order. Scales so the smallest weight rounds to
+    1 (e.g. 0.4/0.1*6 -> [4,1,1,1,1,1,1])."""
+    w = wmp_weights(num_nsp)
+    keys = ["sp"] + [f"nsp{i}" for i in range(num_nsp)]
+    min_w = min(w[k] for k in keys)
+    return [max(1, round(w[k] / min_w)) for k in keys]
+
+
 def provision_pair(
     switches: List[Dict], adj, u: int, v: int, dry_run: bool, use_uA: bool = False
 ) -> None:
@@ -89,55 +115,54 @@ def provision_pair(
     v_name = switches[v]["name"]
     u_host = switches[u]["host_name"]
     v_host = switches[v]["host_name"]
-    v_prefix = switches[v]["host_subnet"].split("/")[0]  # e.g. "2001:db8:a013::"
-    u_primary_addr = switches[u]["host_host_addr"]
+    u_via = switches[u]["host_sw_addr"]   # sw's own addr on the u-host link
+    v_addr = switches[v]["host_host_addr"]  # destination's one real address
+    u_addr = switches[u]["host_host_addr"]  # source's one real address
 
     print(f"\n=== provisioning {u_name} ({u_host}) -> {v_name} ({v_host}) ===")
 
     sp, nsps = forward_paths(adj, u, v)
     all_paths: List[List[int]] = [sp] + nsps
+    weights = integer_weights(len(nsps))
 
-    # 1. Destination host: one extra address per forward path.
-    for i, _mids in enumerate(all_paths):
-        addr = f"{v_prefix}{PATH_ADDR_BASE + i:x}"
-        docker_exec(
-            v_host,
-            ["ip", "-6", "addr", "add", f"{addr}/64", "dev", HOST_IFACE, "nodad"],
-            dry_run,
-        )
+    # 0. L4-aware ECMP hashing -- required, see module docstring point 1.
+    docker_exec(
+        u_host,
+        ["sysctl", "-w", "net.ipv6.fib_multipath_hash_policy=1"],
+        dry_run,
+    )
 
-    # 2. Source host: one seg6 route per forward path.
+    # 1. One weighted multipath route on the source host, one nexthop per
+    #    forward path, all targeting the destination's single real address.
+    route_cmd = ["ip", "-6", "route", "replace", f"{v_addr}/128"]
     for i, mids in enumerate(all_paths):
-        addr = f"{v_prefix}{PATH_ADDR_BASE + i:x}"
         segs = segment_list(switches, u, mids, v, use_uA)
-        docker_exec(
-            u_host,
-            [
-                "ip", "-6", "route", "add", f"{addr}/128",
-                "encap", "seg6", "mode", "encap.red",
-                "segs", ",".join(segs),
-                "dev", HOST_IFACE,
-            ],
-            dry_run,
-        )
+        route_cmd += [
+            "nexthop", "via", u_via,
+            "encap", "seg6", "mode", "encap.red",
+            "segs", ",".join(segs),
+            "dev", HOST_IFACE,
+            "weight", str(weights[i]),
+        ]
         label = "SP" if i == 0 else f"NSP{i - 1}"
-        print(f"    {label}: {addr} via {'->'.join(switches[m]['name'] for m in mids)} "
+        print(f"    {label}: weight={weights[i]} via {'->'.join(switches[m]['name'] for m in mids)} "
               f"segs={segs}")
+    docker_exec(u_host, route_cmd, dry_run)
 
-    # 3. Return direction: single SP-only route, for reachability only.
+    # 2. Return direction: single SP-only route, for reachability only.
     w = sp[0]
     return_segs = segment_list(switches, v, [w], u, use_uA)
     docker_exec(
         v_host,
         [
-            "ip", "-6", "route", "add", f"{u_primary_addr}/128",
+            "ip", "-6", "route", "replace", f"{u_addr}/128",
             "encap", "seg6", "mode", "encap.red",
             "segs", ",".join(return_segs),
             "dev", HOST_IFACE,
         ],
         dry_run,
     )
-    print(f"    return path (reachability only): {u_primary_addr} "
+    print(f"    return path (reachability only): {u_addr} "
           f"via {switches[w]['name']} segs={return_segs}")
 
 

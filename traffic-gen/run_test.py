@@ -2,24 +2,33 @@
 """
 WMP-PolarFly traffic generation + weighted-split measurement.
 
-For a pair already provisioned by provision.py, this:
-  1. Starts one iperf3 server per forward path (SP + each NSP) on the
-     destination host, each on its own port (5201, 5202, ...) -- iperf3's
-     default server doesn't multiplex concurrent clients on one port, so
-     distinct ports let every path's stream run at the same time.
-  2. Launches iperf3 clients on the source host concurrently, one per
-     path, each targeting that path's specific destination address (whose
-     kernel route -- installed by provision.py -- determines which SP/NSP
-     segment list actually carries it) and port. Parallel-stream count
-     per client (`-P`) is set proportional to that path's target W-CMP
-     weight, so the achieved traffic split approximates the intended
-     ratio (e.g. -P 4 for SP, -P 1 for each NSP at the whitepaper's 40/10
-     split for q=7).
-  3. Collects each client's `--json` output, sums bytes transferred per
-     path, and reports the achieved split against the target weights.
+For a pair already provisioned by provision.py's single weighted multipath
+route, this:
+  1. Starts one iperf3 server on the destination host (one port -- there's
+     only one destination address now, not one per path).
+  2. Runs one iperf3 client on the source host with many parallel streams
+     (`-P N`), all targeting that single destination address/port. Each
+     stream gets its own ephemeral source port from the OS, which is
+     exactly the entropy the kernel's (now L4-aware, per provision.py)
+     multipath hash needs to spread streams across the weighted nexthops.
+  3. Since every stream now goes to the *same* address, we can't tell
+     paths apart by destination the way the old design did. Instead: for
+     each stream, `--json` gives us its local (source) port (from
+     `start.connected[]`) and its byte count (from `end.streams[].sender`,
+     matched by socket id). For each stream's source port, `ip -6 route
+     get ... sport <port> dport <port>` on the source host performs the
+     exact same hash lookup real forwarding uses (this is the standard,
+     reliable way to predict/attribute ECMP decisions in Linux -- it's not
+     a separate mechanism from real forwarding, same FIB lookup code
+     path), returning which nexthop's segment list that stream actually
+     used. Matching the resolved segment list's first segment against
+     each path's precomputed first segment (unique per path, since every
+     path's first hop differs) attributes that stream's bytes to a path.
+  4. Sums attributed bytes per path and reports achieved-vs-target split.
 
 Usage:
-  python3 traffic-gen/run_test.py --q 7 --pair sw001 sw019 --duration 10
+  python3 traffic-gen/run_test.py --q 7 --pair sw001 sw019
+  python3 traffic-gen/run_test.py --q 7 --pair sw001 sw019 --streams 200 --duration 5
 """
 
 from __future__ import annotations
@@ -27,10 +36,11 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 import time
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 sys.path.insert(
     0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "topogen2")
@@ -42,73 +52,72 @@ from polarfly_clab import (  # noqa: E402
     verify,
     build_wiring,
 )
-from path_calculator import build_adjacency, wmp_weights  # noqa: E402
-from provision import forward_paths, PATH_ADDR_BASE  # noqa: E402
+from path_calculator import build_adjacency, segment_list, wmp_weights  # noqa: E402
+from provision import forward_paths  # noqa: E402
 
-BASE_PORT = 5201
+SERVER_PORT = 5201
+SEGS_RE = re.compile(r"segs \d+ \[ ([a-f0-9:, ]+?) \]")
 
 
 def path_label(i: int) -> str:
     return "SP" if i == 0 else f"NSP{i - 1}"
 
 
-def start_servers(dst_host: str, num_paths: int) -> None:
-    for i in range(num_paths):
-        port = BASE_PORT + i
-        subprocess.run(
-            ["docker", "exec", "-d", dst_host, "iperf3", "-s", "-p", str(port)],
-            check=True,
-        )
-    time.sleep(1.0)  # let servers bind before clients connect
+def start_server(dst_host: str) -> None:
+    subprocess.run(["docker", "exec", "-d", dst_host, "iperf3", "-s", "-p", str(SERVER_PORT)], check=True)
+    time.sleep(1.0)
 
 
-def stop_servers(dst_host: str) -> None:
+def stop_server(dst_host: str) -> None:
     subprocess.run(["docker", "exec", dst_host, "pkill", "-f", "iperf3 -s"], check=False)
 
 
-def run_clients(
-    src_host: str, v_prefix: str, num_paths: int, weights: Dict[str, float],
-    duration: int,
-) -> List[Dict]:
-    weight_keys = ["sp"] + [f"nsp{i}" for i in range(num_paths - 1)]
-    max_w = max(weights[k] for k in weight_keys)
-    # Parallel-stream count per path, proportional to its weight relative to
-    # the largest (so the biggest-weight path gets the most streams).
-    streams = {k: max(1, round(4 * weights[k] / max_w)) for k in weight_keys}
+def run_client(src_host: str, dst_addr: str, streams: int, duration: int) -> Dict:
+    cmd = [
+        "docker", "exec", src_host, "iperf3",
+        "-c", dst_addr, "-p", str(SERVER_PORT),
+        "-P", str(streams), "-t", str(duration), "--json",
+    ]
+    print(f"+ {' '.join(cmd)}")
+    out = subprocess.run(cmd, capture_output=True, check=True).stdout
+    return json.loads(out)
 
-    procs = []
-    for i in range(num_paths):
-        addr = f"{v_prefix}{PATH_ADDR_BASE + i:x}"
-        port = BASE_PORT + i
-        key = weight_keys[i]
-        cmd = [
-            "docker", "exec", src_host, "iperf3",
-            "-c", addr, "-p", str(port),
-            "-P", str(streams[key]),
-            "-t", str(duration),
-            "--json",
-        ]
-        print(f"+ {' '.join(cmd)}  (target weight={weights[key]:.3f}, streams={streams[key]})")
-        procs.append((path_label(i), key, subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)))
 
-    results = []
-    for label, key, proc in procs:
-        out, err = proc.communicate()
-        if proc.returncode != 0:
-            print(f"  ! {label} iperf3 client failed: {err.decode(errors='replace')[:300]}", file=sys.stderr)
-            results.append(dict(label=label, key=key, bytes=0, ok=False))
-            continue
-        data = json.loads(out)
-        total_bytes = data["end"]["sum_received"]["bytes"] if "sum_received" in data["end"] else data["end"]["sum_sent"]["bytes"]
-        results.append(dict(label=label, key=key, bytes=total_bytes, ok=True))
-    return results
+def resolve_path_for_port(
+    src_host: str, src_addr: str, dst_addr: str, sport: int
+) -> Optional[str]:
+    """Which nexthop (as a raw comma/space-joined segs string) would a flow
+    from this source port actually take, per the kernel's own FIB lookup."""
+    out = subprocess.run(
+        [
+            "docker", "exec", src_host, "ip", "-6", "route", "get", dst_addr,
+            "from", src_addr, "sport", str(sport), "dport", str(SERVER_PORT),
+        ],
+        capture_output=True, text=True,
+    ).stdout
+    m = SEGS_RE.search(out)
+    if not m:
+        return None
+    return m.group(1).split()[0]  # first segment, unique per path
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[1])
     ap.add_argument("--q", type=int, default=7)
     ap.add_argument("--pair", nargs=2, required=True, metavar=("SRC", "DST"))
-    ap.add_argument("--duration", type=int, default=10, help="seconds per iperf3 client (default: 10)")
+    ap.add_argument(
+        "--streams", type=int, default=40,
+        help="parallel iperf3 streams (default: 40 -- empirically the largest "
+             "-P this lab's veth/seg6-encap path reliably sustains; higher "
+             "values (tested up to 100) intermittently fail with 'unable to "
+             "receive results' under this containerlab setup's overhead)",
+    )
+    ap.add_argument("--duration", type=int, default=5, help="seconds (default: 5)")
+    ap.add_argument(
+        "--uA", action="store_true",
+        help="match against uA segments instead of the default uN -- must match "
+             "whatever provision.py used for this pair",
+    )
     args = ap.parse_args()
 
     if not is_prime(args.q):
@@ -127,28 +136,54 @@ def main() -> int:
     u, v = name_to_idx[src_name], name_to_idx[dst_name]
     src_host = switches[u]["host_name"]
     dst_host = switches[v]["host_name"]
-    v_prefix = switches[v]["host_subnet"].split("/")[0]
+    src_addr = switches[u]["host_host_addr"]
+    dst_addr = switches[v]["host_host_addr"]
 
     sp, nsps = forward_paths(adj, u, v)
-    num_paths = 1 + len(nsps)
+    all_paths = [sp] + nsps
+    num_paths = len(all_paths)
     weights = wmp_weights(len(nsps))
+    weight_keys = ["sp"] + [f"nsp{i}" for i in range(len(nsps))]
+
+    # First segment of each path's segment list -> path label. Unique per
+    # path since every path's first hop is different.
+    first_seg_to_label: Dict[str, str] = {}
+    for i, mids in enumerate(all_paths):
+        segs = segment_list(switches, u, mids, v, args.uA)
+        first_seg_to_label[segs[0]] = path_label(i)
 
     print(f"=== testing {src_name} -> {dst_name}: {num_paths} paths, "
-          f"{args.duration}s per client ===")
-    start_servers(dst_host, num_paths)
-    try:
-        results = run_clients(src_host, v_prefix, num_paths, weights, args.duration)
-    finally:
-        stop_servers(dst_host)
+          f"{args.streams} streams, {args.duration}s ===")
 
-    total = sum(r["bytes"] for r in results)
-    weight_keys = ["sp"] + [f"nsp{i}" for i in range(num_paths - 1)]
+    start_server(dst_host)
+    try:
+        data = run_client(src_host, dst_addr, args.streams, args.duration)
+    finally:
+        stop_server(dst_host)
+
+    local_port = {c["socket"]: c["local_port"] for c in data["start"]["connected"]}
+    bytes_by_socket = {s["sender"]["socket"]: s["sender"]["bytes"] for s in data["end"]["streams"]}
+
+    bytes_by_label: Dict[str, int] = {path_label(i): 0 for i in range(num_paths)}
+    unresolved = 0
+    for sock, port in local_port.items():
+        first_seg = resolve_path_for_port(src_host, src_addr, dst_addr, port)
+        label = first_seg_to_label.get(first_seg)
+        if label is None:
+            unresolved += 1
+            continue
+        bytes_by_label[label] += bytes_by_socket.get(sock, 0)
+
+    total = sum(bytes_by_label.values())
     print(f"\n{'path':<8}{'target %':>10}{'achieved %':>12}{'bytes':>14}")
-    for r, key in zip(results, weight_keys):
+    for i, key in enumerate(weight_keys):
+        label = path_label(i)
         target_pct = 100 * weights[key]
-        achieved_pct = 100 * r["bytes"] / total if total else 0.0
-        flag = "" if r["ok"] else "  (FAILED)"
-        print(f"{r['label']:<8}{target_pct:>9.1f}%{achieved_pct:>11.1f}%{r['bytes']:>14d}{flag}")
+        b = bytes_by_label[label]
+        achieved_pct = 100 * b / total if total else 0.0
+        print(f"{label:<8}{target_pct:>9.1f}%{achieved_pct:>11.1f}%{b:>14d}")
+    if unresolved:
+        print(f"\n({unresolved}/{len(local_port)} streams could not be attributed to a path)")
 
     return 0
 
