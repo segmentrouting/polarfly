@@ -83,7 +83,7 @@ def forward_paths(adj, u: int, v: int) -> Tuple[List[int], List[List[int]]]:
 
 
 def provision_pair(
-    switches: List[Dict], adj, u: int, v: int, dry_run: bool
+    switches: List[Dict], adj, u: int, v: int, dry_run: bool, use_uA: bool = False
 ) -> None:
     u_name = switches[u]["name"]
     v_name = switches[v]["name"]
@@ -109,7 +109,7 @@ def provision_pair(
     # 2. Source host: one seg6 route per forward path.
     for i, mids in enumerate(all_paths):
         addr = f"{v_prefix}{PATH_ADDR_BASE + i:x}"
-        segs = segment_list(switches, u, mids, v)
+        segs = segment_list(switches, u, mids, v, use_uA)
         docker_exec(
             u_host,
             [
@@ -126,7 +126,7 @@ def provision_pair(
 
     # 3. Return direction: single SP-only route, for reachability only.
     w = sp[0]
-    return_segs = segment_list(switches, v, [w], u)
+    return_segs = segment_list(switches, v, [w], u, use_uA)
     docker_exec(
         v_host,
         [
@@ -150,6 +150,11 @@ def main() -> int:
              "(repeatable)",
     )
     ap.add_argument("--dry-run", action="store_true", help="print commands, don't run them")
+    ap.add_argument(
+        "--uA", action="store_true",
+        help="use uA (interface-bound End.X) segments per hop instead of the "
+             "default uN (node SID, BGP-routed)",
+    )
     args = ap.parse_args()
 
     if not args.pair:
@@ -176,7 +181,7 @@ def main() -> int:
             print(f"error: {src_name} and {dst_name} are directly adjacent -- "
                   f"no SP/NSP split to provision for an adjacent pair", file=sys.stderr)
             return 2
-        provision_pair(switches, adj, u, v, args.dry_run)
+        provision_pair(switches, adj, u, v, args.dry_run, args.uA)
 
     return 0
 

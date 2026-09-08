@@ -119,13 +119,36 @@ def uA_sid(sw: Dict, peer_idx: int) -> str:
     raise ValueError(f"{sw['name']} has no fabric port toward peer index {peer_idx}")
 
 
-def segment_list(switches: List[Dict], u: int, mids: List[int], v: int) -> List[str]:
+def uN_sid(sw: Dict) -> str:
+    """The uN SID (node locator) for switch `sw`: fc00:0:1<NNN>::, i.e. its
+    own `locator_prefix` (/48) with the mask dropped."""
+    return sw["locator_prefix"].split("/")[0]
+
+
+def segment_list(
+    switches: List[Dict], u: int, mids: List[int], v: int, use_uA: bool = False
+) -> List[str]:
     """uSID chain for path u -> mids... -> v, terminating in v's uDT6 SID
-    (destination decap into the tenant VRF)."""
-    hops = [u] + mids + [v]
-    segs: List[str] = []
-    for i in range(len(hops) - 1):
-        segs.append(uA_sid(switches[hops[i]], hops[i + 1]))
+    (destination decap into the tenant VRF).
+
+    Default is uN (node SID) per intermediate hop, routed via BGP -- safe
+    here specifically because every hop in a computed SP/NSP path is, by
+    construction, a direct graph-neighbor of the previous one (that's how
+    common_neighbor() finds them), so there's no ECMP ambiguity: uN-based
+    routing resolves to the exact same physical links uA's interface-bound
+    steering would pick, since a direct neighbor is reachable via exactly
+    one edge either way. `use_uA=True` instead chains one uA (interface-
+    bound End.X, no BGP lookup at all) per hop transition, for testing that
+    mechanism specifically.
+    """
+    if use_uA:
+        hops = [u] + mids + [v]
+        segs: List[str] = []
+        for i in range(len(hops) - 1):
+            segs.append(uA_sid(switches[hops[i]], hops[i + 1]))
+        segs.append(switches[v]["udt6_sid"].split("/")[0])
+        return segs
+    segs = [uN_sid(switches[m]) for m in mids]
     segs.append(switches[v]["udt6_sid"].split("/")[0])
     return segs
 
@@ -182,6 +205,12 @@ def main() -> int:
         "--out", default=None,
         help="write all-pairs path/segment/weight data as JSON to this path",
     )
+    ap.add_argument(
+        "--uA", action="store_true",
+        help="use uA (interface-bound End.X) segments per hop instead of the "
+             "default uN (node SID, BGP-routed) -- both resolve to the same "
+             "physical path here, since every hop is a direct graph-neighbor",
+    )
     args = ap.parse_args()
 
     if not is_prime(args.q):
@@ -237,9 +266,9 @@ def main() -> int:
             return out
         w = data["sp"][0]
         nsps = data["nsps"]
-        out["sp"] = dict(relay=name_of(w), segments=segment_list(switches, u, [w], v))
+        out["sp"] = dict(relay=name_of(w), segments=segment_list(switches, u, [w], v, args.uA))
         out["nsps"] = [
-            dict(mids=[name_of(a), name_of(b)], segments=segment_list(switches, u, [a, b], v))
+            dict(mids=[name_of(a), name_of(b)], segments=segment_list(switches, u, [a, b], v, args.uA))
             for a, b in nsps
         ]
         out["weights"] = wmp_weights(len(nsps))
