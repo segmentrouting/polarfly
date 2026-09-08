@@ -4,8 +4,9 @@ Polarfly containerlab topology generator.
 
 Builds the Erdős–Rényi polarity graph of the projective plane PG(2, q)
 for prime q, and emits a containerlab YAML wiring `docker-sonic-vs:latest`
-switches according to that graph, with one `iejalapeno/alpine-srv6:1.0`
-host attached to each switch.
+switches according to that graph, with one `bmcdougall/alpine-srv6-scapy:1.0`
+host attached to each switch (iperf3/scapy/encap.red-capable iproute2 --
+a superset of the plain iejalapeno/alpine-srv6:1.0 base it's built from).
 
 For q = 13 (default):
   - Nodes (switches):     q^2 + q + 1                  = 183
@@ -116,16 +117,27 @@ def mgmt_ip(network_24_third_octet: int, host: int) -> str:
     return f"172.100.{network_24_third_octet}.{host}"
 
 
-def build_wiring(points, edges, absolute, q: int) -> Dict:
+def build_wiring(points, edges, absolute, q: int, variant: str = "sonic-vs") -> Dict:
     """Compute the canonical (switch, port, peer, ip) wiring used by both
     YAML and config emitters. Returns a dict of derived data structures.
 
     Conventions:
       - Switches numbered 1..n; sw{i+1:0Wd}
       - Per-switch fabric ports allocated in edge-iteration order:
-          local port index 0,1,2,... -> Ethernet0, Ethernet4, Ethernet8, ...
+        - variant "sonic-vs": local port index 0,1,2,... -> Ethernet0,
+          Ethernet4, Ethernet8, ... (real Force10-S6000 4-lane stride, to
+          match docker-sonic-vs's platform.json). Host port is a single
+          global constant Ethernet{4*(q+1)}.
+        - variant "sonic-vpp": local port index 0,1,2,... -> Ethernet0,
+          Ethernet1, Ethernet2, ... (sequential single-lane, to match
+          docker-sonic-vpp's own baked-in platform.json AND its
+          create_if_mapping()/start_sonic.sh port-trim logic, which numbers
+          Ethernet<N> purely by position in the VPP_DPDK_PORTS list with no
+          gaps). Host port is therefore PER-SWITCH at Ethernet{radix}, where
+          radix is that switch's fabric port count (q for absolute points,
+          q+1 otherwise) -- absolute and non-absolute switches disagree on
+          which Ethernet index is "host".
         Absolute-point switches use one fewer fabric port (no self-loop).
-      - Host port reserved at Ethernet{4*(q+1)}.
       - Each fabric link e in [0..|E|-1] uses /127 from 2001:db8:1::/64:
           subnet  = 2001:db8:1:0:E::/127  with E encoded in low bits
           (we use 2 addresses per link, so subnet base = e * 2)
@@ -134,6 +146,7 @@ def build_wiring(points, edges, absolute, q: int) -> Dict:
     n = len(points)
     abs_set = set(absolute)
     width = max(3, len(str(n)))
+    is_vpp = variant == "sonic-vpp"
 
     def sw_name(i: int) -> str:
         return f"sw{i + 1:0{width}d}"
@@ -141,6 +154,8 @@ def build_wiring(points, edges, absolute, q: int) -> Dict:
     def host_name(i: int) -> str:
         return f"h{i + 1:0{width}d}"
 
+    # Global (sonic-vs) host port constant; unused for sonic-vpp, where
+    # host_port is computed per-switch below instead.
     host_port = f"Ethernet{4 * (q + 1)}"
 
     # Per-switch list of fabric ports in allocation order.
@@ -154,8 +169,12 @@ def build_wiring(points, edges, absolute, q: int) -> Dict:
         vlocal = next_port[v]
         next_port[u] += 1
         next_port[v] += 1
-        u_port = f"Ethernet{ulocal * 4}"
-        v_port = f"Ethernet{vlocal * 4}"
+        if is_vpp:
+            u_port = f"Ethernet{ulocal}"
+            v_port = f"Ethernet{vlocal}"
+        else:
+            u_port = f"Ethernet{ulocal * 4}"
+            v_port = f"Ethernet{vlocal * 4}"
 
         # /127 P2P from 2001:db8:1::/64 area, indexed by edge number.
         # Use 2001:db8:1:<eg>::/127 where eg = e_idx (so .0 and .1 of that /127).
@@ -194,6 +213,8 @@ def build_wiring(points, edges, absolute, q: int) -> Dict:
     switches: List[Dict] = []
     for i in range(n):
         sw_idx_1 = i + 1  # 1-based
+        radix = len(fabric_ports[i])
+        sw_host_port = f"Ethernet{radix}" if is_vpp else host_port
         # Locator: fc00:0:1<NNN>::/48 where NNN is 3 hex digits of switch id.
         # sw001 -> fc00:0:1001::/48, sw057 -> fc00:0:1039::/48 (57 = 0x39).
         loc_id = f"{0x1000 + sw_idx_1:04x}"  # e.g. 1001, 1002, ..., 1039
@@ -230,7 +251,8 @@ def build_wiring(points, edges, absolute, q: int) -> Dict:
                 idx1=sw_idx_1,
                 name=sw_name(i),
                 host_name=host_name(i),
-                host_port=host_port,
+                host_port=sw_host_port,
+                radix=radix,
                 fabric=fabric_ports[i],
                 is_absolute=(i in abs_set),
                 loc_id=loc_id,
@@ -252,6 +274,7 @@ def build_wiring(points, edges, absolute, q: int) -> Dict:
         q=q,
         width=width,
         host_port=host_port,
+        variant=variant,
         switches=switches,
         edges=edges,
         absolute=absolute,
@@ -262,10 +285,17 @@ def emit_yaml(points, edges, absolute, q: int, out_path: str, wiring: Dict,
               with_binds: bool = False, bind_dir_rel: str = "") -> None:
     n = wiring["n"]
     switches = wiring["switches"]
-    host_port = wiring["host_port"]
+    variant = wiring.get("variant", "sonic-vs")
+    is_vpp = variant == "sonic-vpp"
+    # NOTE: "sonic-vpp" is NOT a containerlab-registered kind (unlike
+    # "sonic-vs", which containerlab's binary knows natively). containerlab
+    # rejects unrecognized kind strings, so the vpp variant uses the generic
+    # "linux" kind with an explicit per-node image override instead.
+    kind = "linux" if is_vpp else "sonic-vs"
+    image = "docker-sonic-vpp:latest" if is_vpp else "docker-sonic-vs:latest"
 
     lines: List[str] = []
-    lines.append(f"# Polarfly q={q} containerlab topology")
+    lines.append(f"# Polarfly q={q} containerlab topology ({kind})")
     lines.append(f"# Generated by topogen2/polarfly_clab.py")
     lines.append(f"# Switches:        {n}")
     lines.append(f"# Fabric links:    {len(edges)}")
@@ -283,17 +313,50 @@ def emit_yaml(points, edges, absolute, q: int, out_path: str, wiring: Dict,
     lines.append("")
     lines.append("topology:")
     lines.append("  kinds:")
-    lines.append("    sonic-vs:")
-    lines.append("      image: docker-sonic-vs:latest")
-    lines.append("    linux:")
-    lines.append("      image: iejalapeno/alpine-srv6:1.0")
+    if is_vpp:
+        # Switches and hosts both use the generic "linux" kind here (no
+        # "sonic-vpp" kind exists in containerlab); each node overrides
+        # `image:` individually below instead of relying on a kind default.
+        lines.append("    linux: {}")
+    else:
+        lines.append(f"    {kind}:")
+        lines.append(f"      image: {image}")
+        lines.append("    linux:")
+        lines.append("      image: bmcdougall/alpine-srv6-scapy:1.0")
     lines.append("")
     lines.append("  nodes:")
     for s in switches:
         ip = f"172.100.0.{11 + s['idx']}"
-        if with_binds:
+        if is_vpp:
+            # radix+1 veth ports total (fabric + host), in Ethernet0..Ethernet{radix}
+            # order; VPP_DPDK_PORTS position purely determines the EthernetN
+            # numbering (see start_sonic.sh's create_if_mapping()) -- no gaps,
+            # no relation to sonic-vs's stride-4 lane convention.
+            num_ports = s["radix"] + 1
+            dpdk_ports = ",".join(f"eth{i + 1}" for i in range(num_ports))
             lines.append(f"    {s['name']}:")
-            lines.append(f"      kind: sonic-vs")
+            lines.append(f"      kind: {kind}")
+            lines.append(f"      image: {image}")
+            lines.append(f"      mgmt-ipv4: {ip}")
+            # docker-sonic-vpp needs the same --privileged its own
+            # start_sonic_vpp.sh grants via `docker run --privileged` (network
+            # namespace/interface manipulation, syncd, etc.)
+            lines.append(f"      privileged: true")
+            lines.append(f"      env:")
+            lines.append(f'        VPP_DPDK_PORTS: "{dpdk_ports}"')
+            lines.append(f'        SONIC_NUM_PORTS: "{num_ports}"')
+            lines.append(f'        DPDK_DISABLE: "y"')
+            if with_binds:
+                lines.append(f"      binds:")
+                lines.append(
+                    f"        - {bind_dir_rel}/{s['name']}/config_db.json:/etc/sonic/config_db.json"
+                )
+                lines.append(
+                    f"        - {bind_dir_rel}/{s['name']}/frr.conf:/etc/sonic/frr/frr.conf"
+                )
+        elif with_binds:
+            lines.append(f"    {s['name']}:")
+            lines.append(f"      kind: {kind}")
             lines.append(f"      mgmt-ipv4: {ip}")
             lines.append(f"      binds:")
             lines.append(
@@ -303,7 +366,7 @@ def emit_yaml(points, edges, absolute, q: int, out_path: str, wiring: Dict,
                 f"        - {bind_dir_rel}/{s['name']}/frr.conf:/etc/sonic/frr/frr.conf"
             )
         else:
-            lines.append(f"    {s['name']}: {{ kind: sonic-vs, mgmt-ipv4: {ip} }}")
+            lines.append(f"    {s['name']}: {{ kind: {kind}, mgmt-ipv4: {ip} }}")
     lines.append("")
     for s in switches:
         ip = f"172.100.1.{11 + s['idx']}"
@@ -316,11 +379,17 @@ def emit_yaml(points, edges, absolute, q: int, out_path: str, wiring: Dict,
     lines.append("")
     lines.append("  links:")
     lines.append("    # ---- fabric links (polarity adjacencies) ----")
-    lines.append("    # NOTE: link endpoints use eth<N> containerlab naming, where N = SONiC")
-    lines.append("    # 'index' field + 1 (eth1=Ethernet0, eth2=Ethernet4, ..., eth(q+2)=host port).")
-    lines.append("    # SONiC's syncd virtual-SAI creates the Ethernet<N> hostif itself and binds")
-    lines.append("    # it to the corresponding ethN veth via port_config.ini's index field.")
-    lines.append("    # Attaching as Ethernet<N> directly causes SAI_HOSTIF create failures.")
+    if is_vpp:
+        lines.append("    # NOTE: link endpoints use eth<N> containerlab naming. Inside the")
+        lines.append("    # container, start_sonic.sh's create_if_mapping() numbers EthernetN")
+        lines.append("    # purely by VPP_DPDK_PORTS list position (no gaps): eth1->Ethernet0,")
+        lines.append("    # eth2->Ethernet1, ..., with the host port last (Ethernet{radix}).")
+    else:
+        lines.append("    # NOTE: link endpoints use eth<N> containerlab naming, where N = SONiC")
+        lines.append("    # 'index' field + 1 (eth1=Ethernet0, eth2=Ethernet4, ..., eth(q+2)=host port).")
+        lines.append("    # SONiC's syncd virtual-SAI creates the Ethernet<N> hostif itself and binds")
+        lines.append("    # it to the corresponding ethN veth via port_config.ini's index field.")
+        lines.append("    # Attaching as Ethernet<N> directly causes SAI_HOSTIF create failures.")
     # Emit edges in original order; pull port from wiring (lower index endpoint
     # is the "u" side of each edge by construction).
     for e_idx, (u, v) in enumerate(edges):
@@ -334,10 +403,11 @@ def emit_yaml(points, edges, absolute, q: int, out_path: str, wiring: Dict,
             f'"{switches[v]["name"]}:{v_eth}"]'
         )
     lines.append("    # ---- host links (one alpine-srv6 per switch) ----")
-    # Host port has SONiC index = (q+1) (just past the last fabric port),
-    # so containerlab interface number = (q+1) + 1 = q+2.
-    host_eth = f"eth{q + 2}"
     for s in switches:
+        # sonic-vs: host port is a fixed global constant Ethernet{4*(q+1)} -> eth{q+2}.
+        # sonic-vpp: host port is per-switch Ethernet{radix}, always the last
+        # entry in VPP_DPDK_PORTS -> eth{radix+1}.
+        host_eth = f"eth{s['radix'] + 1}" if is_vpp else f"eth{q + 2}"
         lines.append(
             f'    - endpoints: ["{s["name"]}:{host_eth}", "{s["host_name"]}:eth1"]'
         )
@@ -422,13 +492,50 @@ def _port_table(used_ports: List[str]) -> Dict[str, Dict[str, str]]:
     return out
 
 
-def build_config_db(s: Dict) -> Dict:
+# docker-sonic-vpp's own baked-in platform.json for HWSKU=Force10-S6000
+# (PLATFORM=x86_64-kvm_x86_64-r0) -- confirmed by reading that file directly.
+# Unlike the *real* Force10-S6000 hwsku (S6000_LANES above, stride-4), this
+# is sequential: Ethernet<N> is simply the Nth front-panel port, one per
+# index, lanes taken straight from the image's platform.json.
+VPP_LANES: List[str] = [
+    "25,26,27,28",
+    "29,30,31,32",
+    "33,34,35,36",
+    "37,38,39,40",
+    "45,46,47,48",
+    "41,42,43,44",
+    "1,2,3,4",
+    "5,6,7,8",
+    "13,14,15,16",
+    "9,10,11,12",
+]
+
+
+def _port_table_vpp(used_ports: List[str]) -> Dict[str, Dict[str, str]]:
+    """Build a PORT table for docker-sonic-vpp's sequential Ethernet<N>
+    naming, sourced from its own platform.json lane assignments."""
+    out: Dict[str, Dict[str, str]] = {}
+    for p in used_ports:
+        idx = int(p[len("Ethernet"):])
+        out[p] = {
+            "lanes": VPP_LANES[idx],
+            "alias": f"fortyGigE0/{idx}",
+            "index": str(idx),
+            "speed": "40000",
+            "admin_status": "up",
+            "mtu": "9100",
+        }
+    return out
+
+
+def build_config_db(s: Dict, variant: str = "sonic-vs") -> Dict:
     """Build the config_db.json dict for switch s."""
     fabric = s["fabric"]
     host_port = s["host_port"]
 
     # All ports we want SONiC to instantiate: every fabric port + the host port.
     used_ports = [p["port"] for p in fabric] + [host_port]
+    port_table = _port_table_vpp(used_ports) if variant == "sonic-vpp" else _port_table(used_ports)
 
     # INTERFACE table: P2P /127 on each fabric port; /64 on host port (in VRF).
     interfaces: Dict[str, Dict] = {}
@@ -459,7 +566,7 @@ def build_config_db(s: Dict) -> Dict:
             f"Loopback0|{s['loopback_v6']}/128": {},
         },
         "INTERFACE": interfaces,
-        "PORT": _port_table(used_ports),
+        "PORT": port_table,
     }
     return cfg
 
@@ -584,11 +691,12 @@ def emit_configs(wiring: Dict, out_dir: str) -> int:
     """Write per-switch config_db.json and frr.conf into out_dir/<sw_name>/.
     Returns number of switches written."""
     switches = wiring["switches"]
+    variant = wiring.get("variant", "sonic-vs")
     os.makedirs(out_dir, exist_ok=True)
     for s in switches:
         sw_dir = os.path.join(out_dir, s["name"])
         os.makedirs(sw_dir, exist_ok=True)
-        cfg = build_config_db(s)
+        cfg = build_config_db(s, variant=variant)
         with open(os.path.join(sw_dir, "config_db.json"), "w") as fh:
             json.dump(cfg, fh, indent=4)
             fh.write("\n")
@@ -601,9 +709,20 @@ def emit_configs(wiring: Dict, out_dir: str) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[1])
     ap.add_argument("--q", type=int, default=13, help="prime order (default: 13)")
+    ap.add_argument(
+        "--variant",
+        choices=["sonic-vs", "sonic-vpp"],
+        default="sonic-vs",
+        help="switch dataplane: sonic-vs (default, AF_PACKET-vs-Linux-kernel "
+             "reference) or sonic-vpp (VPP/AF_PACKET dataplane)",
+    )
     here = os.path.dirname(os.path.abspath(__file__))
     # New layout: polarfly/q<q>/{yaml, adj, sonic-config/<sw>/...}
-    default_topo_dir = os.path.normpath(os.path.join(here, "..", "q{q}"))
+    # (sonic-vpp variant nests one level deeper, under q<q>/sonic-vpp/)
+    is_vpp_argv = "--variant" in sys.argv and "sonic-vpp" in sys.argv
+    default_topo_dir = os.path.normpath(
+        os.path.join(here, "..", "q{q}", "sonic-vpp" if is_vpp_argv else "")
+    )
     default_out = os.path.join(default_topo_dir, "sonic-polarfly-q{q}-nobinds.clab.yaml")
     default_out_binds = os.path.join(
         default_topo_dir, "sonic-polarfly-q{q}.clab.yaml"
@@ -680,7 +799,7 @@ def main() -> int:
     edges, absolute = polarity_edges(points, args.q)
     verify(points, edges, absolute, args.q)
 
-    wiring = build_wiring(points, edges, absolute, args.q)
+    wiring = build_wiring(points, edges, absolute, args.q, variant=args.variant)
 
     topo_dir = args.topo_dir.replace("{q}", str(args.q))
     out_path = args.out.replace("{q}", str(args.q))
@@ -709,6 +828,7 @@ def main() -> int:
     if args.emit_configs:
         cfg_count = emit_configs(wiring, cfg_dir)
 
+    print(f"variant          = {args.variant}")
     print(f"q                = {args.q}")
     print(f"switches         = {len(points)}")
     print(f"fabric radix     = {args.q + 1}")

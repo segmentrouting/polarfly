@@ -49,7 +49,7 @@ Cabling uses ShuffleBoxes — passive optical devices that internally permute fi
 
 PolarFly is the first diameter-2 topology to asymptotically reach the Moore bound, exceeding 96% of theoretical peak at practical radixes — i.e., it packs nearly the maximum possible number of nodes for its degree and diameter. Every router pair is at most two hops apart allowing for flat topologies of very wide diameter. PolarFly also offers roughly 50% more feasible degrees than Slim Fly [5], the prior state of the art, and supports modular incremental growth through its cluster structure.
 
-PolarFly connects N = q² + q + 1 routers (with q being an **odd** prime number or prime power) with fabric degree q + 1, as the Erdős–Rényi polarity graph ER_q derived from the projective plane PG(2, q). For example, with q = 7 on a 16-port switch, 8 ports go to fabric (degree q+1 = 8) and 8 to servers, yielding a fabric of N = 7² + 7 + 1 = 57 switches — 57 nodes from just 8 fabric uplinks each. (See Appendix A for further detail.)
+PolarFly connects N = q² + q + 1 routers (with q being a prime number or prime power) with fabric degree q + 1, as the Erdős–Rényi polarity graph ER_q derived from the projective plane PG(2, q). For example, with q = 7 on a 16-port switch, 8 ports go to fabric (degree q+1 = 8) and 8 to servers, yielding a fabric of N = 7² + 7 + 1 = 57 switches — 57 nodes from just 8 fabric uplinks each. (See Appendix A for further detail.)
 
 ### 2.3 The path diversity inversion
 
