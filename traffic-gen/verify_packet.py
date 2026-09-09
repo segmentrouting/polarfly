@@ -50,18 +50,18 @@ from polarfly_clab import (  # noqa: E402
     verify,
     build_wiring,
 )
-from path_calculator import build_adjacency, segment_list  # noqa: E402
+from path_calculator import build_adjacency, usid_carrier  # noqa: E402
 from provision import HOST_IFACE, forward_paths, integer_weights  # noqa: E402
 from run_test import path_label  # noqa: E402
 
 TEST_PORT = 9999
 
 
-def install_single_path_route(src_host: str, v_addr: str, segs: List[str]) -> None:
+def install_single_path_route(src_host: str, v_addr: str, carrier: str) -> None:
     subprocess.run(
         [
             "docker", "exec", src_host, "ip", "-6", "route", "replace", f"{v_addr}/128",
-            "encap", "seg6", "mode", "encap.red", "segs", ",".join(segs),
+            "encap", "seg6", "mode", "encap.red", "segs", carrier,
             "dev", HOST_IFACE,
         ],
         check=True,
@@ -73,11 +73,11 @@ def install_multipath_route(
 ) -> None:
     route_cmd = ["docker", "exec", src_host, "ip", "-6", "route", "replace", f"{v_addr}/128"]
     for i, mids in enumerate(all_paths):
-        segs = segment_list(switches, u, mids, v, use_uA)
+        carrier = usid_carrier(switches, u, mids, v, use_uA)
         route_cmd += [
             "nexthop", "via", u_via,
             "encap", "seg6", "mode", "encap.red",
-            "segs", ",".join(segs),
+            "segs", carrier,
             "dev", HOST_IFACE,
             "weight", str(weights[i]),
         ]
@@ -150,8 +150,8 @@ def main() -> int:
     print(f"=== verifying {src_name} -> {dst_name}: {num_paths} paths ===")
     results: List[bool] = []
     for i, mids in enumerate(all_paths):
-        segs = segment_list(switches, u, mids, v, args.uA)
-        install_single_path_route(src_host, v_addr, segs)
+        carrier = usid_carrier(switches, u, mids, v, args.uA)
+        install_single_path_route(src_host, v_addr, carrier)
         results.append(check_path(src_host, dst_host, v_addr, path_label(i)))
 
     print("\nrestoring weighted multipath route ...")

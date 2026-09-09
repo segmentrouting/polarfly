@@ -14,7 +14,17 @@ weights -- rather than us picking a path by addressing a different
 destination per path.
 
 For each `--pair`, this:
-  1. Sets `net.ipv6.fib_multipath_hash_policy=1` on the source host, so the
+  1. Bumps both hosts' `eth1` (the host-to-switch link) to jumbo MTU 9100,
+     matching the switch-side host-facing port (`q7-config.sh` already
+     bumps every switch `Ethernet<N>`, fabric and host-facing alike, to
+     9100 -- the host side of that same link was never touched and
+     defaults to 1500). SRv6's per-hop SID overhead (~32-48 bytes for a
+     2-3 SID path) can push an encap.red-encapsulated packet over 1500,
+     and Linux's seg6 LWT encap doesn't reliably surface that overhead to
+     the TCP stack's MSS/PMTU calculation -- causing fragmentation-driven
+     retransmits and depressed throughput, confirmed via retransmits seen
+     in earlier single-stream tests.
+  2. Sets `net.ipv6.fib_multipath_hash_policy=1` on the source host, so the
      kernel's ECMP/multipath hash includes L4 ports (TCP/UDP source and
      dest port), not just the L3 addresses. This is *required*: the
      default policy (0, L3-only) means every flow between the same two
@@ -24,14 +34,14 @@ For each `--pair`, this:
      different source ports all resolved to the same nexthop; with L4
      hashing enabled, the same 100 ports split ~84/16 against a 4:1 target
      weight.
-  2. Installs one multipath route on the source host to the destination's
+  3. Installs one multipath route on the source host to the destination's
      real address (`ip -6 route replace <dst>/128 nexthop via <sw-on-link-addr>
      encap seg6 mode encap.red segs ... weight W ...`, one nexthop per
      forward path). IPv6's multipath API requires an explicit `via`
      gateway per nexthop (a bare `dev`-only nexthop is rejected) -- the
      gateway is always the source switch's own address on the host link,
      regardless of which SRv6 path a given nexthop's segments describe.
-  3. Installs a single SP-only *return* route (source's real address, one
+  4. Installs a single SP-only *return* route (source's real address, one
      nexthop, no multipath) on the destination host, for basic two-way
      reachability only (iperf3's control channel is TCP even for UDP
      tests) -- not part of what's under test.
@@ -42,11 +52,13 @@ containerlab deploy against already-running containers.
 Usage:
   python3 traffic-gen/provision.py --q 7 --pair sw001 sw019 --pair sw002 sw033
   python3 traffic-gen/provision.py --q 7 --pair sw001 sw019 --dry-run
+  python3 traffic-gen/provision.py --q 7 --pairs-file pairs.json
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import subprocess
 import sys
@@ -65,7 +77,7 @@ from polarfly_clab import (  # noqa: E402
 from path_calculator import (  # noqa: E402
     build_adjacency,
     common_neighbor,
-    segment_list,
+    usid_carrier,
     wmp_weights,
 )
 
@@ -125,7 +137,20 @@ def provision_pair(
     all_paths: List[List[int]] = [sp] + nsps
     weights = integer_weights(len(nsps))
 
-    # 0. L4-aware ECMP hashing -- required, see module docstring point 1.
+    # 0a. Jumbo MTU on the host's link to its switch, matching the switch's
+    #     own host-facing port (q7-config.sh bumps every switch Ethernet<N>,
+    #     fabric and host-facing alike, to 9100). The host side of that same
+    #     link was never touched and defaults to 1500 -- SRv6's per-hop SID
+    #     overhead (~32-48 bytes for a 2-3 SID path) can push an
+    #     encap.red-encapsulated packet over 1500, and Linux's seg6 LWT
+    #     encap doesn't reliably surface that overhead to the TCP stack's
+    #     MSS/PMTU calculation, causing fragmentation-driven retransmits and
+    #     depressed throughput -- confirmed via retransmits seen in earlier
+    #     single-stream tests.
+    docker_exec(u_host, ["ip", "link", "set", HOST_IFACE, "mtu", "9100", "up"], dry_run)
+    docker_exec(v_host, ["ip", "link", "set", HOST_IFACE, "mtu", "9100", "up"], dry_run)
+
+    # 0b. L4-aware ECMP hashing -- required, see module docstring point 1.
     docker_exec(
         u_host,
         ["sysctl", "-w", "net.ipv6.fib_multipath_hash_policy=1"],
@@ -136,34 +161,34 @@ def provision_pair(
     #    forward path, all targeting the destination's single real address.
     route_cmd = ["ip", "-6", "route", "replace", f"{v_addr}/128"]
     for i, mids in enumerate(all_paths):
-        segs = segment_list(switches, u, mids, v, use_uA)
+        carrier = usid_carrier(switches, u, mids, v, use_uA)
         route_cmd += [
             "nexthop", "via", u_via,
             "encap", "seg6", "mode", "encap.red",
-            "segs", ",".join(segs),
+            "segs", carrier,
             "dev", HOST_IFACE,
             "weight", str(weights[i]),
         ]
         label = "SP" if i == 0 else f"NSP{i - 1}"
         print(f"    {label}: weight={weights[i]} via {'->'.join(switches[m]['name'] for m in mids)} "
-              f"segs={segs}")
+              f"segs={carrier}")
     docker_exec(u_host, route_cmd, dry_run)
 
     # 2. Return direction: single SP-only route, for reachability only.
     w = sp[0]
-    return_segs = segment_list(switches, v, [w], u, use_uA)
+    return_carrier = usid_carrier(switches, v, [w], u, use_uA)
     docker_exec(
         v_host,
         [
             "ip", "-6", "route", "replace", f"{u_addr}/128",
             "encap", "seg6", "mode", "encap.red",
-            "segs", ",".join(return_segs),
+            "segs", return_carrier,
             "dev", HOST_IFACE,
         ],
         dry_run,
     )
     print(f"    return path (reachability only): {u_addr} "
-          f"via {switches[w]['name']} segs={return_segs}")
+          f"via {switches[w]['name']} segs={return_carrier}")
 
 
 def main() -> int:
@@ -174,6 +199,11 @@ def main() -> int:
         help="a switch pair to provision, e.g. --pair sw001 sw019 "
              "(repeatable)",
     )
+    ap.add_argument(
+        "--pairs-file",
+        help="JSON file: a list of [SRC, DST] pairs, e.g. "
+             '[["sw001","sw019"], ["sw002","sw033"]] -- combined with any --pair flags',
+    )
     ap.add_argument("--dry-run", action="store_true", help="print commands, don't run them")
     ap.add_argument(
         "--uA", action="store_true",
@@ -182,8 +212,14 @@ def main() -> int:
     )
     args = ap.parse_args()
 
+    pairs = [tuple(p) for p in args.pair]
+    if args.pairs_file:
+        with open(args.pairs_file) as f:
+            pairs.extend(tuple(p) for p in json.load(f))
+    args.pair = pairs
+
     if not args.pair:
-        print("error: at least one --pair SRC DST is required", file=sys.stderr)
+        print("error: at least one --pair SRC DST (or --pairs-file) is required", file=sys.stderr)
         return 2
     if not is_prime(args.q):
         print(f"error: q={args.q} is not prime", file=sys.stderr)

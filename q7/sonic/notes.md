@@ -13,3 +13,9 @@
           }
         }
       ]
+
+### ip -6 host routes
+```bash
+ip -6 route add 2001:db8:a013::2 nexthop encap seg6 mode encap.red segs fc00:0:1033:1013:e000:: via 2001:db8:a001::1 dev eth1 weight 4 
+
+```

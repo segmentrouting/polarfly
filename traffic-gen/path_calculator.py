@@ -153,6 +153,50 @@ def segment_list(
     return segs
 
 
+def _hextets_after_block(addr: str) -> List[str]:
+    """Every SID here is `fc00:0:<...>::` (32-bit fc00:0::/32 block prefix,
+    trailing zero groups collapsed) -- strip the `::` and the fixed block
+    prefix, leaving just the significant 16-bit hextet(s) (one for a uN/uA
+    SID, two -- node id + `e000` sub-code -- for a uDT6 SID)."""
+    trimmed = addr[:-2] if addr.endswith("::") else addr
+    parts = trimmed.split(":")
+    assert parts[:2] == ["fc00", "0"], f"unexpected SID prefix: {addr}"
+    return parts[2:]
+
+
+def usid_carrier(
+    switches: List[Dict], u: int, mids: List[int], v: int, use_uA: bool = False
+) -> str:
+    """Compress segment_list()'s per-hop chain into a single F3216 uSID
+    carrier: one 128-bit address holding every hop's 16-bit node/adjacency
+    id back-to-back after the fixed fc00:0::/32 block prefix, terminating
+    in the destination's uDT6 sub-id -- e.g. SP via sw051 to sw019 becomes
+    `fc00:0:1033:1013:e000::` instead of the two separate addresses
+    `fc00:0:1033::` + `fc00:0:1013:e000::`. This is what should actually
+    ride on the wire (and what a controller programming host routes would
+    emit) -- `segment_list()`'s expanded multi-address form stays useful
+    for showing/debugging the hop-by-hop chain, but `ip -6 route ... segs`
+    should be given this single carrier, not a comma-joined list of
+    per-hop addresses.
+
+    SP/NSP paths are capped at 3 hops by construction (this is always true
+    regardless of q, since NSPs are exactly 3-hop and SP is 2-hop), so the
+    hextet count here (at most 3 hop-SIDs + 2 for uDT6 = 5) always fits
+    the 6-hextet budget (128 - 32 block bits = 96 bits = 6 x 16-bit); the
+    assertion below is a correctness backstop, not a scaling concern.
+    """
+    segs = segment_list(switches, u, mids, v, use_uA)
+    hextets: List[str] = []
+    for seg in segs:
+        hextets.extend(_hextets_after_block(seg))
+    max_hextets = 6
+    assert len(hextets) <= max_hextets, (
+        f"path too long to compress into a single uSID carrier: "
+        f"{len(hextets)} hextets (max {max_hextets}) for segs={segs}"
+    )
+    return "fc00:0:" + ":".join(hextets) + "::"
+
+
 # -----------------------------------------------------------------------------
 # W-CMP weights
 # -----------------------------------------------------------------------------
@@ -266,9 +310,17 @@ def main() -> int:
             return out
         w = data["sp"][0]
         nsps = data["nsps"]
-        out["sp"] = dict(relay=name_of(w), segments=segment_list(switches, u, [w], v, args.uA))
+        out["sp"] = dict(
+            relay=name_of(w),
+            segments=segment_list(switches, u, [w], v, args.uA),
+            usid_carrier=usid_carrier(switches, u, [w], v, args.uA),
+        )
         out["nsps"] = [
-            dict(mids=[name_of(a), name_of(b)], segments=segment_list(switches, u, [a, b], v, args.uA))
+            dict(
+                mids=[name_of(a), name_of(b)],
+                segments=segment_list(switches, u, [a, b], v, args.uA),
+                usid_carrier=usid_carrier(switches, u, [a, b], v, args.uA),
+            )
             for a, b in nsps
         ]
         out["weights"] = wmp_weights(len(nsps))
