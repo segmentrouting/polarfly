@@ -44,7 +44,16 @@ For each `--pair`, this:
   4. Installs a single SP-only *return* route (source's real address, one
      nexthop, no multipath) on the destination host, for basic two-way
      reachability only (iperf3's control channel is TCP even for UDP
-     tests) -- not part of what's under test.
+     tests) -- not part of what's under test. **Skipped** if the reverse
+     pair (dst, src) is *also* being provisioned in this same invocation
+     (checked across all `--pair`/`--pairs-file` entries together): that
+     reverse pair's own step 3 installs a real weighted multipath route at
+     the exact same (host, destination) this return-only route would
+     target, and `ip route replace` would let whichever direction is
+     provisioned second silently clobber the other's real multipath route
+     with a single SP-only path -- confirmed live with a bidirectional
+     pairs file, where one direction's traffic came back 100% SP / 0% NSP
+     even though it had been provisioned correctly moments earlier.
 
 Mirrors q7/sonic/q7-config.sh's deploy-time push pattern: runs AFTER
 containerlab deploy against already-running containers.
@@ -121,7 +130,8 @@ def integer_weights(num_nsp: int) -> List[int]:
 
 
 def provision_pair(
-    switches: List[Dict], adj, u: int, v: int, dry_run: bool, use_uA: bool = False
+    switches: List[Dict], adj, u: int, v: int, dry_run: bool, use_uA: bool = False,
+    skip_return: bool = False,
 ) -> None:
     u_name = switches[u]["name"]
     v_name = switches[v]["name"]
@@ -174,7 +184,20 @@ def provision_pair(
               f"segs={carrier}")
     docker_exec(u_host, route_cmd, dry_run)
 
-    # 2. Return direction: single SP-only route, for reachability only.
+    # 2. Return direction: single SP-only route, for reachability only --
+    #    but ONLY if the reverse pair (v, u) isn't *also* being provisioned
+    #    in this same batch. If it is, its own step 1 will install a real
+    #    weighted multipath route on v_host targeting u_addr -- the exact
+    #    same (host, destination) this return-only route would target.
+    #    Installing both means whichever runs second clobbers the first
+    #    with `route replace` (confirmed live: a bidirectional pairs file
+    #    silently downgraded one direction's real multipath route to a
+    #    single SP-only path, making that direction's traffic look 100%
+    #    SP with zero NSP split even though it was provisioned correctly).
+    if skip_return:
+        print(f"    return path skipped: {v_name} -> {u_name} is provisioned as its own pair "
+              f"in this batch, which already installs a real (better) multipath route here")
+        return
     w = sp[0]
     return_carrier = usid_carrier(switches, v, [w], u, use_uA)
     docker_exec(
@@ -233,6 +256,7 @@ def main() -> int:
     adj = build_adjacency(wiring["n"], edges)
     name_to_idx = {sw["name"]: sw["idx"] for sw in switches}
 
+    pairs_set = set(args.pair)
     for src_name, dst_name in args.pair:
         if src_name not in name_to_idx or dst_name not in name_to_idx:
             print(f"error: unknown switch name in --pair {src_name} {dst_name}", file=sys.stderr)
@@ -242,7 +266,8 @@ def main() -> int:
             print(f"error: {src_name} and {dst_name} are directly adjacent -- "
                   f"no SP/NSP split to provision for an adjacent pair", file=sys.stderr)
             return 2
-        provision_pair(switches, adj, u, v, args.dry_run, args.uA)
+        skip_return = (dst_name, src_name) in pairs_set
+        provision_pair(switches, adj, u, v, args.dry_run, args.uA, skip_return)
 
     return 0
 

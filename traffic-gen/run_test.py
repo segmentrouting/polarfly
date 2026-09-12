@@ -191,25 +191,54 @@ def resolve_path_for_port(
     return m.group(1).split()[0]  # each nexthop carries exactly one seg now
 
 
+def _launch_and_collect(
+    pairs_ctx: List[PairCtx], streams: int, duration: int,
+    udp: bool, bandwidth: str, length: Optional[int],
+) -> List[Tuple[PairCtx, Optional[Dict]]]:
+    procs = [(c, launch_client(c, streams, duration, udp, bandwidth, length)) for c in pairs_ctx]
+    results: List[Tuple[PairCtx, Optional[Dict]]] = []
+    for c, proc in procs:
+        out, err = proc.communicate()
+        if proc.returncode != 0:
+            print(f"  ! {c.label} iperf3 client failed: {err.decode(errors='replace')[:300]}",
+                  file=sys.stderr)
+            results.append((c, None))
+            continue
+        results.append((c, json.loads(out)))
+    return results
+
+
 def run_once(
     pairs_ctx: List[PairCtx], streams: int, duration: int,
     udp: bool, bandwidth: str, length: Optional[int],
 ) -> List[Tuple[PairCtx, Optional[Dict]]]:
     """Run one concurrent test across all pairs; return each pair's parsed
-    iperf3 JSON (None if that pair's client failed)."""
+    iperf3 JSON (None if that pair's client still failed after one retry).
+
+    A client occasionally fails with an empty-stderr "unable to read from
+    stream socket: Resource temporarily unavailable" under heavy
+    concurrent `docker exec` load -- confirmed transient (contention on
+    the orchestrating host itself, not the fabric), and more likely on a
+    container doing double duty as both a client for one pair and the
+    iperf3 server for another pair in the same batch. Failed pairs get
+    one retry (after a short pause) before being reported as failed."""
     dst_hosts = [c.dst_host for c in pairs_ctx]
     start_servers(dst_hosts)
     try:
-        procs = [(c, launch_client(c, streams, duration, udp, bandwidth, length)) for c in pairs_ctx]
-        results: List[Tuple[PairCtx, Optional[Dict]]] = []
-        for c, proc in procs:
-            out, err = proc.communicate()
-            if proc.returncode != 0:
-                print(f"  ! {c.label} iperf3 client failed: {err.decode(errors='replace')[:300]}",
-                      file=sys.stderr)
-                results.append((c, None))
-                continue
-            results.append((c, json.loads(out)))
+        results = _launch_and_collect(pairs_ctx, streams, duration, udp, bandwidth, length)
+        failed = [c for c, d in results if d is None]
+        if failed:
+            print(f"  retrying {len(failed)} failed client(s) after 1s: "
+                  f"{', '.join(c.label for c in failed)}")
+            time.sleep(1.0)
+            retried_by_label = {
+                c.label: d
+                for c, d in _launch_and_collect(failed, streams, duration, udp, bandwidth, length)
+            }
+            results = [
+                (c, retried_by_label.get(c.label, d) if d is None else d)
+                for c, d in results
+            ]
     finally:
         stop_servers(dst_hosts)
     return results
