@@ -5,7 +5,7 @@
 
 **Status:** DRAFT v0.7 — for internal review
 
-**Date:** August 2026
+**Date:** September 2026
 
 ---
 
@@ -315,7 +315,7 @@ The savings derive from PolarFly's flat topology: a 2-tier Clos dedicates roughl
 | Scale per port | — | Unbounded n | ~16K ToRs / ~4M ports at 2×q=127 | Gap closed at ≥51.2T radix |
 | Diameter / latency | WMP-PolarFly | Probabilistic (≈4–5 hops) | Deterministic 2 (L ≈ 2.6) | Gap grows with optics cost |
 | Per-bit cost & power | WMP-PolarFly | 9–45% under fat tree | Near Moore-bound floor | PolarFly advantage increases with bandwidth |
-| Path diversity | — | High (spray), non-minimal | 1 SP and ~q NSPs per slice | non-MRC comparison |
+| Path diversity | — | High (spray), non-minimal | 1 SP and ~q-1 NSPs per slice | non-MRC comparison |
 | Transit ASIC state | WMP-PolarFly | LPM + wide ECMP groups | LPM only; paths in encap memory | Avoids ECMP table pressure |
 | Control plane | WMP-PolarFly | Distributed protocol (Spraypoint) | IS-IS/BGP for liveness; paths algebraic | Spraypoint is not public |
 | Heterogeneity | RNG | Per-node degree mixing | Uniform per slice | Limited practical advantage for RNG |
