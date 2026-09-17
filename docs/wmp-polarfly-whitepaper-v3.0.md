@@ -30,8 +30,8 @@ Flat topologies, where switches interconnect directly with no aggregation layers
 
 **Figure 1**: *The 10-node Petersen Graph is an intuitive low-diameter topology showing how*
 *any node can reach any other non-directly connected node via a single two-hop shortest path*
-<img src=./images/figure-1.png width="400" height="400" alt="Figure 1">
 
+<img src=./images/figure-1.png width="400" height="400" alt="Figure 1">
 
 The common obstacle blocking deployment of low-diameter topologies: they provide far fewer equal-cost shortest paths per endpoint pair than a Clos, starving standard ECMP of the path entropy it needs for effective load balancing. Prior solutions required either HPC-class adaptive routing hardware (UGAL) or abandoning structured topologies entirely in favor of random graphs (Amazon RNG/Spraypoint) [1]. This paper's thesis is that WMP-PolarFly is a lower-cost, more efficient alternative to Clos and other datacenter topologies, deployable today on open standards. The key enabler is relocating path intelligence from the fabric to the encap node: SRv6 source routing concentrates all path state in host memory while the transit fabric carries only minimal-state LPM entries, dissolving the forwarding-state objection that has historically blocked structured low-diameter topologies on commodity hardware.
 
