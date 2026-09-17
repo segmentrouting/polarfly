@@ -1,8 +1,11 @@
 # WMP-PolarFly: Weighted Multipath Routing on Algebraically Optimal Low-Diameter Datacenter Topologies
 
 **Author:** Bruce McDougall, Cisco Systems
+
 **Co-author:** Christian Martin, Cisco Systems
+
 **Status:** DRAFT v3.0
+
 **Date:** September 2026
 
 ---
@@ -11,7 +14,7 @@
 
 Low-diameter topologies offer a compelling alternative to Clos fat trees for datacenter fabrics by eliminating spine layers and reducing switch count, optics, and per-bit power consumption. However, their adoption has been blocked by practical considerations around cabling complexity, lack of shortest-path ECMP, and the fact that k-shortest-path routing techniques that could compensate are generally not realized on commodity switch ASICs.
 
-This paper presents **WMP-PolarFly**, a routing architecture that resolves these objections for the PolarFly topology. WMP-PolarFly uses SRv6 uSID source routing to steer traffic across a source-destination pair's **shortest path (SP)** and **next-shortest-paths (NSPs)** with algebraically derived weights. The SP and NSP set is computed directly from the PolarFly graph's projective-plane coordinates, requiring no path-computation protocol, no topology probing, and no transit forwarding state beyond plain LPM. We present deployment configurations spanning native high-bandwidth fabric links for both AI training clusters and general-purpose cloud, multi-tenant VPC overlays with combined transport and service uSID carriers, and physically separate PolarFly planes for first-hop switch redundancy. We compare WMP-PolarFly against Clos fat trees, Amazon's RNG random-graph architecture, and the Spritz sender-based load-balancing framework, and demonstrate that WMP-PolarFly matches or exceeds each on switch count, optics, and per-bit cost while delivering deterministic diameter-2 latency on open standards deployable today.
+This paper presents **WMP-PolarFly** (Weighted Multi-Path Polarfly), a routing architecture that resolves these objections for the PolarFly topology. WMP-PolarFly uses SRv6 uSID source routing to steer traffic across a source-destination pair's **shortest path (SP)** and set of **next-shortest-paths (NSPs)** with algebraically derived weights. The SP and NSP set is computed directly from the PolarFly graph's projective-plane coordinates, requiring no path-computation protocol, no topology probing, and no transit forwarding state beyond plain LPM. We present deployment configurations spanning native high-bandwidth fabric links for both AI training clusters and general-purpose cloud, multi-tenant VPC overlays with combined transport and service uSID carriers, and physically separate PolarFly planes for first-hop switch redundancy. We compare WMP-PolarFly against Clos fat trees, Amazon's RNG random-graph architecture, and the Spritz sender-based load-balancing framework, and demonstrate that WMP-PolarFly matches or exceeds each on switch count, optics, and per-bit cost while delivering deterministic diameter-2 latency on open standards deployable today.
 
 ---
 
@@ -26,6 +29,7 @@ Clos fat trees have dominated datacenter fabric design for over a decade, and fo
 Flat topologies, where switches interconnect directly with no aggregation layers, have promised an escape from the Clos cost curve for over a decade. The key insight: if every switch serves both endpoints and fabric, no switch is dedicated purely to transit. Examples include Jellyfish [12], which first demonstrated that random regular graphs could match Clos throughput at lower cost; Slim Fly [5] and Xpander [6], which showed that structured graphs could approach theoretical efficiency limits; and PolarFly [2], which achieved the first asymptotic match to the Moore bound at diameter 2, the theoretical maximum number of nodes for a given degree and diameter.
 
 **Figure 1**: *The 10-node Petersen Graph is an intuitive low-diameter topology showing how any node can reach any other non-directly connected node via a single two-hop shortest path*
+<img src=./images/figure-1.png width="400" height="400" align="left" alt="Figure 1">
 
 The common obstacle: these topologies provide far fewer equal-cost shortest paths per endpoint pair than a Clos, starving standard ECMP of the path entropy it needs for effective load balancing. Prior solutions required either HPC-class adaptive routing hardware (UGAL) or abandoning structured topologies entirely in favor of random graphs (Amazon RNG/Spraypoint) [1]. This paper's thesis is that WMP-PolarFly is a lower-cost, more efficient alternative to Clos and other datacenter topologies, deployable today on open standards. The key enabler is relocating path intelligence from the fabric to the encap node: SRv6 source routing concentrates all path state in host memory while the transit fabric carries only minimal-state LPM entries, dissolving the forwarding-state objection that has historically blocked structured low-diameter topologies on commodity hardware.
 
