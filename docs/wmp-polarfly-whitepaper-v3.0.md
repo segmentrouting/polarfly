@@ -28,8 +28,7 @@ Clos fat trees have dominated datacenter fabric design for over a decade, and fo
 
 Flat topologies, where switches interconnect directly with no aggregation layers, have promised an escape from the Clos cost curve for over a decade. The key insight: if every switch serves both endpoints and fabric, no switch is dedicated purely to transit. Examples include Jellyfish [12], which first demonstrated that random regular graphs could match Clos throughput at lower cost; Slim Fly [5] and Xpander [6], which showed that structured graphs could approach theoretical efficiency limits; and PolarFly [2], which achieved the first asymptotic match to the Moore bound at diameter 2, the theoretical maximum number of nodes for a given degree and diameter.
 
-**Figure 1**: *The 10-node Petersen Graph is an intuitive low-diameter topology showing how*
-*any node can reach any other non-directly connected node via a single two-hop shortest path*
+**Figure 1**: *The 10-node Petersen Graph is an intuitive low-diameter topology showing how any node can reach any other non-directly connected node via a single two-hop shortest path*
 
 <img src=./images/figure-1.png width="400" height="400" alt="Figure 1">
 
@@ -41,7 +40,7 @@ This paper makes five contributions:
 
 1. **WMP-PolarFly architecture**: a weighted multipath routing design where the SP and NSPs are derived algebraically from PolarFly's projective-plane coordinates, with SRv6 uSID encapsulation concentrating path state at the encap node while transit switches carry only O(n) LPM entries.
 
-2. **Encap/decap architecture**: an analysis of three encapsulation models — host-based encap with host decap (Model 1), host-based encap with egress-leaf decap (Model 2), and leaf-based encap with leaf decap (Model 3) — with a recommendation for Models 1 or 2, which place path state in cheap host DRAM rather than constrained switch or NIC memory. The choice of decap location (host or egress leaf) depends on use case and scale requirements.
+2. **Encap/decap architecture**: an analysis of three encapsulation models — host-based encap with host decap (Model 1), host-based encap with egress-leaf decap (Model 2), and leaf-based encap with leaf decap (Model 3) — with a recommendation for Models 1 or 2, which place path state in abundant host DRAM rather than constrained switch or NIC memory. The choice of decap location (host or egress leaf) depends on use case and scale requirements.
 
 3. **Multi-tenant VPC overlay**: a uSID carrier composition that combines transport path (SP/NSP) with tenant service function (uDT6) in a single SRv6 header, using on-demand algebraic path computation that eliminates control-plane consultation for per-flow path setup.
 
@@ -53,7 +52,7 @@ This paper makes five contributions:
 
 Section 2 presents PolarFly's topology foundations and the path diversity challenge. Section 3 develops the WMP-PolarFly architecture including encap/decap models, resilience, and multi-tenant considerations. Section 4 analyzes deployment configurations. Section 5 examines deployment scenarios for AI backend and general-purpose cloud. Section 6 provides comparative analysis against Clos, RNG, and Spritz. Section 7 concludes.
 
-WMP-PolarFly builds on open-source components (FRR, SONiC), Ethernet, and standard SRv6 (RFC 8986 [8], RFC 9256 [7]), and is deployable today. Availability constraints of alternative architectures are discussed in Section 6.2.
+It should be noted, WMP-PolarFly architecture is built on standard Ethernet and SRv6 (RFC 8986 [8], RFC 9256 [7]), and is deployable today. Availability constraints of alternative architectures are discussed in Section 6.2.
 
 ---
 
@@ -61,17 +60,19 @@ WMP-PolarFly builds on open-source components (FRR, SONiC), Ethernet, and standa
 
 ### 2.1 Construction and properties
 
-PolarFly [2] is defined by a single parameter **q**, which must be an odd prime or odd prime power. From q, three properties follow directly:
+A PolarFly [2] topology is defined by a single parameter **q**, which must be an odd prime or odd prime power. From q, three properties follow directly:
 
 - **N = q² + q + 1** — the number of switches in the fabric
 - **Fabric degree = q + 1** — the number of fabric-facing ports per switch
 - **Diameter = 2** — the maximum number of hops between any two switches
 
-The topology is the Erdős–Rényi polarity graph ER_q over the projective plane PG(2, q). Each switch is assigned a projective coordinate, a 3-tuple (a, b, c) over the finite field GF(q), and two switches are directly connected if and only if their coordinates are orthogonal: a₁a₂ + b₁b₂ + c₁c₂ ≡ 0 (mod q).
-
-For example, with q = 7 on a 16-port switch, 8 ports serve the fabric (degree q+1 = 8) and 8 serve endpoints, yielding a fabric of 7² + 7 + 1 = 57 switches from just 8 fabric uplinks each. PolarFly asymptotically reaches the Moore bound, the theoretical maximum node count for a given degree and diameter, exceeding 96% efficiency at practical radixes and 99% at q = 127. It is the most scale-efficient diameter-2 topology known. (See Appendix A for the odd-prime-power constraint and feasible-degree lattice.)
+The PolarFly network is built on a structured graph design (the Erdős–Rényi polarity graph) that dictates how these properties translate into physical wiring. Rather than using random layouts, every switch is assigned a unique 3-part coordinate identifier, and a direct link is established between any two switches whose coordinates satisfy a deterministic matching rule—essentially, a zero-mod-q dot product.
 
 **Figure 2**: *A 57-node q = 7 PolarFly topology. Image credit Lakhotia et al.*
+
+<img src=./images/figure-2.png width="400" height="400" alt="Figure 2">
+
+For example, with q = 7 on a 16-port switch, 8 ports serve the fabric (degree q+1 = 8) and 8 serve endpoints, yielding a fabric of 7² + 7 + 1 = 57 switches from just 8 fabric uplinks each. PolarFly asymptotically reaches the Moore bound, the theoretical maximum node count for a given degree and diameter, exceeding 96% efficiency at practical radixes and 99% at q = 127. It is the most scale-efficient diameter-2 topology known. (See Appendix A for the odd-prime-power constraint and feasible-degree lattice.)
 
 **Table 1: PolarFly fabric sizes at selected values of q**
 
