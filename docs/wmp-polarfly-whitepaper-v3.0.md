@@ -28,7 +28,9 @@ Clos fat trees have dominated datacenter fabric design for over a decade, and fo
 
 Flat topologies, where switches interconnect directly with no aggregation layers, have promised an escape from the Clos cost curve for over a decade. The key insight: if every switch serves both endpoints and fabric, no switch is dedicated purely to transit. Examples include Jellyfish [12], which first demonstrated that random regular graphs could match Clos throughput at lower cost; Slim Fly [5] and Xpander [6], which showed that structured graphs could approach theoretical efficiency limits; and PolarFly [2], which achieved the first asymptotic match to the Moore bound at diameter 2, the theoretical maximum number of nodes for a given degree and diameter.
 
-**Figure 1**: *The 10-node Petersen Graph is an intuitive low-diameter topology showing how any node can reach any other non-directly connected node via a single two-hop shortest path*
+**Figure 1**: *The 10-node Petersen Graph is an intuitive low-diameter topology showing how*
+
+*any node can reach any other non-directly connected node via a single two-hop shortest path*
 <img src=./images/figure-1.png width="400" height="400" alt="Figure 1">
 
 
