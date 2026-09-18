@@ -86,21 +86,19 @@ For example, with q = 7 on a 16-port switch, 8 ports serve the fabric (degree q+
 
 ### 2.2 The path diversity inversion
 
-PolarFly's efficiency comes from a structural property: **no two switches share more than one common neighbor**. This maximizes scale (edges are never wasted on redundant two-hop paths) but creates a routing challenge: between most non-adjacent switch pairs, there is only **one** shortest (2-hop) path. In networking terms, every source-destination pair has exactly one spine to traverse, with no second equal-cost path to hash onto.
-
-The irony: the property that makes PolarFly the most efficient topology simultaneously starves it of the path redundancy that ECMP depends on. **Optimality and path diversity are structurally in tension.**
+PolarFly's efficiency comes from a structural property: **no two switches share more than one common neighbor**. This maximizes scale (edges are never wasted on redundant two-hop paths) but creates a routing challenge: between most non-adjacent switch pairs, there is only **one** shortest (2-hop) path. In networking terms, every source-destination pair has exactly one spine to traverse, with no second equal-cost path to hash onto. Ironically, the property that makes PolarFly the most efficient topology simultaneously starves it of the shortest-path redundancy that ECMP depends on.
 
 ### 2.3 Routing approaches for low-diameter topologies
 
 Four approaches address the path diversity challenge, solving the same problem with different assumptions about what the operator controls and what guarantees they receive in return:
 
-**UGAL / in-network adaptive routing.** Switches sense congestion in real time and deflect traffic onto longer non-minimal paths. This is the standard approach in the HPC Dragonfly and Slim Fly lineage. It delivers real-time adaptivity but requires adaptive-routing hardware that commodity Ethernet ASICs generally do not provide, though certain implementations on standard hardware may be feasible in constrained settings.
+**UGAL / in-network adaptive routing.** Switches sense congestion in real time and deflect traffic onto longer non-minimal paths. This is the standard approach in the HPC Dragonfly and Slim Fly lineage. It delivers real-time adaptivity but requires adaptive-routing hardware that commodity Ethernet ASICs generally do not provide.
 
 **RNG / Spraypoint (topology randomness).** Amazon's RNG [1] uses quasi-random graphs where the randomness of the wiring provides path diversity natively. Spraypoint sprays flows across the full neighbor set using standard ECMP, with traffic converging through waypoint nodes. It achieves diversity through topology design but requires a custom protocol that is not publicly available. The cost is path length: typically 4–5 hops versus PolarFly's diameter of 2.
 
 **Spritz (endpoint probing).** Bonato et al.'s Spritz [13] moves adaptive routing to the endpoint on commodity Ethernet, using ECN, packet trimming, and timeout feedback to probe and cache efficient paths. It works on any low-diameter topology without needing to know the graph structure, but must discover paths empirically before reaching steady state.
 
-**WMP-PolarFly (algebraic derivation).** The approach presented in this paper: the endpoint derives all paths from the source and destination's projective coordinates using finite-field arithmetic, programs them as SRv6 segment lists, and distributes traffic with explicit weights. It requires SRv6 encapsulation and coordinate assignment, but in return delivers deterministic paths with zero discovery latency and no in-network state beyond plain LPM.
+**WMP-PolarFly (algebraic derivation).** The approach presented in this paper: the endpoint derives the set of SP + NSPs from the source and destination's projective coordinates using finite-field arithmetic, programs them as SRv6 segment lists, and distributes traffic with explicit weights. It requires SRv6 encapsulation and coordinate assignment, but in return delivers deterministic paths with zero discovery latency and no in-network state beyond plain LPM.
 
 ---
 
@@ -116,6 +114,8 @@ For a given non-directly connected source-destination pair in a PolarFly fabric 
 For q = 7: **1 SP + 6 NSPs = 7 total forwarding paths** for most pairs. For q = 31: 1 SP + ~30 NSPs. For q = 127: 1 SP + ~126 NSPs.
 
 **Figure 3**: *Node-1 to Node-34 in a 57-node q = 7 fabric: one SP and six NSPs*
+
+<img src=./images/figure-3.png width="400" height="400" alt="Figure 3">
 
 ### 3.2 Algebraic path derivation
 
