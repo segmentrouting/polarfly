@@ -68,17 +68,19 @@ The PolarFly network is built on a structured graph design (the Erdős–Rényi 
 
 **Figure 2**: *A 57-switch q = 7 PolarFly topology. Image credit Lakhotia et al.*
 
+<img src=./images/figure-2.png width="400" height="400" alt="Figure 2">
+
 For example, with q = 7 on a 16-port switch, 8 ports serve the fabric (degree q+1 = 8) and 8 serve endpoints, yielding a fabric of 7² + 7 + 1 = 57 switches from just 8 fabric uplinks each. PolarFly asymptotically reaches the Moore bound, the theoretical maximum switch count for a given degree and diameter, exceeding 96% efficiency at practical radixes and 99% at q = 127. It is the most scale-efficient diameter-2 topology known. (See Appendix A for the odd-prime-power constraint and feasible-degree lattice.)
 
 **Table 1: PolarFly fabric sizes at selected values of q**
 
-| q | Type | Switches (q²+q+1) | Fabric degree (q+1) |
-|---|---|---|---|
-| 7 | prime | 57 | 8 |
-| 31 | prime | 993 | 32 |
-| 61 | prime | 3,783 | 62 |
-| 127 | prime | 16,257 | 128 |
-| 251 | prime | 63,253 | 252 |
+| q | Switches (q²+q+1) | Fabric degree (q+1) |
+|---|---|---|
+| 7 | 57 | 8 |
+| 31 | 993 | 32 |
+| 61 | 3,783 | 62 |
+| 127 | 16,257 | 128 |
+| 251 | 63,253 | 252 |
 
 ### 2.2 The path diversity inversion
 
