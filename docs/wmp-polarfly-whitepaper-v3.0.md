@@ -121,9 +121,25 @@ For q = 7: **1 SP + 6 NSPs = 7 total forwarding paths** for most pairs. For q = 
 
 The property that distinguishes WMP-PolarFly from generic source routing: **the SP and NSP set is algebraically derivable from endpoint coordinates**.
 
-The SP relay between two non-adjacent nodes with coordinates A and C is the cross product A × C in GF(q), a single finite-field computation yielding the relay's coordinates directly. The NSPs are enumerated by iterating over A's remaining neighbors (excluding the relay and any triangle-adjacent neighbor) and computing their common neighbor with C.
+The SP relay node between two non-adjacent nodes with coordinates A and C is the cross product A × C in GF(q), a single finite-field computation yielding the SP relay's coordinates directly. The NSPs are enumerated by iterating over A's remaining neighbors and computing their common neighbor with C. To ensure disjointness we exclude the relay and any 'potential-NSP' midpoint who uses the same SP relay node to get to C.
 
-**Worked example (q = 7).** Every switch has a 3-digit mod-7 address. Router A = (1, 0, 2) wants to reach C = (1, 4, 6). They are not adjacent (dot product = 6 ≠ 0). The SP relay B is the cross product: B = A × C mod 7, yielding one canonical projective point. The encap node emits the SRv6 segment list [uSID-B, uSID-C]. The same arithmetic enumerates 6 NSPs, each through a different first-hop neighbor, producing 6 additional three-SID segment lists.
+**Worked example (q = 7).** Every switch has a 3-digit mod-7 address. Instead of A to C let's use Node-10 = (1, 0, 1) to Node-19 = (1, 1, 3). They are not adjacent (their combined dot product 1x1 + 0x1 + 1x3 = 4 which is ≠ 0). The SP relay B is the cross product: B = A × C mod 7, yielding one canonical projective point, which in our example is Node-29. The encap node emits the SRv6 segment list [uSID-B, uSID-C]. The same arithmetic enumerates 6 NSPs, each through a different first-hop neighbor, producing 6 additional three-SID segment lists. 
+
+**Table 2: SP and NSP list for Node-10 to Node-19 in a q = 7 Polarfly topology**
+
+| Path  | Type  | Route                | Segment list                       |
+|-------|-------|----------------------|-------------------------------------|
+| SP    | 2-hop | 10 → 29 → 19          | [uSID-29, uSID-19]                  |
+| NSP-1 | 3-hop | 10 → 2 → 11 → 19      | [uSID-2, uSID-11, uSID-19]           |
+| NSP-2 | 3-hop | 10 → 15 → 31 → 19     | [uSID-15, uSID-31, uSID-19]          |
+| NSP-3 | 3-hop | 10 → 22 → 51 → 19     | [uSID-22, uSID-51, uSID-19]          |
+| NSP-4 | 3-hop | 10 → 36 → 20 → 19     | [uSID-36, uSID-20, uSID-19]          |
+| NSP-5 | 3-hop | 10 → 43 → 40 → 19     | [uSID-43, uSID-40, uSID-19]          |
+| NSP-6 | 3-hop | 10 → 50 → 49 → 19     | [uSID-50, uSID-49, uSID-19]          |
+
+Note: technically there is a seventh 3-hop path between Node-10 and Node-19: 10 → 57 → 29 → 19, however, per the previous note on non-disjointness, it is eliminated as the 29 → 19 hop is a repeat of the SP.
+
+The full mathematical foundation is described in Appendix B.
 
 **Control-plane consequence:** no path-computation protocol is required. A routing protocol such as IS-IS or BGP may be used to distribute node-SIDs and BFD may be used for liveness detection, but path discovery and calculation — the functions of RSVP-TE, PCE, or CSPF — are eliminated entirely. A local software agent on the encap node synthesizes the full SP + NSP segment-list set from the destination's coordinates alone.
 
@@ -135,40 +151,45 @@ The contrast with tunnel-based k-shortest-path routing is significant. In a tunn
 
 **Three encap/decap models** determine where path intelligence and packet processing live:
 
-**Model 1: Host encap, host decap.** The source host (CPU, DPU, or hypervisor) performs SRv6 encapsulation with segment lists computed algebraically and cached in host DRAM. The destination host decapsulates. This is the most general model, applicable to both AI training (MRC/RDMA) and multi-tenant cloud (VPC overlays). Because each destination host requires its own locator/uSID in the carrier, segment lists are per destination host. However, the transport portion of the segment list (the SP or NSP through the fabric) is per destination *switch* and shared across all hosts on that switch, so the source host caches transport prefixes per switch and appends the destination host's locator at encap time.
+**Model 1: Host encap, host decap.** The source host (CPU, DPU, or hypervisor) performs SRv6 encapsulation with SP and NSP segment lists computed algebraically and cached in host DRAM. The destination host decapsulates. This is the most general model, applicable to both AI training (MRC/RDMA) and multi-tenant cloud (VPC overlays). Because each destination host requires its own locator/uSID in the carrier, segment lists are per destination host. However, the transport portion of the segment list (the SP or NSP through the fabric) is per destination *switch* and shared across all hosts on that switch, so the source host caches transport prefixes per switch and appends the destination host's locator at encap time.
 
 At q = 61 with 64 hosts per switch, a host communicating with all remote hosts would need segment lists for 3,782 remote switches × ~61 paths ≈ 231K transport prefixes, cached in host DRAM. The per-host suffix is a simple append. For AI training collectives, the NCCL/RCCL orchestrator can further limit the active working set to the subset of GPUs currently participating in the collective, keeping the active entry count proportional to the collective size rather than the full fabric.
+// i'm not sure what is meant by 'simple append' and I'm not sure it works with iproute2. Are we assuming the use of some programmable smartNIC with the append claim?
 
-**Model 1 in practice (iproute2 example at q=7).** On a Linux host attached to switch sw001, the route to hosts on remote switch sw019 (subnet 2001:db8:a013::/64) is a single weighted multipath entry with 7 nexthops: 1 SP at weight 4 and 6 NSPs at weight 1:
+**Model 1 in practice (iproute2 example at q=7).** On a Linux host attached to Node-10, the route to a remote host attached to Node-19 (subnet 2001:db8:a013::/64) is a single weighted multipath entry with 7 nexthops: 1 SP at weight 4 and 6 NSPs at weight 1:
 
 ```
 2001:db8:a013::/64 metric 1024 pref medium
-  nexthop encap seg6 mode encap.red segs 1 [ fc00:0:1033:1013:e000:: ] weight 4
-  nexthop encap seg6 mode encap.red segs 1 [ fc00:0:1002:100b:1013:e000:: ] weight 1
-  nexthop encap seg6 mode encap.red segs 1 [ fc00:0:1009:1004:1013:e000:: ] weight 1
-  nexthop encap seg6 mode encap.red segs 1 [ fc00:0:1017:101f:1013:e000:: ] weight 1
-  nexthop encap seg6 mode encap.red segs 1 [ fc00:0:101e:101d:1013:e000:: ] weight 1
-  nexthop encap seg6 mode encap.red segs 1 [ fc00:0:1025:1031:1013:e000:: ] weight 1
-  nexthop encap seg6 mode encap.red segs 1 [ fc00:0:102c:1028:1013:e000:: ] weight 1
+  nexthop encap seg6 mode encap.red segs 1 [ fc00:0:1033:1013:a013:e000:: ] weight 4
+  nexthop encap seg6 mode encap.red segs 1 [ fc00:0:1002:100b:1013:a013:e000:: ] weight 1
+  nexthop encap seg6 mode encap.red segs 1 [ fc00:0:1009:1004:1013:a013:e000:: ] weight 1
+  nexthop encap seg6 mode encap.red segs 1 [ fc00:0:1017:101f:1013:a013:e000:: ] weight 1
+  nexthop encap seg6 mode encap.red segs 1 [ fc00:0:101e:101d:1013:a013:e000:: ] weight 1
+  nexthop encap seg6 mode encap.red segs 1 [ fc00:0:1025:1031:1013:a013:e000:: ] weight 1
+  nexthop encap seg6 mode encap.red segs 1 [ fc00:0:102c:1028:1013:a013:e000:: ] weight 1
 ```
+// can you update the above route output with hex values from table 2
 
-The SP carrier `fc00:0:1033:1013:e000::` encodes two uSIDs: relay sw051 (0x1033) and destination sw019's locator plus uDT function (0x1013:e000). The NSP carriers encode three uSIDs: first-hop, mid-node, and the same destination locator plus uDT. Transit switches process only node-SID LPM lookups. The destination host matches its locator, executes the uDT decap, and processes the inner packet.
+In the host encap/decap model the SP carrier `fc00:0:1033:1013:a013:e000::` encodes two fabric uSIDs (relay and egress node) and the destination host locator plus function uSIDs for a total of 4 uSID. The NSP carriers encode three fabric uSIDs: first-hop, mid-node, and egress node, then the same destination host locator plus uDT. Transit switches process only node-SID LPM lookups (or uA SIDs should the operator choose to use adjacency uSIDs). The destination host matches its locator, executes the uDT decap, and processes the inner packet.
 
 Each host in this q=7 fabric holds 56 such routes (one per remote switch subnet), each with 7 weighted nexthops, for a total of 392 nexthop entries. At q=61 this grows to ~3,782 routes × ~61 nexthops ≈ 231K entries, entirely in host memory.
+// I'm not sure this math is correct. In the host encap/decap model each remote host would have its own inner destination subnet, so assuming q=7 switches have 8 fabric and 8 host interfaces, the fabric can support 57x8 destination host subnets, so a given source host would need 56x8x7 routes (3136 - no problem). This does get trickier at q=61 (64 hosts per switch) I believe we're looking at 3782x64x61 = ~14.75M...definitely a scenario where routes are programmed on demand as opposed to all at once.
 
 **Model 2: Host encap, egress leaf decap.** The source host encapsulates as in Model 1, but the segment list targets the destination *switch* rather than individual hosts. The egress leaf switch performs SRv6 decap (End.DT6 or uDT6), strips the outer header, and forwards to the local endpoint based on the inner destination address. Because routing targets switch subnets rather than individual hosts, the entry count drops by a factor of hosts-per-switch compared to Model 1. This model is useful when all hosts on a switch share a common subnet and the operator prefers simpler host addressing at the cost of a decap function on the egress switch.
+// I've been using the term Node, you've been saying switch. We should choose one and be consistent. From an industry literature perspective do you think switch is the right choice? if so, can you edit all my 'Node' entries to be 'switch'?
 
-**Model 3: Switch encap, switch decap.** The ingress switch encapsulates on behalf of the source endpoint. This is the traditional SR-TE model widely deployed in service provider transport networks, but it concentrates SR-policy entries in TCAM-constrained switches and thus does not scale as well as the host-based encapsulation models.
+**Model 3: Switch encap, switch decap.** The ingress switch encapsulates on behalf of the source endpoint. This is the traditional SR-TE model widely deployed in service provider transport networks, but it concentrates SR-policy entries in TCAM-constrained switches and is not expected to be deployed in either frontend or backend data center fabrics considered here.
 
-**Recommendation:** Models 1 or 2 for all deployment scenarios. Both place path state in host memory, scale naturally with host DRAM capacity, and align with the architecture's principle of host-based encap intelligence. The choice between them depends on the addressing model: Model 1 when destination hosts need individual locators (MRC, multi-tenant VPC), Model 2 when shared subnets per switch simplify addressing. Model 3 is available as a fallback where host-based encapsulation is not feasible. Subsequent sections of this paper assume host-based encapsulation, and all calculations are based on that assumption.
+**Recommendation:** Models 1 or 2 for all deployment scenarios. Both place path state in host memory, scale naturally with host DRAM capacity. The choice between them depends on the addressing model: Model 1 when destination hosts need individual locators (MRC, multi-tenant VPC), Model 2 when shared subnets per switch simplify addressing. Model 3 is available as a fallback where host-based encapsulation is not feasible. Subsequent sections of this paper assume host-based encapsulation, and all calculations are based on that assumption.
 
 ### 3.4 WMP weight computation
 
 Traffic splits across the SP and NSP segment lists with explicit weights. The SP is more efficient (2 hops vs. 3), so it receives a premium, but the premium shrinks as q grows and the SP becomes one path among many.
 
-At q = 7 (7 paths): a 30% SP, ~12% per NSP split is a reasonable starting point. At q = 127 (~127 paths): weights converge toward near-uniform, and the operator may treat all paths as ECMP. The weight is a derived function of q and hop-count ratio, not a constant, though operators can override it for specific traffic patterns.
+At q = 7 (7 paths): a 30% SP, ~12% per NSP split is a reasonable starting point. At q = 127 (~127 paths): weights converge toward near-uniform, and the operator may treat all SP and NSP paths as ECMP. The weight is a derived function of q and hop-count ratio, not a constant, though operators can override it for specific traffic patterns.
 
 The host computes segment lists on demand from coordinates and caches them for active connections. For each unique destination switch, the encap node holds one SP + ~(q−1) NSP segment lists. At q = 61, a host with active connections to 1,000 distinct remote switches caches ~61K segment lists, well within the memory capacity of modern host systems, DPUs, and SmartNICs. Multiple connections to the same destination switch reuse the same cached transport prefixes.
+// should we default to Model 1 and say 1000 distinct remote hosts?
 
 ### 3.5 Live-vertex-set adaptation
 
@@ -177,6 +198,7 @@ In a partially deployed fabric, the SP relay between a live pair may not yet be 
 ### 3.6 Resilience and failure handling
 
 When a pair's SP relay fails, traffic undergoes a transition: 2-hop SP traffic shifts to 3-hop NSPs. The encap node re-derives weights algebraically from the updated live-vertex set, faster than any IGP reconvergence. If a link fails rather than a node, the encap node removes the affected path from the segment-list set and rebalances weights across the surviving paths.
+// is this a claim we can defend: "faster than any IGP reconvergence"
 
 Node liveness is detected via BFD (as discussed in Section 3.2). The key resilience property: because the full SP + NSP set provides ~q edge-disjoint paths between any pair, losing a single node or link affects only one path out of ~q. Traffic redistributes across the remaining paths with a weight adjustment, not a topology reconvergence. In MRC deployments, path-level failure handling moves to the transport entirely: MRC's per-path EV probing detects a dead path within one RTT-scale window and stops scheduling packets onto it, composing with the algebraic re-derivation at the host level.
 
@@ -194,7 +216,7 @@ A 51.2T switch ships as a 64×800G device. It can be deployed at native port spe
 | 128×400G | 400G | 61 | 62 | 66 | 3,783 | 66 × 400G per switch |
 | 256×200G | 200G | 127 | 128 | 128 | 16,257 | 128 × 200G per switch |
 
-Each configuration represents a single PolarFly topology with one fabric link per adjacency. Server-facing ports can be broken out independently to match endpoint NIC speeds (e.g., 400G server ports broken out to 4×100G for GPU connections) without affecting the fabric topology.
+Each configuration represents a single PolarFly topology with one fabric link per adjacency. Server-facing ports can be broken out independently to match endpoint NIC speeds (e.g., 400G server ports broken out to 4×100G for multi-plane GPU connections) without affecting the fabric topology.
 
 ### 4.1 Native high-bandwidth links
 
@@ -202,7 +224,7 @@ For both AI training and general-purpose cloud, the optimal configuration uses n
 
 ### 4.2 Physically separate PolarFly planes
 
-For deployments requiring first-hop switch redundancy, multiple physically separate PolarFly fabrics serve as independent planes. Each GPU or server NIC connects to multiple planes via separate ports, so a switch failure in one plane affects only that plane's connections.
+For multi-planar deployments or those requiring first-hop switch redundancy, multiple physically separate PolarFly fabrics can be built out as independent planes. Each GPU or server NIC connects to multiple planes via separate ports, so a switch failure in one plane affects only that plane's connections.
 
 **Table 3: Multi-plane configurations on 51.2T switches**
 
@@ -211,7 +233,10 @@ For deployments requiring first-hop switch redundancy, multiple physically separ
 | 2 planes, 128×400G | 2 | 61 | 3,783 | 7,566 | 66 × 400G split across 2 planes |
 | 4 planes, 64×800G | 4 | 31 | 993 | 3,972 | 32 × 800G split across 4 planes |
 
+// i think this table may be conflating planes and slices
+
 In a 4-plane configuration with q=31, each GPU's NIC is broken out to 4×100G with one port connecting to each plane's local switch. A switch failure in one plane leaves three surviving planes. Within each plane, the full SP + NSP path set (1 + ~30 paths per pair) provides transport-level diversity.
+// multiplanar deployments i'm familiar with are designed for maximize scale and radix, so generally a 51.2T deployment would be 4 or 8 planes of two-tier clos at 512x100G. Polarfly at 512x100G radix would be insanely large, however, the 8-plane 512x100G design supports 131k GPUs with 8x768 switches (8x256(spine)x512(leaf)) = 6144. I think q=31 might be the sweet spot to compete with the 8 plane clos. 8 planes of 993 switches, each switch has 64x400G broken out as 256x100G. 8 planes of 993 switches x 256 GPUs is 254k GPUs and 7944 switches. So a ~23% increase in switches and we nearly double the GPUs, and we have manageable host SRv6 FIB scale. If I recall correctly, MRC doesn't attempt to create an EV for every destination across all of 8x256 spines in the 2-tier clos, rather the active FIB is some subset of destinations and the EVs a subset of the 8x256 spines. MRC over Polarfly could operate very similarly, perhaps every SP (8 in an 8 plane deployment) and 50% of the NSPs (~31x(8/2)) becomes an EV, giving a source-dest pair ~128 EVs (rough target of MRC spec) to work with. If the rolling all-to-all (a given source has EVs to ~10-20% of destinations at a given time), then 80x25.4k is ~2M entries, which is a lot. would a ConnectX or Pollara SmartNIC support that? And if it makes sense to move these details into 5.1 let's do so.
 
 ### 4.3 Additive expansion
 
@@ -220,6 +245,7 @@ PolarFly's complete edge set is known in advance from the algebraic construction
 ### 4.4 Scale at modern radix
 
 At 128×400G (q=61), a single PolarFly plane reaches 3,783 switches. At 256×200G (q=127), it reaches 16,257 switches at 99% Moore-bound efficiency. Both exceed the footprint of any known single datacenter building. The odd-prime-power constraint (Appendix A) excludes powers of 2 from the feasible set of q values, but the lattice of odd primes is dense enough at modern radix that a feasible q lies within a few ports of any target.
+// there are many data center buildings today with 3783 or more switches
 
 ---
 
@@ -227,7 +253,7 @@ At 128×400G (q=61), a single PolarFly plane reaches 3,783 switches. At 256×200
 
 ### 5.1 AI backend with MRC
 
-The AI training backend is the deployment type where PolarFly's advantages compound: the fabric is built once at known size, the operator owns the stack end to end, hardware is uniform per build, and per-bit cost compounds directly into training economics.
+The AI training backend is the deployment type where WMP-PolarFly may be particularly advantageous: the fabric is built once at known size, the operator owns the stack end to end, hardware is uniform per build, and per-bit cost compounds directly into training economics.
 
 MRC's properties map naturally onto WMP-PolarFly. Per-packet spraying across the full SP + NSP set eliminates elephant-flow collision risk. Algebraic path-set provisioning replaces fabric-dependent EV configuration with a direct computation at connection setup. NSCC's per-path congestion signals modulate the algebraic WMP weight priors adaptively. The 1–2μs SP/NSP latency gap (one additional switch traversal) is well within MRC's reorder window.
 
@@ -246,7 +272,8 @@ For general-purpose cloud and private cloud deployments with VPC isolation, WMP-
 
 That is 5 active uSIDs consuming 5 of the 6 available F3216 slots, with the 6th slot serving as the zero-terminator. The SP case uses 4 active uSIDs with two slots free.
 
-As a concrete example, an NSP carrier from a host on sw001 to the 64th host on sw019 in a tenant VPC might look like: `fc00:0:1002:100b:1013:a03f:e000::`, encoding first-hop (0x1002), mid-node (0x100b), destination switch (0x1013), destination host (0xa03f), and uDT6 tenant function (0xe000). Host locators can be reused at every switch since hosts connect directly to their local leaf; for example, if every switch has 64 attached hosts, locators a000 through a03f can be assigned identically at each switch.
+As a concrete example, an NSP carrier from a host on Node-10 to the 64th host on Node-19 in a tenant VPC might look like: `fc00:0:1002:100b:1013:a03f:e000::`, encoding first-hop (0x1002), mid-node (0x100b), destination switch (0x1013), destination host (0xa03f), and uDT6 tenant function (0xe000). Host locators can be reused at every switch since hosts connect directly to their local leaf; for example, if every switch has 64 attached hosts, locators a000 through a03f can be assigned identically at each switch.
+// for consistency i'm sticking with node (or switch) 10 to 19. Can you update the uSID entries in this paragraph to 10 -> 19 per the polarfly math? 
 
 **Where state lives in the multi-tenant model:**
 
@@ -255,11 +282,13 @@ As a concrete example, an NSP carrier from a host on sw001 to the 64th host on s
 - **Destination host:** processes the final uSIDs (host locator + uDT6 tenant function), performs VRF-based decap, and delivers the inner packet to the appropriate VM or container.
 - **Source host:** holds SR policy entries per (destination host × tenant) pair in host memory, computed algebraically on demand.
 
-**On-demand flow computation.** Rather than pre-populating segment lists for all possible destinations, the source host maintains static state pushed at boot: a prefix-to-coordinate map (~4K entries for q=61) plus a tenant VRF-to-uDT6 function map (pushed per VM lifecycle event). Per-flow SR policy entries are computed on first packet to a new destination (algebraic path computation plus tenant suffix lookup, completed in microseconds with no network round trip) and cached for the flow's lifetime, aging out when idle. The working set is proportional to active flows, not total fabric size × tenant count.
+**On-demand flow computation.** Rather than pre-populating segment lists for all possible destinations, the source host maintains static state pushed at boot: a prefix-to-coordinate map (~4K entries for q=61) plus a tenant VRF-to-uDT6 function map (pushed per VM lifecycle event). Per-flow SR policy entries are computed on first packet to a new destination host (algebraic path computation plus tenant suffix lookup, completed in microseconds with no network round trip) and cached for the flow's lifetime, aging out when idle. The working set is proportional to active flows, not total fabric size × tenant count.
 
 This is architecturally similar to Google's Andromeda SDN stack [14], which also uses host-based encapsulation with on-demand flow installation. The critical difference: Andromeda's first-packet slow path requires a control-plane round trip to the Hoverboard system for encapsulation rules. WMP-PolarFly's first-packet path is purely local, because the host can algebraically compute the transport path from coordinates without consulting any controller. An SDN coordinator pushes only topology state (coordinates, SIDs, tenant mappings) to hosts; per-flow path computation is self-service.
+// Note - with host decap each remote host is its own subnet that is attached to the polarfly fabric, but not 'of' the polarfly fabric. So we might need some mapping of host-nets per node/switch
 
 The boundary between cloud and backend deployments is less sharp than it may appear. A fixed-footprint datacenter with a known build size and an operator-owned stack shares many characteristics with an AI training cluster, and WMP-PolarFly applies equally to both. The architecture's requirements are SRv6 encapsulation at the host and PolarFly coordinate assignment in the fabric; any environment that meets these is a candidate.
+// i'm not sure we need this paragraph. is there a specific idea its contributing to the overall arguement?
 
 ---
 
@@ -282,7 +311,8 @@ At matched oversubscription on the same switch hardware, WMP-PolarFly and RNG co
 | **RNG** | 993 | ~95K | ~32 edge-disjoint (spray) | 4–5 |
 | **WMP-PolarFly q=31** | 993 | ~95K | 1 SP + ~30 NSPs | 2–3 |
 
-The hardware is indistinguishable. The differences are hop count (2–3 vs. 4–5), path structure (deterministic algebraic vs. statistical spray), and availability. RNG is production-proven at Amazon but not publicly available: the Spraypoint protocol has not been open-sourced and ShuffleBoxes are not commercially available. A non-Amazon operator would need to reimplement Spraypoint and fabricate ShuffleBoxes independently. WMP-PolarFly builds on open standards (SRv6) and open-source NOS implementations (FRR, SONiC), and is deployable today.
+The hardware is indistinguishable. The differences are hop count (2–3 vs. 4–5), path structure (deterministic algebraic vs. statistical spray), and availability. RNG is production-proven at Amazon but not publicly available: the Spraypoint protocol has not been open-sourced and their ShuffleBoxes are custom built in house. A non-Amazon operator would need to reimplement Spraypoint and fabricate ShuffleBoxes independently. WMP-PolarFly builds on open standards (SRv6) and open-source NOS implementations (FRR, SONiC), and is deployable today.
+// WMP-Polarfly can work with any NOS that supports SRv6, not just FRR/SONiC
 
 **MRC backend comparison (128×400G switches, q=61):**
 
@@ -290,6 +320,8 @@ The hardware is indistinguishable. The differences are hop count (2–3 vs. 4–
 |---|---|---|---|---|
 | **8-plane Clos** | 6,144 | 131K | 2,097K | ECMP per plane |
 | **Single PolarFly q=61** | 3,783 (−38%) | ~125K | 234K (−89%) | 1 SP + ~60 NSPs |
+
+// if my q=31 numbers from an earlier comment are correct, let's add that line to this table, and augment the below analysis
 
 The single-plane PolarFly comparison is dramatic: 38% fewer switches and 89% fewer fabric optics at comparable GPU count, because PolarFly uses native 400G fabric links (one optic per adjacency) while the Clos uses 8 planes of 100G links across leaf, spine, and super-spine tiers.
 
@@ -308,7 +340,7 @@ Spritz [13] is the closest intellectual sibling: both move routing intelligence 
 | Setup latency | Probing time before steady state | Zero (computed at connection setup) |
 | Host state | Empirical path cache (requires re-probing) | Deterministic function of coordinates (always current) |
 
-Spritz's strength is generality: it works on any low-diameter topology without needing to know the graph structure. WMP-PolarFly's strength is certainty: the path set is a mathematical fact, not a discovery, so there is no probing phase, no stale-cache risk, and failure re-derivation is instantaneous. WMP-PolarFly's host state is a deterministic function of topology coordinates, always valid by construction, whereas Spritz maintains an empirical path cache that requires periodic re-probing to stay current. An operator choosing between them is choosing between topology-agnostic flexibility and topology-specific optimality.
+Spritz's strength is generality: it works on any low-diameter topology without needing to know the graph structure. WMP-PolarFly's strength is its determinism: the path set is a mathematical fact, not a discovery, so there is no probing phase, no stale-cache risk, and failure re-derivation is instantaneous. WMP-PolarFly's host state is a deterministic function of topology coordinates, always valid by construction, whereas Spritz maintains an empirical path cache that requires periodic re-probing to stay current. An operator choosing between them is choosing between topology-agnostic flexibility and topology-specific optimality.
 
 ### 6.4 Feature comparison
 
@@ -334,10 +366,11 @@ Spritz's strength is generality: it works on any low-diameter topology without n
 ### 7.1 Conclusions
 
 WMP-PolarFly demonstrates that the path-state objection to structured low-diameter fabrics is an artifact of tunnel-based forwarding, not a fundamental limitation. SRv6 uSID moves path state to the encap node; PolarFly's algebraic structure eliminates path-computation protocols. The SP + NSP construct provides path diversity for any deployment type: for AI training backends, MRC enables per-packet spraying across the SP + NSP set with congestion-aware adaptive weighting; for general-purpose cloud, flow-level weighted multipath distributes traffic across the same path set using standard Linux routing. In MRC deployments, path-health probing and per-path congestion state are functions native to the MRC transport, fully decoupled from WMP-PolarFly's host state. The multi-tenant VPC overlay extends the architecture to general-purpose cloud, with on-demand algebraic path computation that eliminates the control-plane round trip traditional SDN overlays require.
+// WMP-Polarfly's success is not because it uses host-encap, its because WMP-Polarfly uses weighted source routing over many paths to overcome the lack of ECMP and tunnel-state challenges that low-diameter has faced in the past
 
 At matched oversubscription on identical switch hardware, WMP-PolarFly matches RNG on switch count and optics while delivering half the hop count and deterministic diameter-2 latency. Against Clos, it eliminates the spine layer entirely, achieving 40–60% switch-count savings and significant optics reduction. Against Spritz, it trades topology generality for algebraic path certainty: zero probing latency, zero stale-cache risk, instantaneous failure re-derivation, and host state that is a deterministic function of coordinates rather than an empirical cache requiring periodic refresh.
 
-Unlike RNG and Spritz, WMP-PolarFly is built entirely on open standards and open-source NOS implementations, and is deployable today.
+Unlike RNG and Spritz, WMP-PolarFly is built entirely on open standards and is deployable today.
 
 ### 7.2 Future work
 
@@ -378,3 +411,65 @@ The orthogonal polarity that defines ER_q degenerates in fields of characteristi
 ### A.2 The feasible-degree lattice at high radix
 
 The feasible set comprises odd primes and odd prime powers. Primes alone: 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127 … never more than about 6 apart. Odd prime powers (49, 81, 121, 125, 169, 243 …) fill additional points. The lattice is dense enough that for any target radix above ~60, a feasible q lies within a few ports.
+
+### A.3 Polarfly q = 7 coordinates table
+
+| Node | Coordinate | Self-conjugate |
+|---|---|---|
+| 1 | (0, 0, 1) | |
+| 2 | (0, 1, 0) | |
+| 3 | (0, 1, 1) | |
+| 4 | (0, 1, 2) | |
+| 5 | (0, 1, 3) | |
+| 6 | (0, 1, 4) | |
+| 7 | (0, 1, 5) | |
+| 8 | (0, 1, 6) | |
+| 9 | (1, 0, 0) | |
+| 10 | (1, 0, 1) | |
+| 11 | (1, 0, 2) | |
+| 12 | (1, 0, 3) | |
+| 13 | (1, 0, 4) | |
+| 14 | (1, 0, 5) | |
+| 15 | (1, 0, 6) | |
+| 16 | (1, 1, 0) | |
+| 17 | (1, 1, 1) | |
+| 18 | (1, 1, 2) | |
+| 19 | (1, 1, 3) | |
+| 20 | (1, 1, 4) | |
+| 21 | (1, 1, 5) | |
+| 22 | (1, 1, 6) | |
+| 23 | (1, 2, 0) | |
+| 24 | (1, 2, 1) | |
+| 25 | (1, 2, 2) | |
+| 26 | (1, 2, 3) | yes |
+| 27 | (1, 2, 4) | yes |
+| 28 | (1, 2, 5) | |
+| 29 | (1, 2, 6) | |
+| 30 | (1, 3, 0) | |
+| 31 | (1, 3, 1) | |
+| 32 | (1, 3, 2) | yes |
+| 33 | (1, 3, 3) | |
+| 34 | (1, 3, 4) | |
+| 35 | (1, 3, 5) | yes |
+| 36 | (1, 3, 6) | |
+| 37 | (1, 4, 0) | |
+| 38 | (1, 4, 1) | |
+| 39 | (1, 4, 2) | yes |
+| 40 | (1, 4, 3) | |
+| 41 | (1, 4, 4) | |
+| 42 | (1, 4, 5) | yes |
+| 43 | (1, 4, 6) | |
+| 44 | (1, 5, 0) | |
+| 45 | (1, 5, 1) | |
+| 46 | (1, 5, 2) | |
+| 47 | (1, 5, 3) | yes |
+| 48 | (1, 5, 4) | yes |
+| 49 | (1, 5, 5) | |
+| 50 | (1, 5, 6) | |
+| 51 | (1, 6, 0) | |
+| 52 | (1, 6, 1) | |
+| 53 | (1, 6, 2) | |
+| 54 | (1, 6, 3) | |
+| 55 | (1, 6, 4) | |
+| 56 | (1, 6, 5) | |
+| 57 | (1, 6, 6) | |
